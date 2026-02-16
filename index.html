@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
   <title>OSION – Fit Calculator (Jeans)</title>
-  <meta name="description" content="Jeans Fit Calculator: Größenempfehlung (W/L) mit Messhilfe, Plausibilitätscheck und klaren Hinweisen zur Reduktion von Retouren/Reklamationen." />
+  <meta name="description" content="Jeans Fit Calculator: Größenempfehlung (W/L) mit Messhilfe, Plausibilitätscheck und klaren Hinweisen für die passende Jeans." />
 
   <style>
     :root{
@@ -447,7 +447,7 @@
       </div>
 
       <div class="badgeRow">
-        <div class="pill"><span class="dot"></span> Fokus: weniger Retouren & Reklamationen</div>
+        <div class="pill"><span class="dot"></span> Fokus: passende Jeans finden</div>
         <div class="pill">Output: W/L + Hinweise + Sicherheitsgrad</div>
       </div>
     </div>
@@ -558,7 +558,6 @@
             <ul class="bullets" id="bullets"></ul>
             <div class="note" id="note"></div>
 
-            <!-- NUR diese Kachel bleibt (die andere wurde entfernt) -->
             <div class="miniGrid">
               <div class="tile">
                 <h3>Warum diese Empfehlung?</h3>
@@ -570,10 +569,10 @@
           <div class="divider"></div>
 
           <div class="tile">
-            <h3>Messdaten erfassen (optional, aber stark gegen Retouren)</h3>
+            <h3>Messdaten erfassen (optional, empfohlen)</h3>
             <p>
-              Empfehlung wird maximal präzise mit: <b>Taille-Umfang</b> und <b>Innenbeinlänge</b>.
-              Ohne Messwerte nutzt der Calculator eine Schätzung – das ist solide, aber weniger exakt.
+              Empfehlung wird am präzisesten mit: <b>Taille-Umfang</b> und <b>Innenbeinlänge</b>.
+              Ohne Messwerte nutzt der Calculator eine Schätzung.
             </p>
           </div>
 
@@ -723,15 +722,8 @@
           .replaceAll("&","&amp;")
           .replaceAll("<","&lt;")
           .replaceAll(">","&gt;")
-          .replaceAll('"',"quot;")
+          .replaceAll('"',"&quot;")
           .replaceAll("'","&#039;");
-      }
-
-      function platformTracking(eventName, payload){
-        try{
-          window.dataLayer = window.dataLayer || [];
-          window.dataLayer.push({ event: eventName, ...payload });
-        }catch(e){}
       }
 
       function compute(){
@@ -783,21 +775,21 @@
         if (used.waist){
           bullets.push(`Taille gemessen: ${waistCmIn} cm → W${W}.`);
         } else {
-          bullets.push(`Taille nicht gemessen → Schätzung genutzt. Für maximale Treffsicherheit Taille messen.`);
-          notes.push(`Ohne gemessene Taille ist die Empfehlung konservativ. Messung bringt deutlich höhere Sicherheit.`);
+          bullets.push(`Taille nicht gemessen → Schätzung genutzt. Für maximale Präzision Taille messen.`);
+          notes.push(`Ohne gemessene Taille ist die Empfehlung konservativ. Eine Messung erhöht die Treffsicherheit deutlich.`);
         }
 
         if (used.inseam){
           bullets.push(`Innenbeinlänge gemessen: ${inseamCmIn} cm → L${L}.`);
         } else {
           bullets.push(`Innenbeinlänge nicht gemessen → Schätzung genutzt. Für exakten Sitz Innenbeinlänge messen.`);
-          notes.push(`Innenbeinlänge beeinflusst den Sitz stark. Messung bringt deutlich höhere Sicherheit.`);
+          notes.push(`Innenbeinlänge beeinflusst den Sitz stark. Eine Messung erhöht die Treffsicherheit deutlich.`);
         }
 
         bullets.push(`Sitz: ${fit === "slim" ? "enger" : fit === "loose" ? "lockerer" : "normal"} · Stretch: ${stretch === "high" ? "viel" : stretch === "none" ? "kein" : "etwas"}.`);
 
         if (brand !== "tts"){
-          bullets.push(`Passform-Tendenz berücksichtigt: ${brand === "small" ? "fällt klein aus" : "fällt groß aus"}.`);
+          bullets.push(`Passform-Tendenz berücksichtigt: ${brand === "small" ? "fällt eher klein aus" : "fällt eher groß aus"}.`);
         }
 
         const betweenHint = (stretch === "high" || fit === "slim")
@@ -805,7 +797,7 @@
           : `Wenn du zwischen zwei Größen liegst: eher die größere nehmen (mehr Komfort).`;
         notes.push(betweenHint);
 
-        notes.push(`Hinweis: Maßangaben und Sitz-Hinweise auf der Produktseite sind entscheidend.`);
+        notes.push(`Tipp: Maße und Hinweise auf der Produktseite sind entscheidend für den Sitz.`);
 
         const why = [
           `Basis: ${used.waist ? "gemessene Taille" : "Taille-Schätzung"} + ${used.inseam ? "gemessene Innenbeinlänge" : "Innenbein-Schätzung"}.`,
@@ -825,15 +817,6 @@
         el.confBar.style.width = `${score}%`;
 
         el.result.style.display = "block";
-
-        platformTracking("oson_fit_calc_result", {
-          category: "jeans",
-          W, L,
-          confidence: score,
-          usedWaist: used.waist,
-          usedInseam: used.inseam,
-          fit, stretch, rise, brand
-        });
       }
 
       function reset(){
@@ -848,7 +831,6 @@
         el.result.style.display = "none";
         el.confBar.style.width = "0%";
         el.confText.textContent = "";
-        platformTracking("oson_fit_calc_reset", { category: "jeans" });
       }
 
       async function copyResult(){
@@ -859,7 +841,6 @@
         const txt = `${el.sizeWL.textContent} – ${el.sizeMeta.textContent}\nHinweise:\n- ${[...el.bullets.querySelectorAll("li")].map(li=>li.textContent).join("\n- ")}\n\n${el.note.textContent}`;
         try{
           await navigator.clipboard.writeText(txt);
-          platformTracking("oson_fit_calc_copy", { category: "jeans" });
           alert("Ergebnis kopiert.");
         }catch(e){
           alert("Kopieren nicht möglich. Bitte manuell markieren.");
@@ -876,8 +857,6 @@
       el.openMeasure.addEventListener("click", openModal);
       el.closeMeasure.addEventListener("click", closeModal);
       el.modalBackdrop.addEventListener("click", (e)=>{ if(e.target === el.modalBackdrop) closeModal(); });
-
-      platformTracking("oson_fit_calc_view", { category: "jeans" });
     })();
   </script>
 </body>
