@@ -3,35 +3,22 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
-  <title>OSION – Jeans Scan & Vorschau</title>
-  <meta name="description" content="Jeans Scan & Vorschau: Größenwahrscheinlichkeit (W/L) plus visuelle Vorschau mit Overlay. Foto bleibt im Browser." />
+  <title>OSION – Jeans Live Scan</title>
+  <meta name="description" content="Jeans Live Scan: Kamera-gestützter Größen-Scan (W/L) mit Wahrscheinlichkeiten und optionaler Vorschau. Foto bleibt im Browser." />
 
   <style>
     :root{
-      --bg0:#070a14;
-      --bg1:#0b1030;
-      --bg2:#171a3a;
-
-      --text:#eaf0ff;
-      --muted: rgba(234,240,255,.72);
-
-      --bad:#ff6b6b;
-      --gold:#ffd36a;
-      --good:#45d483;
-
-      --a1:#b3003c;
-      --a2:#6b2cff;
-
-      --r: 18px;
-      --r2: 26px;
-
+      --bg0:#070a14; --bg1:#0b1030; --bg2:#171a3a;
+      --text:#eaf0ff; --muted: rgba(234,240,255,.72);
+      --bad:#ff6b6b; --gold:#ffd36a; --good:#45d483;
+      --a1:#b3003c; --a2:#6b2cff;
+      --r:18px; --r2:26px;
       --sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
       --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
     }
 
     *{ box-sizing:border-box; }
     html,body{ height:100%; }
-
     body{
       margin:0;
       font-family: var(--sans);
@@ -44,21 +31,20 @@
       overflow-x:hidden;
     }
 
-    .wrap{ max-width: 1180px; margin:0 auto; padding: 26px 18px 44px; }
+    .wrap{ max-width: 1180px; margin:0 auto; padding: 18px 14px 44px; }
 
-    /* Topbar */
     .topbar{
-      display:flex; align-items:center; justify-content:space-between; gap:14px;
-      padding: 14px 14px;
+      display:flex; align-items:center; justify-content:space-between; gap:12px;
+      padding: 12px 12px;
       border: 1px solid rgba(255,255,255,.14);
       border-radius: var(--r2);
       background: linear-gradient(180deg, rgba(255,255,255,.07), rgba(255,255,255,.025));
       box-shadow: 0 22px 80px rgba(0,0,0,.55);
       backdrop-filter: blur(12px);
     }
-    .brand{ display:flex; align-items:center; gap:14px; min-width: 280px; }
+    .brand{ display:flex; align-items:center; gap:12px; min-width: 240px; }
     .logo{
-      width:54px; height:54px; border-radius: 16px;
+      width:48px; height:48px; border-radius: 16px;
       border:1px solid rgba(255,255,255,.18);
       background: linear-gradient(135deg, rgba(179,0,60,.25), rgba(107,44,255,.25));
       display:grid; place-items:center; overflow:hidden;
@@ -66,7 +52,7 @@
       flex:0 0 auto;
     }
     .logo img{ width:100%; height:100%; object-fit:cover; display:block; }
-    .brand h1{ margin:0; font-size: 15px; letter-spacing:.25px; font-weight: 950; line-height:1.15; }
+    .brand h1{ margin:0; font-size: 14px; letter-spacing:.25px; font-weight: 950; line-height:1.15; }
     .brand .sub{ margin-top:2px; font-size: 12px; color: var(--muted); line-height:1.2; }
 
     .badgeRow{ display:flex; gap:10px; flex-wrap:wrap; justify-content:flex-end; }
@@ -87,48 +73,15 @@
       box-shadow: 0 0 0 3px rgba(255,255,255,.06);
     }
 
-    /* Tabs */
-    .tabs{
-      margin-top: 14px;
-      display:flex;
-      gap: 10px;
-      flex-wrap:wrap;
-      align-items:center;
-    }
-    .tab{
-      border:1px solid rgba(255,255,255,.14);
-      background: rgba(255,255,255,.04);
-      color: rgba(234,240,255,.85);
-      padding: 10px 12px;
-      border-radius: 999px;
-      cursor:pointer;
-      font-weight: 950;
-      letter-spacing:.2px;
-      transition: transform .15s ease, border-color .15s ease, background .15s ease;
-      box-shadow: inset 0 1px 0 rgba(255,255,255,.06);
-      user-select:none;
-    }
-    .tab:hover{ transform: translateY(-1px); border-color: rgba(255,255,255,.24); }
-    .tab.active{
-      background: linear-gradient(135deg, rgba(179,0,60,.34), rgba(107,44,255,.34));
-      border-color: rgba(255,255,255,.18);
-    }
-
-    /* Layout */
     .grid{
       margin-top: 14px;
       display:grid;
-      grid-template-columns: 1.05fr .95fr;
-      gap: 16px;
+      grid-template-columns: 1.15fr .85fr;
+      gap: 14px;
       align-items:start;
     }
-    @media (max-width: 980px){
-      .grid{ grid-template-columns: 1fr; }
-      .badgeRow{ justify-content:flex-start; }
-      .brand{ min-width:auto; }
-    }
+    @media (max-width: 980px){ .grid{ grid-template-columns: 1fr; } }
 
-    /* Card */
     .card{
       border: 1px solid rgba(255,255,255,.14);
       border-radius: var(--r2);
@@ -140,41 +93,12 @@
       overflow:hidden;
     }
     .cardHead{
-      padding: 16px 16px 0;
+      padding: 14px 14px 0;
       display:flex; align-items:flex-start; justify-content:space-between; gap: 12px;
     }
-    .cardTitle{ margin:0; font-size: 17px; font-weight: 950; letter-spacing:.3px; }
+    .cardTitle{ margin:0; font-size: 16px; font-weight: 950; letter-spacing:.3px; }
     .cardHint{ margin: 6px 0 0; font-size: 13px; color: var(--muted); line-height:1.35; }
-    .cardBody{ padding: 14px 16px 16px; }
-
-    .row{
-      display:grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-      margin-bottom: 12px;
-    }
-    @media (max-width: 560px){ .row{ grid-template-columns:1fr; } }
-
-    label{ display:block; font-size: 12px; color: var(--muted); margin: 0 0 6px; }
-    .field{ position:relative; }
-
-    input, select{
-      width:100%;
-      padding: 12px 12px;
-      border-radius: 14px;
-      border: 1px solid rgba(255,255,255,.14);
-      background: linear-gradient(180deg, rgba(10,12,28,.72), rgba(10,12,28,.46));
-      color: var(--text);
-      outline:none;
-      transition: border-color .15s ease, transform .15s ease, box-shadow .15s ease;
-      box-shadow: inset 0 1px 0 rgba(255,255,255,.06), 0 10px 30px rgba(0,0,0,.35);
-    }
-    input::placeholder{ color: rgba(185,194,232,.55); }
-    input:focus, select:focus{
-      border-color: rgba(255,255,255,.28);
-      transform: translateY(-1px);
-      box-shadow: inset 0 1px 0 rgba(255,255,255,.07), 0 0 0 4px rgba(107,44,255,.14), 0 10px 34px rgba(0,0,0,.4);
-    }
+    .cardBody{ padding: 12px 14px 14px; }
 
     .actions{ display:flex; gap:10px; flex-wrap:wrap; margin-top: 8px; }
     .btn{
@@ -200,7 +124,6 @@
     }
     .btn.ghost{ background:transparent; box-shadow:none; }
 
-    /* Stage */
     .stage{
       border: 1px solid rgba(255,255,255,.14);
       border-radius: var(--r2);
@@ -214,30 +137,30 @@
       overflow:hidden;
       border: 1px solid rgba(255,255,255,.12);
       background: rgba(255,255,255,.03);
+      aspect-ratio: 3 / 4;
     }
-    canvas, img{ display:block; width:100%; height:auto; }
-    #photo{ display:none; }
-    #overlay{
+
+    video, canvas{
       position:absolute;
       inset:0;
+      width:100%;
+      height:100%;
+      object-fit: cover;
+      display:block;
+    }
+
+    #video{ transform: scaleX(-1); } /* selfie mirror for better UX */
+    #view, #overlay, #tryon{
       pointer-events:none;
     }
-    #tryon{
-      position:absolute;
-      inset:0;
-      pointer-events:none;
-      mix-blend-mode: screen;
-      opacity: .92;
-    }
+    #view{ opacity:0; } /* we draw view only after capture */
+    #tryon{ mix-blend-mode: screen; opacity: .92; }
 
     .status{
       margin-top:10px;
+      display:flex; gap:10px; flex-wrap:wrap; align-items:center;
       font-size: 12px;
       color: var(--muted);
-      display:flex;
-      gap: 10px;
-      align-items:center;
-      flex-wrap:wrap;
     }
     .chip{
       padding: 8px 10px;
@@ -247,8 +170,31 @@
       color: rgba(234,240,255,.78);
       font-size: 12px;
     }
+    .chip.good{ border-color: rgba(69,212,131,.35); }
+    .chip.warn{ border-color: rgba(255,211,106,.35); }
+    .chip.bad{ border-color: rgba(255,107,107,.35); }
 
-    /* Result */
+    .row{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+    @media (max-width: 560px){ .row{ grid-template-columns:1fr; } }
+
+    label{ display:block; font-size: 12px; color: var(--muted); margin: 0 0 6px; }
+    input, select{
+      width:100%;
+      padding: 12px 12px;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,.14);
+      background: linear-gradient(180deg, rgba(10,12,28,.72), rgba(10,12,28,.46));
+      color: var(--text);
+      outline:none;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.06), 0 10px 30px rgba(0,0,0,.35);
+    }
+    input::placeholder{ color: rgba(185,194,232,.55); }
+
     .result{
       margin-top: 12px;
       padding: 14px;
@@ -276,7 +222,7 @@
     }
     .sizeBig .meta{ font-size: 13px; color: var(--muted); margin-top: 6px; }
 
-    .confidence{ min-width: 260px; max-width: 340px; flex: 1; }
+    .confidence{ min-width: 240px; max-width: 340px; flex: 1; }
     .confLabel{
       font-size: 12px; color: var(--muted); margin-bottom: 6px;
       display:flex; justify-content:space-between; gap: 12px;
@@ -289,9 +235,7 @@
       overflow:hidden;
     }
     .bar > i{
-      display:block;
-      height:100%;
-      width:0%;
+      display:block; height:100%; width:0%;
       background: linear-gradient(90deg, var(--bad), var(--gold), var(--good));
       border-radius: 999px;
       transition: width .3s ease;
@@ -323,52 +267,33 @@
     .probTop b{ font-size: 13px; letter-spacing:.2px; }
     .probTop span{ font-family: var(--mono); font-size: 12px; color: rgba(234,240,255,.72); }
     .probBar{
-      margin-top: 10px;
-      height: 8px;
+      margin-top: 10px; height: 8px;
       border-radius: 999px;
       border: 1px solid rgba(255,255,255,.14);
       background: rgba(0,0,0,.22);
       overflow:hidden;
     }
     .probBar i{
-      display:block;
-      height:100%;
-      width:0%;
+      display:block; height:100%; width:0%;
       background: linear-gradient(90deg, rgba(179,0,60,.75), rgba(107,44,255,.75));
       border-radius: 999px;
       transition: width .3s ease;
     }
-
-    .note{
-      margin-top: 10px;
-      padding: 10px 12px;
-      border-radius: 14px;
-      border: 1px dashed rgba(255,255,255,.22);
-      background: rgba(255,255,255,.03);
-      color: var(--muted);
-      font-size: 12px;
-      line-height:1.45;
-    }
-
-    .divider{ height:1px; background: rgba(255,255,255,.08); margin: 14px 0; }
 
     .tile{
       border: 1px solid rgba(255,255,255,.12);
       border-radius: var(--r2);
       background: rgba(255,255,255,.028);
       padding: 12px;
+      margin-top:12px;
     }
     .tile h3{ margin:0; font-size: 13px; letter-spacing:.25px; font-weight: 950; }
     .tile p{ margin: 6px 0 0; font-size: 12px; color: var(--muted); line-height:1.45; }
 
     .sliders{
-      display:grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-      margin-top: 12px;
+      display:grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 12px;
     }
     @media (max-width: 560px){ .sliders{ grid-template-columns:1fr; } }
-
     .rangeWrap{
       border: 1px solid rgba(255,255,255,.12);
       border-radius: 18px;
@@ -377,19 +302,16 @@
     }
     .rangeWrap .top{
       display:flex; justify-content:space-between; align-items:center; gap:10px;
-      font-size: 12px; color: var(--muted);
-      margin-bottom: 8px;
+      font-size: 12px; color: var(--muted); margin-bottom: 8px;
     }
     input[type="range"]{ width:100%; }
 
     .foot{
-      margin-top: 14px;
+      margin-top: 12px;
       font-size: 12px;
       color: rgba(255,255,255,.55);
       text-align:center;
     }
-
-    .hidden{ display:none !important; }
   </style>
 </head>
 
@@ -402,59 +324,50 @@
                onerror="this.style.display='none'; this.parentElement.textContent='OSION'; this.parentElement.style.fontWeight='950'; this.parentElement.style.fontSize='14px';" />
         </div>
         <div>
-          <h1>OSION – Jeans Scan & Vorschau</h1>
-          <div class="sub">Größenwahrscheinlichkeit (W/L) · visuelle Vorschau · Foto bleibt im Browser</div>
+          <h1>OSION Fit Check – Jeans</h1>
+          <div class="sub">Live-Kamera Scan · Größenwahrscheinlichkeit (W/L) · optional Vorschau</div>
         </div>
       </div>
 
       <div class="badgeRow">
-        <div class="pill"><span class="dot"></span> Fokus: passende Jeans finden</div>
-        <div class="pill">Keine Weiterleitung</div>
+        <div class="pill"><span class="dot"></span> Standard: Live-Kamera</div>
+        <div class="pill">Foto bleibt im Browser</div>
       </div>
     </div>
 
-    <div class="tabs" role="tablist" aria-label="Schritte">
-      <div class="tab active" id="tabScan" role="tab" aria-selected="true">1) Größen-Scan</div>
-      <div class="tab" id="tabTry" role="tab" aria-selected="false">2) Vorschau</div>
-      <div class="pill"><span class="dot"></span> Empfehlung: Foto + Maße kombinieren</div>
-    </div>
-
     <div class="grid">
-      <!-- LEFT: Foto + Overlay -->
-      <section class="card" aria-label="Foto">
+      <!-- LEFT: Live Camera -->
+      <section class="card" aria-label="Live-Kamera">
         <div class="cardHead">
           <div>
-            <h2 class="cardTitle">Foto & Marker</h2>
-            <p class="cardHint">
-              Am besten: Ganzkörper-Frontfoto, gerade stehen, gute Beleuchtung, Kamera auf Hüfthöhe.
-              Optional: A4-Blatt sichtbar im Bild für bessere Skalierung.
-            </p>
+            <h2 class="cardTitle">Live-Kamera</h2>
+            <p class="cardHint">Ganzkörper im Bild, gerade stehen, gute Beleuchtung. Wenn die Ampel grün ist, Scan auslösen.</p>
           </div>
           <div class="actions">
-            <label class="btn ghost" for="file">Foto wählen</label>
-            <input id="file" type="file" accept="image/*" hidden />
-            <button class="btn primary" id="analyze" disabled>Scan starten</button>
+            <button class="btn" id="startCam">Kamera starten</button>
+            <button class="btn" id="flipCam" disabled>Kamera wechseln</button>
+            <button class="btn primary" id="capture" disabled>Scan auslösen</button>
           </div>
         </div>
 
         <div class="cardBody">
           <div class="stage">
             <div class="canvasWrap">
-              <img id="photo" alt="Hochgeladenes Foto" />
-              <canvas id="view" width="1200" height="800"></canvas>
-              <canvas id="tryon" width="1200" height="800"></canvas>
-              <canvas id="overlay" width="1200" height="800"></canvas>
+              <video id="video" playsinline autoplay muted></video>
+              <canvas id="view"></canvas>
+              <canvas id="tryon"></canvas>
+              <canvas id="overlay"></canvas>
             </div>
 
             <div class="status">
               <span class="chip" id="modelState">KI-Modul: wird geladen …</span>
-              <span class="chip" id="photoState">Foto: nicht geladen</span>
-              <span class="chip" id="refState">Marker: aus</span>
+              <span class="chip" id="camState">Kamera: aus</span>
+              <span class="chip warn" id="liveState">Ampel: warten</span>
             </div>
 
-            <div class="tile" style="margin-top:12px;">
+            <div class="tile">
               <h3>Marker (optional)</h3>
-              <p>Wenn ein A4-Blatt im Bild ist: Marker auswählen, dann 2 Punkte auf die Blattbreite klicken. So kann der Scan besser skalieren.</p>
+              <p>Für stabilere Skalierung: A4-Blatt im Bild halten. Dann Marker aktivieren und 2 Punkte auf die Blattbreite setzen.</p>
               <div class="row" style="margin-top:10px;">
                 <div class="field">
                   <label for="refMode">Marker</label>
@@ -469,135 +382,117 @@
                   <button class="btn" id="clearRef">Marker-Punkte löschen</button>
                 </div>
               </div>
-              <div class="note" style="margin-top:10px;">
-                Hinweis: Marker ist ein Qualitäts-Upgrade. Ohne Marker ist das Ergebnis stärker von Foto-Perspektive abhängig.
+
+              <div class="status" style="margin-top:10px;">
+                <span class="chip" id="refState">Marker: aus</span>
+                <span class="chip" id="hintState">Hinweis: —</span>
               </div>
             </div>
 
-            <div class="foot">OSION · Foto bleibt im Browser</div>
+            <div class="foot">OSION · Live Scan</div>
           </div>
         </div>
       </section>
 
-      <!-- RIGHT: Inputs + Results (Scan / Try-On) -->
+      <!-- RIGHT: Inputs + Results + Try-on -->
       <section class="card" aria-label="Scan und Vorschau">
         <div class="cardHead">
           <div>
-            <h2 class="cardTitle" id="rightTitle">Größen-Scan</h2>
-            <p class="cardHint" id="rightHint">Gib Maße an (optional, aber stark). Der Scan kombiniert Foto + Angaben zu einer Größenwahrscheinlichkeit.</p>
+            <h2 class="cardTitle">Größen-Scan</h2>
+            <p class="cardHint">Maße sind optional. Mit Taille-Umfang und Innenbeinlänge wird der Scan präziser.</p>
           </div>
         </div>
 
         <div class="cardBody">
-          <!-- SCAN PANEL -->
-          <div id="panelScan">
-            <div class="row">
-              <div class="field">
-                <label for="height">Körpergröße (optional)</label>
-                <input id="height" type="number" inputmode="numeric" min="120" max="220" placeholder="z. B. 182" />
-              </div>
-              <div class="field">
-                <label for="weight">Gewicht (optional)</label>
-                <input id="weight" type="number" inputmode="numeric" min="35" max="200" placeholder="z. B. 84" />
-              </div>
+          <div class="row">
+            <div class="field">
+              <label for="height">Körpergröße (optional)</label>
+              <input id="height" type="number" inputmode="numeric" min="120" max="220" placeholder="z. B. 182" />
             </div>
-
-            <div class="row">
-              <div class="field">
-                <label for="waist">Taille-Umfang (optional)</label>
-                <input id="waist" type="number" inputmode="numeric" min="55" max="140" placeholder="z. B. 88" />
-              </div>
-              <div class="field">
-                <label for="inseam">Innenbeinlänge (optional)</label>
-                <input id="inseam" type="number" inputmode="numeric" min="55" max="105" placeholder="z. B. 82" />
-              </div>
-            </div>
-
-            <div class="row">
-              <div class="field">
-                <label for="fit">Sitz-Wunsch</label>
-                <select id="fit">
-                  <option value="regular" selected>Normal</option>
-                  <option value="slim">Enger</option>
-                  <option value="loose">Lockerer</option>
-                </select>
-              </div>
-              <div class="field">
-                <label for="stretch">Stretch-Anteil</label>
-                <select id="stretch">
-                  <option value="none">Kein Stretch</option>
-                  <option value="some" selected>Etwas Stretch</option>
-                  <option value="high">Viel Stretch</option>
-                </select>
-              </div>
-            </div>
-
-            <div class="row">
-              <div class="field">
-                <label for="brand">Passform-Tendenz (optional)</label>
-                <select id="brand">
-                  <option value="tts" selected>Fällt normal aus</option>
-                  <option value="small">Fällt eher klein aus</option>
-                  <option value="large">Fällt eher groß aus</option>
-                </select>
-              </div>
-              <div class="field">
-                <label for="targetWL">Geplante Größe (optional)</label>
-                <input id="targetWL" type="text" placeholder="z. B. W32 / L32" />
-              </div>
-            </div>
-
-            <div class="actions">
-              <button class="btn primary" id="runScan" disabled>Größen-Scan berechnen</button>
-              <button class="btn" id="reset">Zurücksetzen</button>
-              <button class="btn ghost" id="copy">Ergebnis kopieren</button>
-            </div>
-
-            <div class="result" id="result">
-              <div class="resultTop">
-                <div>
-                  <div class="sizeBig">
-                    <div class="w" id="wlOut">W32 / L32</div>
-                    <div class="meta" id="metaOut">Wahrscheinlichste Größe aus Foto + Angaben.</div>
-                  </div>
-                </div>
-                <div class="confidence">
-                  <div class="confLabel">
-                    <span>Scan-Sicherheit</span>
-                    <b id="confText">mittel</b>
-                  </div>
-                  <div class="bar"><i id="confBar"></i></div>
-                </div>
-              </div>
-
-              <ul class="bullets" id="bullets"></ul>
-
-              <div class="probGrid" id="probGrid"></div>
-
-              <div class="note" id="note"></div>
-
-              <div class="divider"></div>
-
-              <div class="tile">
-                <h3>Weiter zu Vorschau</h3>
-                <p>Wenn du eine freigestellte Jeans (PNG) hast, kannst du im nächsten Schritt eine Vorschau erzeugen.</p>
-                <div class="actions" style="margin-top:10px;">
-                  <button class="btn" id="goTry">Vorschau öffnen</button>
-                </div>
-              </div>
+            <div class="field">
+              <label for="weight">Gewicht (optional)</label>
+              <input id="weight" type="number" inputmode="numeric" min="35" max="200" placeholder="z. B. 84" />
             </div>
           </div>
 
-          <!-- TRY-ON PANEL -->
-          <div id="panelTry" class="hidden">
+          <div class="row">
+            <div class="field">
+              <label for="waist">Taille-Umfang (optional)</label>
+              <input id="waist" type="number" inputmode="numeric" min="55" max="140" placeholder="z. B. 88" />
+            </div>
+            <div class="field">
+              <label for="inseam">Innenbeinlänge (optional)</label>
+              <input id="inseam" type="number" inputmode="numeric" min="55" max="105" placeholder="z. B. 82" />
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="field">
+              <label for="fit">Sitz-Wunsch</label>
+              <select id="fit">
+                <option value="regular" selected>Normal</option>
+                <option value="slim">Enger</option>
+                <option value="loose">Lockerer</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="stretch">Stretch-Anteil</label>
+              <select id="stretch">
+                <option value="none">Kein Stretch</option>
+                <option value="some" selected>Etwas Stretch</option>
+                <option value="high">Viel Stretch</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="field">
+              <label for="brand">Passform-Tendenz (optional)</label>
+              <select id="brand">
+                <option value="tts" selected>Fällt normal aus</option>
+                <option value="small">Fällt eher klein aus</option>
+                <option value="large">Fällt eher groß aus</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="targetWL">Geplante Größe (optional)</label>
+              <input id="targetWL" type="text" placeholder="z. B. W32 / L32" />
+            </div>
+          </div>
+
+          <div class="actions">
+            <button class="btn primary" id="runScan" disabled>Scan berechnen</button>
+            <button class="btn" id="reset">Zurücksetzen</button>
+          </div>
+
+          <div class="result" id="result">
+            <div class="resultTop">
+              <div>
+                <div class="sizeBig">
+                  <div class="w" id="wlOut">W— / L—</div>
+                  <div class="meta" id="metaOut">Wahrscheinlichste Größe aus Live-Scan + Angaben.</div>
+                </div>
+              </div>
+              <div class="confidence">
+                <div class="confLabel">
+                  <span>Scan-Sicherheit</span>
+                  <b id="confText">—</b>
+                </div>
+                <div class="bar"><i id="confBar"></i></div>
+              </div>
+            </div>
+
+            <ul class="bullets" id="bullets"></ul>
+            <div class="probGrid" id="probGrid"></div>
+
             <div class="tile">
-              <h3>Jeans-Bild hinzufügen</h3>
-              <p>Für die Vorschau ist ein freigestelltes Jeans-Bild (PNG mit transparentem Hintergrund) ideal.</p>
+              <h3>Vorschau (optional)</h3>
+              <p>Jeans PNG (freigestellt) laden. Vorschau legt die Jeans als Overlay über das Livebild.</p>
               <div class="actions" style="margin-top:10px;">
                 <label class="btn ghost" for="jeansFile">Jeans PNG wählen</label>
                 <input id="jeansFile" type="file" accept="image/png,image/*" hidden />
-                <button class="btn primary" id="applyOverlay" disabled>Vorschau erzeugen</button>
-                <button class="btn" id="clearOverlay" disabled>Vorschau löschen</button>
+                <button class="btn" id="applyOverlay" disabled>Vorschau aktivieren</button>
+                <button class="btn" id="clearOverlay" disabled>Vorschau entfernen</button>
               </div>
 
               <div class="sliders">
@@ -613,77 +508,45 @@
 
               <div class="sliders">
                 <div class="rangeWrap">
-                  <div class="top"><span>Vertikal verschieben</span><b id="yVal">0</b></div>
-                  <input id="yOff" type="range" min="-200" max="200" value="0" />
+                  <div class="top"><span>Vertikal</span><b id="yVal">0</b></div>
+                  <input id="yOff" type="range" min="-220" max="220" value="0" />
                 </div>
                 <div class="rangeWrap">
-                  <div class="top"><span>Horizontal verschieben</span><b id="xVal">0</b></div>
-                  <input id="xOff" type="range" min="-200" max="200" value="0" />
+                  <div class="top"><span>Horizontal</span><b id="xVal">0</b></div>
+                  <input id="xOff" type="range" min="-220" max="220" value="0" />
                 </div>
               </div>
-
-              <div class="note" style="margin-top:12px;">
-                Hinweis: Das ist eine visuelle Vorschau per Overlay. Eine echte KI-Anprobe kann später über eine API angebunden werden.
-              </div>
-            </div>
-
-            <div class="tile" style="margin-top:12px;">
-              <h3>Optional: KI-Anprobe per API</h3>
-              <p>Wenn später ein Try-On-Service angebunden wird, kann das Ergebnisbild über einen Endpoint geladen werden (z. B. <span style="font-family:var(--mono);">/api/tryon</span>).</p>
-              <div class="actions" style="margin-top:10px;">
-                <button class="btn" id="runApiTryon" disabled>KI-Vorschau laden</button>
-              </div>
-              <div class="note" id="apiNote" style="margin-top:10px;">API ist im Code vorbereitet, aber standardmäßig deaktiviert.</div>
-            </div>
-
-            <div class="actions" style="margin-top:12px;">
-              <button class="btn ghost" id="backToScan">Zurück zum Scan</button>
             </div>
           </div>
 
-          <div class="foot">OSION · Jeans Scan & Vorschau</div>
+          <div class="foot">OSION · Jeans Live Scan</div>
         </div>
       </section>
     </div>
   </div>
 
   <script>
-    /******************************************************************
-     * OSION – Jeans Scan & Vorschau (Index HTML)
-     * - Foto bleibt im Browser (clientseitig)
-     * - Größen-Scan: Foto-Pose + optionale Angaben => Wahrscheinlichkeiten
-     * - Vorschau: Overlay (Jeans PNG) + API-Hook (optional)
-     ******************************************************************/
-
     const $ = (id)=>document.getElementById(id);
 
     const el = {
-      // tabs / panels
-      tabScan: $("tabScan"),
-      tabTry: $("tabTry"),
-      panelScan: $("panelScan"),
-      panelTry: $("panelTry"),
-      rightTitle: $("rightTitle"),
-      rightHint: $("rightHint"),
-
-      // photo
-      file: $("file"),
-      photo: $("photo"),
+      video: $("video"),
       view: $("view"),
       overlay: $("overlay"),
       tryon: $("tryon"),
-      analyze: $("analyze"),
 
-      // marker
+      startCam: $("startCam"),
+      flipCam: $("flipCam"),
+      capture: $("capture"),
+
+      modelState: $("modelState"),
+      camState: $("camState"),
+      liveState: $("liveState"),
+      hintState: $("hintState"),
+
       refMode: $("refMode"),
       clearRef: $("clearRef"),
-
-      // states
-      modelState: $("modelState"),
-      photoState: $("photoState"),
       refState: $("refState"),
 
-      // inputs
       height: $("height"),
       weight: $("weight"),
       waist: $("waist"),
@@ -693,26 +556,17 @@
       brand: $("brand"),
       targetWL: $("targetWL"),
 
-      // scan actions
       runScan: $("runScan"),
       reset: $("reset"),
-      copy: $("copy"),
 
-      // results
       result: $("result"),
       wlOut: $("wlOut"),
       metaOut: $("metaOut"),
       bullets: $("bullets"),
       probGrid: $("probGrid"),
-      note: $("note"),
       confText: $("confText"),
       confBar: $("confBar"),
 
-      // go try
-      goTry: $("goTry"),
-      backToScan: $("backToScan"),
-
-      // try-on
       jeansFile: $("jeansFile"),
       applyOverlay: $("applyOverlay"),
       clearOverlay: $("clearOverlay"),
@@ -724,120 +578,53 @@
       alphaVal: $("alphaVal"),
       yVal: $("yVal"),
       xVal: $("xVal"),
-
-      runApiTryon: $("runApiTryon"),
-      apiNote: $("apiNote"),
-      clearOverlayBtn: $("clearOverlay"),
     };
 
-    const ctx = el.view.getContext("2d");
-    const octx = el.overlay.getContext("2d");
-    const tctx = el.tryon.getContext("2d");
+    const ctxV = el.view.getContext("2d");
+    const ctxO = el.overlay.getContext("2d");
+    const ctxT = el.tryon.getContext("2d");
 
     let poseLandmarker = null;
-    let imageBitmap = null;
+    let stream = null;
+    let facingMode = "user"; // start selfie; flip to environment
+    let running = false;
 
-    // marker reference (two clicks)
+    // marker clicks (on overlay canvas)
     let refClicks = [];
     let pixelsPerCm = null;
 
-    // latest landmarks for scan/try-on anchor
+    // pose points last stable
     let lastPose = null;
+    let lastPoseOk = false;
 
-    // jeans overlay image
+    // captured bitmap for scan compute
+    let capturedBitmap = null;
+
+    // jeans overlay
     let jeansBitmap = null;
 
-    const clamp = (n,a,b)=>Math.max(a,Math.min(b,n));
+    const clamp=(n,a,b)=>Math.max(a,Math.min(b,n));
+    const dist=(a,b)=>Math.hypot(a.x-b.x, a.y-b.y);
 
-    function escapeHtml(str){
-      return String(str)
-        .replaceAll("&","&amp;")
-        .replaceAll("<","&lt;")
-        .replaceAll(">","&gt;")
-        .replaceAll('"',"&quot;")
-        .replaceAll("'","&#039;");
+    function setLiveChip(state, text){
+      el.liveState.textContent = "Ampel: " + text;
+      el.liveState.classList.remove("good","warn","bad");
+      el.liveState.classList.add(state);
     }
 
-    function setTab(which){
-      const scan = which === "scan";
-      el.tabScan.classList.toggle("active", scan);
-      el.tabTry.classList.toggle("active", !scan);
-      el.tabScan.setAttribute("aria-selected", scan ? "true" : "false");
-      el.tabTry.setAttribute("aria-selected", scan ? "false" : "true");
-      el.panelScan.classList.toggle("hidden", !scan);
-      el.panelTry.classList.toggle("hidden", scan);
-
-      el.rightTitle.textContent = scan ? "Größen-Scan" : "Vorschau";
-      el.rightHint.textContent = scan
-        ? "Gib Maße an (optional, aber stark). Der Scan kombiniert Foto + Angaben zu einer Größenwahrscheinlichkeit."
-        : "Jeans PNG hinzufügen und Vorschau erzeugen. Overlay kann per Regler feinjustiert werden.";
+    function setHint(text){
+      el.hintState.textContent = "Hinweis: " + (text || "—");
     }
 
-    el.tabScan.addEventListener("click", ()=>setTab("scan"));
-    el.tabTry.addEventListener("click", ()=>{
-      setTab("try");
-      // only allow when we have a photo + pose
-      if(!imageBitmap || !lastPose){
-        el.apiNote.textContent = "Für die Vorschau zuerst Foto laden und Scan starten.";
-      }
-    });
-    el.goTry.addEventListener("click", ()=>setTab("try"));
-    el.backToScan.addEventListener("click", ()=>setTab("scan"));
-
-    function resizeCanvasesToImage(w,h){
+    function resizeLayers(w,h){
       el.view.width = w; el.view.height = h;
       el.overlay.width = w; el.overlay.height = h;
       el.tryon.width = w; el.tryon.height = h;
     }
 
-    function resetOverlayLayers(){
-      octx.clearRect(0,0,el.overlay.width, el.overlay.height);
-      tctx.clearRect(0,0,el.tryon.width, el.tryon.height);
-    }
-
-    function drawPhoto(){
-      if(!imageBitmap) return;
-      resizeCanvasesToImage(imageBitmap.width, imageBitmap.height);
-      ctx.clearRect(0,0,el.view.width, el.view.height);
-      ctx.drawImage(imageBitmap, 0, 0);
-      resetOverlayLayers();
-      drawMarkerClicks();
-    }
-
-    function drawMarkerClicks(){
-      if(refClicks.length === 0) return;
-      octx.save();
-      octx.lineWidth = 4;
-      octx.strokeStyle = "rgba(255,255,255,.85)";
-      octx.fillStyle = "rgba(255,255,255,.85)";
-      for(const p of refClicks){
-        octx.beginPath();
-        octx.arc(p.x, p.y, 7, 0, Math.PI*2);
-        octx.fill();
-      }
-      if(refClicks.length === 2){
-        octx.beginPath();
-        octx.moveTo(refClicks[0].x, refClicks[0].y);
-        octx.lineTo(refClicks[1].x, refClicks[1].y);
-        octx.stroke();
-      }
-      octx.restore();
-    }
-
-    function setState(){
-      el.photoState.textContent = imageBitmap ? "Foto: geladen" : "Foto: nicht geladen";
-
-      const refLabel = el.refMode.value === "none" ? "aus" :
-        (el.refMode.value === "a4_21" ? "A4 21,0 cm" : "A4 29,7 cm");
-
-      el.refState.textContent = "Marker: " + refLabel + (pixelsPerCm ? " · aktiv" : "");
-      el.analyze.disabled = !poseLandmarker || !imageBitmap;
-      el.runScan.disabled = !poseLandmarker || !imageBitmap;
-    }
-
-    function dist(a,b){
-      const dx=a.x-b.x, dy=a.y-b.y;
-      return Math.sqrt(dx*dx+dy*dy);
+    function clearOverlays(){
+      ctxO.clearRect(0,0,el.overlay.width, el.overlay.height);
+      ctxT.clearRect(0,0,el.tryon.width, el.tryon.height);
     }
 
     function pickRefCm(){
@@ -855,74 +642,124 @@
       return px / refCm;
     }
 
+    function updateRefState(){
+      const label = el.refMode.value === "none" ? "aus" :
+        (el.refMode.value === "a4_21" ? "A4 21,0 cm" : "A4 29,7 cm");
+      el.refState.textContent = "Marker: " + label + (pixelsPerCm ? " · aktiv" : "");
+    }
+
     function canvasToImageCoords(evt){
       const rect = el.overlay.getBoundingClientRect();
       const x = (evt.clientX - rect.left) * (el.overlay.width / rect.width);
       const y = (evt.clientY - rect.top) * (el.overlay.height / rect.height);
-      return { x, y };
+      return {x,y};
     }
 
-    // marker clicks on overlay (only if marker active)
     el.overlay.addEventListener("click", (evt)=>{
-      if(!imageBitmap) return;
       if(el.refMode.value === "none") return;
+      if(!running) return;
 
       const p = canvasToImageCoords(evt);
       if(refClicks.length >= 2) refClicks = [];
       refClicks.push(p);
-
       pixelsPerCm = computePixelsPerCm();
-      drawPhoto();
-      if(lastPose) drawPoseOverlay(lastPose);
-      setState();
+      drawOverlay(lastPose);
+      updateRefState();
     });
 
     el.clearRef.addEventListener("click", ()=>{
       refClicks = [];
       pixelsPerCm = null;
-      drawPhoto();
-      if(lastPose) drawPoseOverlay(lastPose);
-      setState();
+      drawOverlay(lastPose);
+      updateRefState();
     });
 
     el.refMode.addEventListener("change", ()=>{
       refClicks = [];
       pixelsPerCm = null;
-      drawPhoto();
-      if(lastPose) drawPoseOverlay(lastPose);
-      setState();
+      drawOverlay(lastPose);
+      updateRefState();
     });
 
-    // ---------- MediaPipe loader ----------
-    async function loadPose(){
-      try{
-        el.modelState.textContent = "KI-Modul: wird geladen …";
-        const vision = await import("https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.14/vision_bundle.mjs");
-        const { FilesetResolver, PoseLandmarker } = vision;
-
-        const fileset = await FilesetResolver.forVisionTasks(
-          "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.14/wasm"
-        );
-
-        poseLandmarker = await PoseLandmarker.createFromOptions(fileset, {
-          baseOptions: {
-            modelAssetPath: "https://storage.googleapis.com/mediapipe-models/pose_landmarker/pose_landmarker_lite/float16/1/pose_landmarker_lite.task",
-            delegate: "GPU"
-          },
-          runningMode: "IMAGE",
-          numPoses: 1
-        });
-
-        el.modelState.textContent = "KI-Modul: bereit";
-      }catch(e){
-        console.error(e);
-        el.modelState.textContent = "KI-Modul: nicht verfügbar (CDN/Netzwerk)";
-        poseLandmarker = null;
+    function drawMarkerClicks(){
+      if(refClicks.length === 0) return;
+      ctxO.save();
+      ctxO.lineWidth = 4;
+      ctxO.strokeStyle = "rgba(255,255,255,.85)";
+      ctxO.fillStyle = "rgba(255,255,255,.85)";
+      for(const p of refClicks){
+        ctxO.beginPath();
+        ctxO.arc(p.x, p.y, 7, 0, Math.PI*2);
+        ctxO.fill();
       }
-      setState();
+      if(refClicks.length === 2){
+        ctxO.beginPath();
+        ctxO.moveTo(refClicks[0].x, refClicks[0].y);
+        ctxO.lineTo(refClicks[1].x, refClicks[1].y);
+        ctxO.stroke();
+      }
+      ctxO.restore();
     }
 
-    // ---------- Scan logic ----------
+    function drawOverlay(pts){
+      clearOverlays();
+      if(!pts){ drawMarkerClicks(); return; }
+
+      ctxO.save();
+      ctxO.lineWidth = 4;
+      ctxO.strokeStyle = "rgba(255,255,255,.72)";
+      ctxO.fillStyle = "rgba(255,255,255,.92)";
+
+      const drawPt=(p,r=6)=>{ ctxO.beginPath(); ctxO.arc(p.x,p.y,r,0,Math.PI*2); ctxO.fill(); };
+      const drawLine=(a,b)=>{ ctxO.beginPath(); ctxO.moveTo(a.x,a.y); ctxO.lineTo(b.x,b.y); ctxO.stroke(); };
+
+      // frame guide box (safe area)
+      ctxO.globalAlpha = 0.25;
+      ctxO.strokeStyle = "rgba(255,255,255,.8)";
+      const pad = el.overlay.width * 0.08;
+      ctxO.strokeRect(pad, pad*0.9, el.overlay.width - pad*2, el.overlay.height - pad*1.5);
+      ctxO.globalAlpha = 1.0;
+      ctxO.strokeStyle = "rgba(255,255,255,.72)";
+
+      // hips + legs
+      drawLine(pts.lh, pts.rh);
+      drawLine(pts.lh, pts.lk); drawLine(pts.lk, pts.la);
+      drawLine(pts.rh, pts.rk); drawLine(pts.rk, pts.ra);
+
+      drawPt(pts.lh,7); drawPt(pts.rh,7);
+      drawPt(pts.lk,6); drawPt(pts.rk,6);
+      drawPt(pts.la,6); drawPt(pts.ra,6);
+
+      ctxO.restore();
+      drawMarkerClicks();
+    }
+
+    function poseQuality(pts){
+      if(!pts) return { ok:false, ready:false, hint:"Körper nicht erkannt." };
+
+      // ordering: hip above knee above ankle
+      const legLeftOk = (pts.lk.y > pts.lh.y && pts.la.y > pts.lk.y);
+      const legRightOk = (pts.rk.y > pts.rh.y && pts.ra.y > pts.rk.y);
+
+      // hips roughly level
+      const hipTilt = Math.abs(pts.lh.y - pts.rh.y);
+
+      // full body in frame: ankles not too close to bottom edge, head not tracked here, so use hip position as proxy
+      const marginBottomOk = (Math.max(pts.la.y, pts.ra.y) < el.overlay.height * 0.95);
+      const marginTopOk = (Math.min(pts.lh.y, pts.rh.y) > el.overlay.height * 0.18);
+
+      let hint = "";
+      if(!marginBottomOk) hint = "Ein Schritt zurück, Füße vollständig ins Bild.";
+      else if(!marginTopOk) hint = "Kamera tiefer oder Abstand erhöhen.";
+      else if(!legLeftOk || !legRightOk) hint = "Beine gerade stellen.";
+      else if(hipTilt > el.overlay.height * 0.06) hint = "Kamera gerade halten.";
+      else hint = "Bereit zum Scan.";
+
+      const ready = marginBottomOk && marginTopOk && legLeftOk && legRightOk && hipTilt <= el.overlay.height * 0.06;
+      return { ok:true, ready, hint };
+    }
+
+    // ---------- Size logic ----------
     function cmToIn(cm){ return cm/2.54; }
     function mapL(inches){
       const opts=[28,30,32,34,36];
@@ -958,19 +795,17 @@
       const fit = el.fit.value;
       const stretch = el.stretch.value;
       const brand = el.brand.value;
-
       if (fit === "slim") W -= 1;
       if (fit === "loose") W += 1;
       if (stretch === "high") W -= 1;
       if (brand === "small") W += 1;
       if (brand === "large") W -= 1;
-
       return clamp(W, 26, 44);
     }
 
-    function confidenceScore({ poseOk, hasMarker, hasWaist, hasInseam, hasHeightWeight }){
+    function confidenceScore({ ready, hasMarker, hasWaist, hasInseam, hasHeightWeight }){
       let s = 25;
-      if(poseOk) s += 35;
+      if(ready) s += 38;
       if(hasMarker) s += 12;
       if(hasWaist) s += 15;
       if(hasInseam) s += 10;
@@ -983,17 +818,15 @@
       return "niedrig";
     }
 
-    // softmax-ish probabilities around candidates
     function buildCandidates(mainWL){
       const base = [
-        {W: mainWL.W,   L: mainWL.L,   tag:"Empfehlung"},
-        {W: mainWL.W+1, L: mainWL.L,   tag:"Alternative"},
-        {W: mainWL.W-1, L: mainWL.L,   tag:"Alternative"},
-        {W: mainWL.W,   L: mainWL.L+2, tag:"Alternative"},
-        {W: mainWL.W,   L: mainWL.L-2, tag:"Alternative"},
+        {W: mainWL.W,   L: mainWL.L},
+        {W: mainWL.W+1, L: mainWL.L},
+        {W: mainWL.W-1, L: mainWL.L},
+        {W: mainWL.W,   L: mainWL.L+2},
+        {W: mainWL.W,   L: mainWL.L-2},
       ].map(x=>({ ...x, W: clamp(x.W,26,44), L: clamp(x.L,28,36) }));
 
-      // de-duplicate
       const uniq = [];
       const seen = new Set();
       for(const c of base){
@@ -1004,95 +837,39 @@
       }
       return uniq.slice(0,4);
     }
-
     function scoreCandidate(c, mainWL, conf){
-      // higher if closer to main
       const d = Math.abs(c.W-mainWL.W)*1.2 + Math.abs(c.L-mainWL.L)*0.7;
       const base = 1 / (1 + d);
-      return base * (0.6 + conf/200); // scale with confidence
+      return base * (0.6 + conf/200);
     }
-
     function normalizeProbs(items){
       const sum = items.reduce((a,x)=>a+x.s,0) || 1;
       return items.map(x=>({ ...x, p: x.s/sum }));
     }
 
-    function drawPoseOverlay(pts){
-      // pts in image coords already
-      octx.save();
-      octx.lineWidth = 4;
-      octx.strokeStyle = "rgba(255,255,255,.72)";
-      octx.fillStyle = "rgba(255,255,255,.90)";
-
-      const drawPt = (p,r=6)=>{
-        octx.beginPath(); octx.arc(p.x,p.y,r,0,Math.PI*2); octx.fill();
-      };
-      const drawLine = (a,b)=>{
-        octx.beginPath(); octx.moveTo(a.x,a.y); octx.lineTo(b.x,b.y); octx.stroke();
-      };
-
-      // hip line + legs
-      drawLine(pts.lh, pts.rh);
-      drawLine(pts.lh, pts.lk); drawLine(pts.lk, pts.la);
-      drawLine(pts.rh, pts.rk); drawLine(pts.rk, pts.ra);
-
-      drawPt(pts.lh,7); drawPt(pts.rh,7);
-      drawPt(pts.lk,6); drawPt(pts.rk,6);
-      drawPt(pts.la,6); drawPt(pts.ra,6);
-
-      octx.restore();
-      drawMarkerClicks();
-    }
-
-    function poseQuality(pts){
-      // simple quality: points exist + ordering
-      const ok = pts.lh && pts.rh && pts.lk && pts.rk && pts.la && pts.ra;
-      if(!ok) return { ok:false, hint:"Punkte nicht stabil erkannt." };
-
-      const legLeftOk = (pts.lk.y > pts.lh.y && pts.la.y > pts.lk.y);
-      const legRightOk = (pts.rk.y > pts.rh.y && pts.ra.y > pts.rk.y);
-
-      const hipTilt = Math.abs(pts.lh.y - pts.rh.y);
-      const legsOk = legLeftOk && legRightOk;
-      const tiltOk = hipTilt < (el.view.height * 0.06);
-
-      let hint = "";
-      if(!legsOk) hint = "Beine wirken leicht angewinkelt. Gerade stehen erhöht die Aussagekraft.";
-      if(!tiltOk) hint = hint ? hint : "Kamera wirkt leicht schief. Gerade ausrichten hilft.";
-
-      return { ok: true, poseOk: legsOk && tiltOk, hint };
-    }
-
-    function buildMainWLFromInputsAndPose(poseInfo){
+    function buildMainWLFromInputsAndPose(posePts){
       const heightCm = Number(el.height.value||0) || null;
       const weightKg = Number(el.weight.value||0) || null;
       const waistCmIn = Number(el.waist.value||0) || null;
       const inseamCmIn = Number(el.inseam.value||0) || null;
 
-      // primary: direct measures
       let waistCm = waistCmIn;
       let inseamCm = inseamCmIn;
 
-      // secondary: estimate from height/weight
       if(!waistCm) waistCm = estimateWaistCmFromHeightWeight(heightCm, weightKg);
       if(!inseamCm) inseamCm = estimateInseamCmFromHeight(heightCm);
 
-      // marker-based refinement (very conservative):
-      // if marker active and pose points exist, approximate inseam using pixel scale
-      if(pixelsPerCm && poseInfo && poseInfo.la && poseInfo.lh && !inseamCmIn){
-        const inseamPx = Math.abs(poseInfo.la.y - poseInfo.lh.y);
+      // marker refinement for inseam proxy (conservative)
+      if(pixelsPerCm && posePts && posePts.la && posePts.lh && !inseamCmIn){
+        const inseamPx = Math.abs(posePts.la.y - posePts.lh.y);
         const approxCm = Math.round(inseamPx / pixelsPerCm);
-        // clamp to realistic range; blend with estimate if we have height
         inseamCm = clamp(Math.round((inseamCm + approxCm) / 2), 60, 100);
       }
 
-      // map to WL
       let W = waistCm ? mapW(cmToIn(waistCm)) : 32;
       let L = inseamCm ? mapL(Math.round(cmToIn(inseamCm))) : 32;
 
       W = adjustW(W);
-
-      // keep L sane
       L = clamp(L, 28, 36);
 
       return {
@@ -1106,10 +883,10 @@
       };
     }
 
-    function renderResult(main, poseQ){
+    function renderResult(main, pq){
       const target = parseTargetWL(el.targetWL.value);
       const conf = confidenceScore({
-        poseOk: poseQ.poseOk,
+        ready: pq.ready,
         hasMarker: !!pixelsPerCm,
         hasWaist: main.used.waist,
         hasInseam: main.used.inseam,
@@ -1118,38 +895,36 @@
       const label = confLabel(conf);
 
       el.wlOut.textContent = `W${main.W} / L${main.L}`;
-      el.metaOut.textContent = "Wahrscheinlichste Größe aus Foto + Angaben.";
+      el.metaOut.textContent = "Wahrscheinlichste Größe aus Live-Scan + Angaben.";
 
       el.confText.textContent = label;
       el.confBar.style.width = `${conf}%`;
 
       const bullets = [];
       bullets.push(`Empfehlung: W${main.W} / L${main.L}.`);
+      bullets.push(pq.ready ? "Live-Scan: Pose wirkt stabil." : "Live-Scan: Pose ist nicht optimal, Ergebnis ist vorsichtiger.");
 
       if(main.used.waist) bullets.push("Taille-Umfang wurde berücksichtigt.");
-      else bullets.push("Taille-Umfang ist optional. Mit Messwert wird der Scan präziser.");
+      else bullets.push("Taille-Umfang ist optional. Mit Messwert wird das Ergebnis präziser.");
 
       if(main.used.inseam) bullets.push("Innenbeinlänge wurde berücksichtigt.");
-      else bullets.push("Innenbeinlänge ist optional. Mit Messwert wird der Scan präziser.");
+      else bullets.push("Innenbeinlänge ist optional. Mit Messwert wird das Ergebnis präziser.");
 
-      if(pixelsPerCm) bullets.push("Marker ist aktiv: Skalierung im Foto ist stabiler.");
-      else bullets.push("Ohne Marker ist Skalierung im Foto stärker von Perspektive abhängig.");
-
-      if(poseQ.hint) bullets.push(poseQ.hint);
+      if(pixelsPerCm) bullets.push("Marker ist aktiv: Skalierung ist stabiler.");
+      else bullets.push("Ohne Marker ist Skalierung stärker von Perspektive abhängig.");
 
       if(target){
         const dW = main.W - target.W;
         const dL = main.L - target.L;
-        if(dW === 0 && dL === 0) bullets.push("Deine geplante Größe passt zur Empfehlung.");
+        if(dW === 0 && dL === 0) bullets.push("Geplante Größe passt zur Empfehlung.");
         else{
-          if(dW !== 0) bullets.push(dW>0 ? `Im Vergleich zu deiner geplanten Größe ist die Weite eher größer (+${dW}).` : `Im Vergleich zu deiner geplanten Größe ist die Weite eher kleiner (${dW}).`);
-          if(dL !== 0) bullets.push(dL>0 ? `Im Vergleich zu deiner geplanten Größe ist die Länge eher länger (+${dL}).` : `Im Vergleich zu deiner geplanten Größe ist die Länge eher kürzer (${dL}).`);
+          if(dW !== 0) bullets.push(dW>0 ? `Im Vergleich zur geplanten Größe ist die Weite eher größer (+${dW}).` : `Im Vergleich zur geplanten Größe ist die Weite eher kleiner (${dW}).`);
+          if(dL !== 0) bullets.push(dL>0 ? `Im Vergleich zur geplanten Größe ist die Länge eher länger (+${dL}).` : `Im Vergleich zur geplanten Größe ist die Länge eher kürzer (${dL}).`);
         }
       }
 
-      el.bullets.innerHTML = bullets.map(x=>`<li>${escapeHtml(x)}</li>`).join("");
+      el.bullets.innerHTML = bullets.map(x=>`<li>${x}</li>`).join("");
 
-      // probabilities
       const cands = buildCandidates(main);
       const scored = cands.map(c=>({ ...c, s: scoreCandidate(c, main, conf) }));
       const probs = normalizeProbs(scored).sort((a,b)=>b.p-a.p);
@@ -1168,122 +943,210 @@
         `;
       }).join("");
 
-      el.note.textContent = "Hinweis: Der Scan liefert eine Wahrscheinlichkeits-Empfehlung. Für maximale Präzision sind Taille-Umfang und Innenbeinlänge ideal.";
-
       el.result.style.display = "block";
+
+      // enable overlay controls if jeans loaded
+      el.applyOverlay.disabled = !(jeansBitmap && lastPose);
+      el.clearOverlay.disabled = !(lastPose);
     }
 
-    async function runPose(){
-      if(!poseLandmarker || !imageBitmap) return null;
-      const res = poseLandmarker.detect(imageBitmap);
-      if(!res || !res.landmarks || res.landmarks.length === 0) return null;
+    // ---------- MediaPipe loader ----------
+    async function loadPose(){
+      try{
+        el.modelState.textContent = "KI-Modul: wird geladen …";
+        const vision = await import("https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.14/vision_bundle.mjs");
+        const { FilesetResolver, PoseLandmarker } = vision;
 
-      const lms = res.landmarks[0];
-      const toPt = (p)=>({ x: p.x * el.view.width, y: p.y * el.view.height, v: p.visibility ?? 1 });
+        const fileset = await FilesetResolver.forVisionTasks(
+          "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.14/wasm"
+        );
 
-      // indices: 23/24 hips, 25/26 knees, 27/28 ankles
-      const pts = {
-        lh: toPt(lms[23]),
-        rh: toPt(lms[24]),
-        lk: toPt(lms[25]),
-        rk: toPt(lms[26]),
-        la: toPt(lms[27]),
-        ra: toPt(lms[28]),
+        poseLandmarker = await PoseLandmarker.createFromOptions(fileset, {
+          baseOptions: {
+            modelAssetPath: "https://storage.googleapis.com/mediapipe-models/pose_landmarker/pose_landmarker_lite/float16/1/pose_landmarker_lite.task",
+            delegate: "GPU"
+          },
+          runningMode: "VIDEO",
+          numPoses: 1
+        });
+
+        el.modelState.textContent = "KI-Modul: bereit";
+      }catch(e){
+        console.error(e);
+        el.modelState.textContent = "KI-Modul: nicht verfügbar (CDN/Netzwerk)";
+        poseLandmarker = null;
+      }
+    }
+
+    // ---------- Camera ----------
+    async function startCamera(){
+      if(!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia){
+        el.camState.textContent = "Kamera: nicht verfügbar";
+        setLiveChip("bad","nicht verfügbar");
+        return;
+      }
+
+      if(stream){
+        stream.getTracks().forEach(t=>t.stop());
+        stream = null;
+      }
+
+      const constraints = {
+        audio: false,
+        video: {
+          facingMode: { ideal: facingMode },
+          width: { ideal: 1280 },
+          height: { ideal: 720 }
+        }
       };
 
-      return pts;
+      try{
+        stream = await navigator.mediaDevices.getUserMedia(constraints);
+        el.video.srcObject = stream;
+
+        await new Promise((res)=>el.video.onloadedmetadata = ()=>res());
+
+        // fit canvases to actual video size
+        resizeLayers(el.video.videoWidth || 720, el.video.videoHeight || 960);
+        running = true;
+
+        el.camState.textContent = "Kamera: an";
+        el.flipCam.disabled = false;
+        el.capture.disabled = !poseLandmarker;
+
+        setLiveChip("warn","warten");
+        setHint("Körper wird gesucht …");
+
+        requestAnimationFrame(loop);
+      }catch(e){
+        console.error(e);
+        el.camState.textContent = "Kamera: Zugriff verweigert";
+        setLiveChip("bad","kein Zugriff");
+        setHint("Kamera-Freigabe erforderlich.");
+      }
     }
 
-    el.analyze.addEventListener("click", async ()=>{
-      drawPhoto();
-      const pts = await runPose();
-      lastPose = pts;
+    el.startCam.addEventListener("click", startCamera);
 
-      if(pts){
-        drawPoseOverlay(pts);
-      }
-
-      // enable scan button
-      el.runScan.disabled = !pts;
-      if(!pts){
-        el.modelState.textContent = "KI-Modul: bereit · Punkte nicht erkannt";
-      }
+    el.flipCam.addEventListener("click", async ()=>{
+      facingMode = (facingMode === "user") ? "environment" : "user";
+      await startCamera();
     });
 
-    el.runScan.addEventListener("click", async ()=>{
-      drawPhoto();
-      if(lastPose) drawPoseOverlay(lastPose);
+    // ---------- Live Pose Loop ----------
+    function toPts(lms){
+      const W = el.overlay.width, H = el.overlay.height;
+      const p = (i)=>({ x: lms[i].x*W, y: lms[i].y*H, v: lms[i].visibility ?? 1 });
+      return { lh:p(23), rh:p(24), lk:p(25), rk:p(26), la:p(27), ra:p(28) };
+    }
 
-      const pq = lastPose ? poseQuality(lastPose) : { ok:false, poseOk:false, hint:"Foto konnte nicht ausgewertet werden." };
+    let lastTs = 0;
+
+    async function loop(ts){
+      if(!running) return;
+
+      // throttle to ~12-15 fps for mobile stability
+      if(ts - lastTs < 70){
+        requestAnimationFrame(loop);
+        return;
+      }
+      lastTs = ts;
+
+      if(!poseLandmarker){
+        setLiveChip("bad","KI fehlt");
+        setHint("KI-Modul ist nicht verfügbar.");
+        requestAnimationFrame(loop);
+        return;
+      }
+
+      const res = poseLandmarker.detectForVideo(el.video, ts);
+
+      if(res && res.landmarks && res.landmarks.length){
+        lastPose = toPts(res.landmarks[0]);
+
+        // because video is mirrored, overlay should mirror too:
+        // we mirror drawing by flipping context horizontally
+        ctxO.save();
+        ctxO.setTransform(-1, 0, 0, 1, el.overlay.width, 0);
+        clearOverlays();
+        drawOverlay(lastPose);
+        ctxO.restore();
+
+        const pq = poseQuality(lastPose);
+        lastPoseOk = pq.ready;
+
+        setHint(pq.hint);
+        if(pq.ready){
+          setLiveChip("good","bereit");
+          el.capture.disabled = false;
+        }else{
+          setLiveChip("warn","anpassen");
+          el.capture.disabled = false; // still allow capture, result will reflect lower confidence
+        }
+      }else{
+        lastPose = null;
+        lastPoseOk = false;
+
+        clearOverlays();
+        drawMarkerClicks();
+
+        setLiveChip("bad","kein Körper");
+        setHint("Ganzkörper ins Bild.");
+        el.capture.disabled = true;
+      }
+
+      updateRefState();
+      requestAnimationFrame(loop);
+    }
+
+    // ---------- Capture frame for scan ----------
+    el.capture.addEventListener("click", async ()=>{
+      if(!el.video.videoWidth || !el.video.videoHeight) return;
+
+      // freeze current frame into view canvas (mirrored)
+      el.view.style.opacity = "1";
+      ctxV.save();
+      ctxV.setTransform(-1, 0, 0, 1, el.view.width, 0);
+      ctxV.drawImage(el.video, 0, 0, el.view.width, el.view.height);
+      ctxV.restore();
+
+      // create bitmap from view canvas
+      capturedBitmap = await createImageBitmap(el.view);
+
+      // enable scan
+      el.runScan.disabled = false;
+
+      // show result container after scan
+      el.result.style.display = "none";
+    });
+
+    // ---------- Compute Scan ----------
+    el.runScan.addEventListener("click", ()=>{
+      if(!capturedBitmap && !lastPose){
+        return;
+      }
+
+      // build from lastPose (live) + inputs + marker
+      const pq = lastPose ? poseQuality(lastPose) : { ok:false, ready:false, hint:"Körper nicht erkannt." };
       const main = buildMainWLFromInputsAndPose(lastPose);
 
       renderResult(main, pq);
 
-      // enable try-on actions once scan exists
-      el.applyOverlay.disabled = !jeansBitmap || !lastPose;
-      el.clearOverlay.disabled = !lastPose;
-      el.runApiTryon.disabled = false; // hook is present, but endpoint must exist
+      // enable overlay buttons
+      el.applyOverlay.disabled = !(jeansBitmap && lastPose);
+      el.clearOverlay.disabled = !(lastPose);
     });
 
     el.reset.addEventListener("click", ()=>{
-      el.height.value="";
-      el.weight.value="";
-      el.waist.value="";
-      el.inseam.value="";
-      el.fit.value="regular";
-      el.stretch.value="some";
-      el.brand.value="tts";
+      el.height.value=""; el.weight.value="";
+      el.waist.value=""; el.inseam.value="";
+      el.fit.value="regular"; el.stretch.value="some"; el.brand.value="tts";
       el.targetWL.value="";
       el.result.style.display="none";
-      el.probGrid.innerHTML="";
-      el.bullets.innerHTML="";
       el.confBar.style.width="0%";
-      el.confText.textContent="";
-      // keep photo
-    });
-
-    el.copy.addEventListener("click", async ()=>{
-      if(el.result.style.display === "none"){
-        alert("Bitte erst den Scan berechnen.");
-        return;
-      }
-      const txt = `${el.wlOut.textContent}\n\nDetails:\n- ${[...el.bullets.querySelectorAll("li")].map(li=>li.textContent).join("\n- ")}\n\n${el.note.textContent}`;
-      try{
-        await navigator.clipboard.writeText(txt);
-        alert("Ergebnis kopiert.");
-      }catch{
-        alert("Kopieren nicht möglich. Bitte manuell markieren.");
-      }
-    });
-
-    // photo upload
-    el.file.addEventListener("change", async ()=>{
-      const f = el.file.files && el.file.files[0];
-      if(!f) return;
-
-      const url = URL.createObjectURL(f);
-      el.photo.src = url;
-
-      await new Promise((resolve, reject)=>{
-        el.photo.onload = ()=>resolve();
-        el.photo.onerror = ()=>reject(new Error("Image load failed"));
-      });
-
-      imageBitmap = await createImageBitmap(f);
-
-      refClicks = [];
-      pixelsPerCm = null;
-      lastPose = null;
-
-      drawPhoto();
-      setState();
-
-      el.result.style.display="none";
-      el.runScan.disabled = true;
-      el.applyOverlay.disabled = true;
-      el.clearOverlay.disabled = true;
-      el.runApiTryon.disabled = true;
-      el.apiNote.textContent = "API ist im Code vorbereitet, aber standardmäßig deaktiviert.";
+      refClicks=[]; pixelsPerCm=null;
+      updateRefState();
+      setHint("—");
     });
 
     // ---------- Try-on overlay ----------
@@ -1305,129 +1168,72 @@
     el.jeansFile.addEventListener("change", async ()=>{
       const f = el.jeansFile.files && el.jeansFile.files[0];
       if(!f) return;
-
       jeansBitmap = await createImageBitmap(f);
-      el.applyOverlay.disabled = !lastPose || !jeansBitmap;
-      el.clearOverlay.disabled = !lastPose;
+      el.applyOverlay.disabled = !(jeansBitmap && lastPose);
+      el.clearOverlay.disabled = !(lastPose);
     });
 
     function drawTryonOverlay(){
-      if(!lastPose || !jeansBitmap || !imageBitmap) return;
+      if(!lastPose || !jeansBitmap) return;
 
-      // clear tryon layer
-      tctx.clearRect(0,0,el.tryon.width, el.tryon.height);
+      // draw on tryon layer mirrored (because video is mirrored)
+      ctxT.save();
+      ctxT.setTransform(-1, 0, 0, 1, el.tryon.width, 0);
+      ctxT.clearRect(0,0,el.tryon.width, el.tryon.height);
 
-      // anchor points (use average hips + average ankles)
-      const hipMid = {
-        x: (lastPose.lh.x + lastPose.rh.x)/2,
-        y: (lastPose.lh.y + lastPose.rh.y)/2
-      };
-      const ankleMid = {
-        x: (lastPose.la.x + lastPose.ra.x)/2,
-        y: (lastPose.la.y + lastPose.ra.y)/2
-      };
-
+      const hipMid = { x:(lastPose.lh.x+lastPose.rh.x)/2, y:(lastPose.lh.y+lastPose.rh.y)/2 };
+      const ankleMid = { x:(lastPose.la.x+lastPose.ra.x)/2, y:(lastPose.la.y+lastPose.ra.y)/2 };
       const hipWidth = dist(lastPose.lh, lastPose.rh);
       const legLen = Math.abs(ankleMid.y - hipMid.y);
 
-      // scaling targets
       const s = Number(el.scale.value)/100;
       const targetW = hipWidth * 1.35 * s;
       const targetH = legLen * 1.15 * s;
 
-      // rotation (hip line)
       const angle = Math.atan2((lastPose.rh.y-lastPose.lh.y), (lastPose.rh.x-lastPose.lh.x));
 
-      // offsets
       const xOff = Number(el.xOff.value);
       const yOff = Number(el.yOff.value);
 
-      // draw centered at hipMid (slightly down)
       const cx = hipMid.x + xOff;
       const cy = hipMid.y + (targetH*0.08) + yOff;
 
-      tctx.save();
-      tctx.translate(cx, cy);
-      tctx.rotate(angle);
+      ctxT.translate(cx, cy);
+      ctxT.rotate(angle);
 
-      // draw jeans bitmap fitted into target box
-      const w = targetW;
-      const h = targetH;
-
-      tctx.globalAlpha = Number(el.alpha.value)/100;
-
-      // "contain" fit
-      const bw = jeansBitmap.width;
-      const bh = jeansBitmap.height;
-      const scale = Math.min(w/bw, h/bh);
-
+      const bw = jeansBitmap.width, bh = jeansBitmap.height;
+      const scale = Math.min(targetW/bw, targetH/bh);
       const dw = bw * scale;
       const dh = bh * scale;
 
-      tctx.drawImage(jeansBitmap, -dw/2, -dh*0.10, dw, dh); // slightly up so waistband sits closer
-      tctx.restore();
+      ctxT.globalAlpha = Number(el.alpha.value)/100;
+      ctxT.drawImage(jeansBitmap, -dw/2, -dh*0.10, dw, dh);
+
+      ctxT.restore();
     }
 
     el.applyOverlay.addEventListener("click", ()=>{
-      drawPhoto();
-      if(lastPose) drawPoseOverlay(lastPose);
       drawTryonOverlay();
     });
 
     el.clearOverlay.addEventListener("click", ()=>{
-      tctx.clearRect(0,0,el.tryon.width, el.tryon.height);
+      ctxT.clearRect(0,0,el.tryon.width, el.tryon.height);
     });
-
-    // ---------- API hook (optional) ----------
-    // This is a prepared hook. It expects your backend to return an image (blob) to draw on tryon canvas.
-    // Endpoint suggestion: POST /api/tryon with form-data: photo, jeans, wl, options
-    async function runApiTryon(){
-      if(!imageBitmap || !jeansBitmap){
-        el.apiNote.textContent = "Für KI-Vorschau: Foto + Jeans PNG erforderlich.";
-        return;
-      }
-      el.apiNote.textContent = "KI-Vorschau: Endpoint ist nicht aktiv. Im Code vorbereiteter Hook.";
-      // Uncomment and adjust when backend exists.
-      /*
-      const endpoint = "/api/tryon";
-      const fd = new FormData();
-
-      // Convert current photo file from input if available
-      const photoFile = el.file.files && el.file.files[0];
-      const jeansFile = el.jeansFile.files && el.jeansFile.files[0];
-      if(!photoFile || !jeansFile) return;
-
-      fd.append("photo", photoFile);
-      fd.append("jeans", jeansFile);
-      fd.append("fit", el.fit.value);
-      fd.append("stretch", el.stretch.value);
-      fd.append("brand", el.brand.value);
-
-      try{
-        const res = await fetch(endpoint, { method:"POST", body: fd });
-        if(!res.ok) throw new Error("TryOn API error");
-        const blob = await res.blob();
-        const img = await createImageBitmap(blob);
-
-        // draw API result to tryon canvas
-        tctx.clearRect(0,0,el.tryon.width, el.tryon.height);
-        tctx.globalAlpha = 1.0;
-        tctx.drawImage(img, 0, 0, el.tryon.width, el.tryon.height);
-
-        el.apiNote.textContent = "KI-Vorschau geladen.";
-      }catch(e){
-        el.apiNote.textContent = "KI-Vorschau nicht verfügbar (Endpoint/Antwort).";
-      }
-      */
-    }
-
-    el.runApiTryon.addEventListener("click", runApiTryon);
 
     // ---------- Boot ----------
     (async function(){
       await loadPose();
-      setTab("scan");
-      setState();
+      el.capture.disabled = true;
+      el.runScan.disabled = true;
+      updateRefState();
+
+      // Live-Kamera ist Standard: sofort starten, wenn möglich.
+      // Hinweis: iOS verlangt oft einen User-Click; falls blockiert, Button bleibt nutzbar.
+      try{
+        await startCamera();
+      }catch{
+        // ignore
+      }
     })();
   </script>
 </body>
