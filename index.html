@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
-  <title>OSION – Fit Calculator (Jeans)</title>
-  <meta name="description" content="Jeans Fit Calculator: Größenempfehlung (W/L) mit Messhilfe, Plausibilitätscheck und klaren Hinweisen für die passende Jeans." />
+  <title>OSION – Fit Check (Jeans) · Fotoanalyse</title>
+  <meta name="description" content="Jeans Fit Check: Fotoanalyse mit Körper-Pose-Erkennung, Plausibilitätscheck, Hinweise zum Sitz und Größenabgleich (W/L)." />
 
   <style>
     :root{
@@ -14,24 +14,23 @@
 
       --text:#eaf0ff;
 
-      --good:#45d483;
       --bad:#ff6b6b;
       --gold:#ffd36a;
+      --good:#45d483;
 
-      /* OSION-Gradient (Rot/Violett) */
       --a1:#b3003c;
       --a2:#6b2cff;
 
-      --radius2: 26px;
+      --r: 18px;
+      --r2: 26px;
 
-      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
       --sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
     }
 
     *{ box-sizing:border-box; }
     html,body{ height:100%; }
 
-    /* ===== Premium Background ===== */
     body{
       margin:0;
       font-family: var(--sans);
@@ -45,12 +44,12 @@
     }
 
     .wrap{
-      max-width: 980px;
+      max-width: 1100px;
       margin: 0 auto;
       padding: 26px 18px 44px;
     }
 
-    /* ===== Premium Topbar ===== */
+    /* Topbar */
     .topbar{
       display:flex;
       align-items:center;
@@ -58,15 +57,14 @@
       gap:14px;
       padding: 14px 14px;
       border: 1px solid rgba(255,255,255,.14);
-      border-radius: var(--radius2);
+      border-radius: var(--r2);
       background: linear-gradient(180deg, rgba(255,255,255,.07), rgba(255,255,255,.025));
       box-shadow: 0 22px 80px rgba(0,0,0,.55);
       backdrop-filter: blur(12px);
     }
-
     .brand{
       display:flex; align-items:center; gap:14px;
-      min-width: 240px;
+      min-width: 260px;
     }
     .logo{
       width:54px; height:54px;
@@ -77,12 +75,7 @@
       overflow:hidden;
       box-shadow: inset 0 1px 0 rgba(255,255,255,.08);
     }
-    .logo img{
-      width:100%;
-      height:100%;
-      object-fit:cover;
-      display:block;
-    }
+    .logo img{ width:100%; height:100%; object-fit:cover; display:block; }
     .brand h1{
       margin:0;
       font-size: 15px;
@@ -96,7 +89,6 @@
       color: rgba(234,240,255,.72);
       line-height:1.2;
     }
-
     .badgeRow{
       display:flex; gap:10px; flex-wrap:wrap; justify-content:flex-end;
     }
@@ -117,18 +109,24 @@
       box-shadow: 0 0 0 3px rgba(255,255,255,.06);
     }
 
-    /* ===== One-column premium layout ===== */
+    /* Layout */
     .grid{
       margin-top: 18px;
       display:grid;
-      grid-template-columns: 1fr;
+      grid-template-columns: 1.05fr .95fr;
       gap: 16px;
+      align-items:start;
+    }
+    @media (max-width: 980px){
+      .grid{ grid-template-columns: 1fr; }
+      .badgeRow{ justify-content:flex-start; }
+      .brand{ min-width:auto; }
     }
 
-    /* ===== Premium Card ===== */
+    /* Card */
     .card{
       border: 1px solid rgba(255,255,255,.14);
-      border-radius: var(--radius2);
+      border-radius: var(--r2);
       background:
         radial-gradient(900px 260px at 10% 0%, rgba(255,255,255,.07), transparent 55%),
         linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02));
@@ -155,9 +153,7 @@
       color: rgba(234,240,255,.72);
       line-height:1.35;
     }
-    .cardBody{
-      padding: 14px 16px 16px;
-    }
+    .cardBody{ padding: 14px 16px 16px; }
 
     .row{
       display:grid;
@@ -165,11 +161,7 @@
       gap: 12px;
       margin-bottom: 12px;
     }
-    @media (max-width: 560px){
-      .row{ grid-template-columns: 1fr; }
-      .badgeRow{ justify-content:flex-start; }
-      .brand{ min-width:auto; }
-    }
+    @media (max-width: 560px){ .row{ grid-template-columns:1fr; } }
 
     label{
       display:block;
@@ -179,38 +171,22 @@
     }
     .field{ position:relative; }
 
-    /* ===== Premium Inputs ===== */
     input, select{
       width:100%;
       padding: 12px 12px;
       border-radius: 14px;
       border: 1px solid rgba(255,255,255,.14);
-      background:
-        linear-gradient(180deg, rgba(10,12,28,.72), rgba(10,12,28,.46));
+      background: linear-gradient(180deg, rgba(10,12,28,.72), rgba(10,12,28,.46));
       color: var(--text);
       outline:none;
       transition: border-color .15s ease, transform .15s ease, box-shadow .15s ease;
-      box-shadow:
-        inset 0 1px 0 rgba(255,255,255,.06),
-        0 10px 30px rgba(0,0,0,.35);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.06), 0 10px 30px rgba(0,0,0,.35);
     }
     input::placeholder{ color: rgba(185,194,232,.55); }
     input:focus, select:focus{
       border-color: rgba(255,255,255,.28);
       transform: translateY(-1px);
-      box-shadow:
-        inset 0 1px 0 rgba(255,255,255,.07),
-        0 0 0 4px rgba(107,44,255,.14),
-        0 10px 34px rgba(0,0,0,.4);
-    }
-
-    .suffix{
-      position:absolute;
-      right: 10px;
-      top: 34px;
-      font-size: 12px;
-      color: rgba(234,240,255,.65);
-      pointer-events:none;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.07), 0 0 0 4px rgba(107,44,255,.14), 0 10px 34px rgba(0,0,0,.4);
     }
 
     .actions{
@@ -219,8 +195,6 @@
       flex-wrap:wrap;
       margin-top: 8px;
     }
-
-    /* ===== Premium Buttons ===== */
     .btn{
       border: 1px solid rgba(255,255,255,.14);
       background: rgba(255,255,255,.045);
@@ -241,40 +215,68 @@
     .btn.primary:hover{
       background: linear-gradient(135deg, rgba(179,0,60,.42), rgba(107,44,255,.42));
     }
-    .btn.ghost{
-      background: transparent;
-      box-shadow: none;
+    .btn.ghost{ background:transparent; box-shadow:none; }
+
+    /* Photo stage */
+    .stage{
+      border: 1px solid rgba(255,255,255,.14);
+      border-radius: var(--r2);
+      background: rgba(0,0,0,.18);
+      padding: 12px;
+      overflow:hidden;
+    }
+    .canvasWrap{
+      position:relative;
+      border-radius: 18px;
+      overflow:hidden;
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.03);
+    }
+    canvas, img{ display:block; width:100%; height:auto; }
+    #photo{ display:none; }
+    #overlay{
+      position:absolute;
+      inset:0;
+      pointer-events:none;
+    }
+    .stageFooter{
+      margin-top:10px;
+      display:flex;
+      justify-content:space-between;
+      gap: 10px;
+      flex-wrap:wrap;
+      color: rgba(234,240,255,.70);
+      font-size: 12px;
+      line-height:1.4;
+    }
+    .tiny{
+      font-family: var(--mono);
+      font-size: 11px;
+      color: rgba(234,240,255,.58);
     }
 
-    /* ===== Premium Result Card ===== */
+    /* Output */
     .result{
       margin-top: 12px;
       padding: 14px;
-      border-radius: var(--radius2);
+      border-radius: var(--r2);
       border: 1px solid rgba(255,255,255,.16);
       background:
         radial-gradient(820px 240px at 0% 0%, rgba(179,0,60,.14), transparent 55%),
         radial-gradient(820px 240px at 100% 0%, rgba(107,44,255,.14), transparent 55%),
         linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02));
       box-shadow: 0 26px 90px rgba(0,0,0,.55);
+      display:none;
     }
-
     .resultTop{
-      display:flex;
-      align-items:flex-start;
-      justify-content:space-between;
-      gap: 12px;
-      flex-wrap:wrap;
+      display:flex; align-items:flex-start; justify-content:space-between;
+      gap: 12px; flex-wrap:wrap;
     }
-
     .sizeBig{
-      display:flex;
-      gap: 10px;
-      align-items:baseline;
-      flex-wrap:wrap;
+      display:flex; gap:10px; align-items:baseline; flex-wrap:wrap;
     }
     .sizeBig .w{
-      font-size: 28px;
+      font-size: 22px;
       font-weight: 950;
       letter-spacing:.6px;
       display:inline-block;
@@ -287,9 +289,8 @@
     .sizeBig .meta{
       font-size: 13px;
       color: rgba(234,240,255,.72);
-      margin-top: 8px;
+      margin-top: 6px;
     }
-
     .confidence{
       min-width: 260px;
       max-width: 320px;
@@ -338,17 +339,15 @@
       line-height:1.45;
     }
 
-    /* Result helper tiles */
-    .miniGrid{
-      display:grid;
-      grid-template-columns: 1fr;
-      gap: 12px;
-      margin-top: 12px;
+    .divider{
+      height:1px;
+      background: rgba(255,255,255,.08);
+      margin: 14px 0;
     }
 
     .tile{
       border: 1px solid rgba(255,255,255,.12);
-      border-radius: var(--radius2);
+      border-radius: var(--r2);
       background: rgba(255,255,255,.028);
       padding: 12px;
     }
@@ -365,66 +364,26 @@
       line-height:1.45;
     }
 
-    .divider{
-      height:1px;
-      background: rgba(255,255,255,.08);
-      margin: 14px 0;
-    }
-
-    /* ===== Modal ===== */
-    .modalBackdrop{
-      position:fixed;
-      inset:0;
-      background: rgba(0,0,0,.62);
-      display:none;
-      align-items:center;
-      justify-content:center;
-      padding: 18px;
-      z-index: 50;
-    }
-    .modal{
-      width:min(860px, 100%);
-      border-radius: 22px;
-      border:1px solid rgba(255,255,255,.18);
-      background: linear-gradient(180deg, rgba(18,22,44,.92), rgba(10,12,28,.92));
-      box-shadow: 0 24px 90px rgba(0,0,0,.6);
-      overflow:hidden;
-    }
-    .modalHead{
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      gap: 10px;
-      padding: 14px 16px;
-      border-bottom:1px solid rgba(255,255,255,.10);
-    }
-    .modalHead b{ font-size: 14px; letter-spacing:.2px; }
-    .modalBody{
-      padding: 14px 16px 16px;
+    .status{
+      margin-top:10px;
+      font-size: 12px;
       color: rgba(234,240,255,.72);
-      line-height:1.5;
-      font-size: 13px;
+      display:flex;
+      gap: 10px;
+      align-items:center;
+      flex-wrap:wrap;
     }
-    .closeX{
-      border:1px solid rgba(255,255,255,.16);
+    .chip{
+      padding: 8px 10px;
+      border-radius: 999px;
+      border:1px solid rgba(255,255,255,.14);
       background: rgba(255,255,255,.04);
-      color: var(--text);
-      border-radius: 12px;
-      padding: 10px 12px;
-      cursor:pointer;
-      font-weight: 950;
-    }
-
-    .svgWrap{
-      margin-top: 10px;
-      border:1px solid rgba(255,255,255,.12);
-      border-radius: 18px;
-      background: rgba(255,255,255,.03);
-      padding: 12px;
+      color: rgba(234,240,255,.78);
+      font-size: 12px;
     }
 
     .foot{
-      margin-top: 12px;
+      margin-top: 14px;
       font-size: 12px;
       color: rgba(255,255,255,.55);
       text-align:center;
@@ -441,422 +400,718 @@
                onerror="this.style.display='none'; this.parentElement.textContent='OSION'; this.parentElement.style.fontWeight='950'; this.parentElement.style.fontSize='14px';" />
         </div>
         <div>
-          <h1>OSION Fit Calculator – Jeans</h1>
-          <div class="sub">Größenempfehlung (W/L) mit Messhilfe, Plausibilitätscheck, Begründung</div>
+          <h1>OSION Fit Check – Jeans</h1>
+          <div class="sub">Fotoanalyse: Pose-Erkennung · Plausibilitätscheck · Hinweise zum Sitz</div>
         </div>
       </div>
 
       <div class="badgeRow">
         <div class="pill"><span class="dot"></span> Fokus: passende Jeans finden</div>
-        <div class="pill">Output: W/L + Hinweise + Sicherheitsgrad</div>
+        <div class="pill">Foto bleibt im Browser</div>
       </div>
     </div>
 
     <div class="grid">
-      <section class="card" aria-label="Eingaben">
+      <!-- LEFT: Photo + analysis -->
+      <section class="card" aria-label="Fotoanalyse">
         <div class="cardHead">
           <div>
-            <h2 class="cardTitle">Deine Daten</h2>
-            <p class="cardHint">Wenn du deinen <b>Taille-Umfang</b> und deine <b>Innenbeinlänge</b> kennst, wird die Empfehlung deutlich präziser.</p>
+            <h2 class="cardTitle">Foto hochladen</h2>
+            <p class="cardHint">
+              Am besten: Ganzkörper-Frontfoto, gerade stehen, gute Beleuchtung, Kamera auf Hüfthöhe.
+              Optional: ein A4-Blatt sichtbar im Bild (als Referenz), z. B. in der Hand auf Hüfthöhe.
+            </p>
           </div>
-          <button class="btn ghost" id="openMeasure">Messhilfe</button>
+          <div class="actions">
+            <label class="btn ghost" for="file">Foto wählen</label>
+            <input id="file" type="file" accept="image/*" hidden />
+            <button class="btn" id="analyze" disabled>Foto analysieren</button>
+          </div>
+        </div>
+
+        <div class="cardBody">
+          <div class="stage">
+            <div class="canvasWrap">
+              <img id="photo" alt="Hochgeladenes Foto" />
+              <canvas id="view" width="1200" height="800" aria-label="Vorschau"></canvas>
+              <canvas id="overlay" width="1200" height="800" aria-label="Overlay"></canvas>
+            </div>
+
+            <div class="stageFooter">
+              <div>
+                <div><b>Tipp:</b> Wenn du ein A4-Blatt im Bild hast, kannst du gleich eine Referenz angeben.</div>
+                <div class="tiny">Referenzbreite (A4 quer: 29,7 cm / A4 hoch: 21,0 cm)</div>
+              </div>
+              <div style="display:flex; gap:10px; flex-wrap:wrap; align-items:center;">
+                <div class="chip">Referenz: <select id="refMode">
+                  <option value="none" selected>keine</option>
+                  <option value="a4_21">A4 Breite 21,0 cm</option>
+                  <option value="a4_297">A4 Breite 29,7 cm</option>
+                </select></div>
+                <div class="chip">Klick 2 Punkte aufs Foto</div>
+              </div>
+            </div>
+
+            <div class="status">
+              <span class="chip" id="modelState">KI-Modul: wird geladen …</span>
+              <span class="chip" id="photoState">Foto: nicht geladen</span>
+              <span class="chip" id="refState">Referenz: aus</span>
+            </div>
+
+            <div class="result" id="result">
+              <div class="resultTop">
+                <div>
+                  <div class="sizeBig">
+                    <div class="w" id="wlOut">W32 / L32</div>
+                    <div class="meta" id="metaOut">Abgleich anhand deiner Angaben + Foto-Plausibilität.</div>
+                  </div>
+                </div>
+
+                <div class="confidence">
+                  <div class="confLabel">
+                    <span>Analyse-Sicherheit</span>
+                    <b id="confText">mittel</b>
+                  </div>
+                  <div class="bar"><i id="confBar"></i></div>
+                </div>
+              </div>
+
+              <ul class="bullets" id="bullets"></ul>
+              <div class="note" id="note"></div>
+
+              <div class="divider"></div>
+
+              <div class="tile">
+                <h3>Was du im Overlay siehst</h3>
+                <p>Markierte Punkte zeigen Hüfte, Knie und Knöchel. So erkennst du, ob Foto/Pose stabil genug ist und ob die Beinlänge plausibel wirkt.</p>
+              </div>
+            </div>
+
+            <div class="foot">OSION · Fit Check · Jeans (Fotoanalyse)</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- RIGHT: Inputs (existing calculator style) -->
+      <section class="card" aria-label="Abgleich">
+        <div class="cardHead">
+          <div>
+            <h2 class="cardTitle">Abgleich (optional, aber stark)</h2>
+            <p class="cardHint">
+              Wenn du deine Maße kennst, wird der Abgleich präziser. Fotoanalyse liefert zusätzlich einen Plausibilitätscheck.
+            </p>
+          </div>
         </div>
 
         <div class="cardBody">
           <div class="row">
             <div class="field">
-              <label for="height">Körpergröße</label>
-              <input id="height" type="number" inputmode="numeric" min="120" max="220" placeholder="z. B. 182" />
-              <div class="suffix">cm</div>
-            </div>
-
-            <div class="field">
-              <label for="weight">Gewicht</label>
-              <input id="weight" type="number" inputmode="numeric" min="35" max="200" placeholder="z. B. 84" />
-              <div class="suffix">kg</div>
-            </div>
-          </div>
-
-          <div class="row">
-            <div class="field">
-              <label for="waist">Taille-Umfang (optional, empfohlen)</label>
+              <label for="waist">Taille-Umfang</label>
               <input id="waist" type="number" inputmode="numeric" min="55" max="140" placeholder="z. B. 88" />
-              <div class="suffix">cm</div>
             </div>
-
             <div class="field">
-              <label for="inseam">Innenbeinlänge (optional, empfohlen)</label>
+              <label for="inseam">Innenbeinlänge</label>
               <input id="inseam" type="number" inputmode="numeric" min="55" max="105" placeholder="z. B. 82" />
-              <div class="suffix">cm</div>
             </div>
           </div>
 
           <div class="row">
             <div class="field">
-              <label for="fit">Sitz (wie soll die Jeans sitzen?)</label>
+              <label for="fit">Sitz-Wunsch</label>
               <select id="fit">
                 <option value="regular" selected>Normal</option>
                 <option value="slim">Enger</option>
                 <option value="loose">Lockerer</option>
               </select>
             </div>
-
             <div class="field">
               <label for="stretch">Stretch-Anteil</label>
               <select id="stretch">
-                <option value="none">Kein Stretch (100% Denim)</option>
-                <option value="some" selected>Etwas Stretch (1–3%)</option>
-                <option value="high">Viel Stretch (4%+)</option>
+                <option value="none">Kein Stretch</option>
+                <option value="some" selected>Etwas Stretch</option>
+                <option value="high">Viel Stretch</option>
               </select>
             </div>
           </div>
 
           <div class="row">
             <div class="field">
-              <label for="rise">Bundhöhe</label>
-              <select id="rise">
-                <option value="mid" selected>Mid Rise (Standard)</option>
-                <option value="low">Low Rise</option>
-                <option value="high">High Rise</option>
-              </select>
-            </div>
-
-            <div class="field">
-              <label for="brand">Passform-Tendenz (optional)</label>
+              <label for="brand">Passform-Tendenz</label>
               <select id="brand">
                 <option value="tts" selected>Fällt normal aus</option>
                 <option value="small">Fällt eher klein aus</option>
                 <option value="large">Fällt eher groß aus</option>
               </select>
             </div>
+            <div class="field">
+              <label for="targetWL">Geplante Größe (falls schon gewählt)</label>
+              <input id="targetWL" type="text" placeholder="z. B. W32 / L32" />
+            </div>
           </div>
 
           <div class="actions">
-            <button class="btn primary" id="calc">Empfehlung berechnen</button>
-            <button class="btn" id="reset">Zurücksetzen</button>
-            <button class="btn ghost" id="copy">Ergebnis kopieren</button>
-          </div>
-
-          <div class="result" id="result" style="display:none;">
-            <div class="resultTop">
-              <div>
-                <div class="sizeBig">
-                  <div class="w" id="sizeWL">W32 / L32</div>
-                  <div class="meta" id="sizeMeta">entspricht ungefähr EU 48–50 · Gürtelmaß ca. 95–100 cm</div>
-                </div>
-              </div>
-
-              <div class="confidence">
-                <div class="confLabel">
-                  <span>Sicherheitsgrad</span>
-                  <b id="confText">hoch</b>
-                </div>
-                <div class="bar" aria-label="Sicherheitsgrad Balken"><i id="confBar"></i></div>
-              </div>
-            </div>
-
-            <ul class="bullets" id="bullets"></ul>
-            <div class="note" id="note"></div>
-
-            <div class="miniGrid">
-              <div class="tile">
-                <h3>Warum diese Empfehlung?</h3>
-                <p id="why">Basierend auf Taille/Innenbeinlänge (oder plausibler Schätzung), plus Sitz, Stretch und Passform-Tendenz.</p>
-              </div>
-            </div>
+            <button class="btn primary" id="sync">Daten übernehmen</button>
+            <button class="btn" id="clear">Zurücksetzen</button>
           </div>
 
           <div class="divider"></div>
 
           <div class="tile">
-            <h3>Messdaten erfassen (optional, empfohlen)</h3>
-            <p>
-              Empfehlung wird am präzisesten mit: <b>Taille-Umfang</b> und <b>Innenbeinlänge</b>.
-              Ohne Messwerte nutzt der Calculator eine Schätzung.
-            </p>
+            <h3>Hinweis</h3>
+            <p>Der Foto-Check ist ein Plausibilitätscheck. Für maximale Präzision sind Taille-Umfang und Innenbeinlänge entscheidend.</p>
           </div>
-
-          <div class="foot">OSION · Fit Calculator · Jeans</div>
         </div>
       </section>
     </div>
   </div>
 
-  <!-- MODAL: Messhilfe -->
-  <div class="modalBackdrop" id="modalBackdrop" role="dialog" aria-modal="true" aria-label="Messhilfe">
-    <div class="modal">
-      <div class="modalHead">
-        <b>Messhilfe – Taille & Innenbeinlänge</b>
-        <button class="closeX" id="closeMeasure">Schließen</button>
-      </div>
-      <div class="modalBody">
-        <div>
-          <b>Taille-Umfang:</b> Maßband auf Höhe, wo die Jeans sitzen soll. Maßband eng anliegend, nicht einschnüren.
-        </div>
-        <div style="margin-top:8px;">
-          <b>Innenbeinlänge:</b> Von Schritt bis Knöchel (oder bis gewünschter Saum). Am besten eine gut passende Jeans messen.
-        </div>
-
-        <div class="svgWrap" aria-hidden="true">
-          <svg viewBox="0 0 820 220" width="100%" height="auto">
-            <defs>
-              <linearGradient id="g" x1="0" x2="1">
-                <stop offset="0" stop-color="#b3003c" stop-opacity=".9"/>
-                <stop offset="1" stop-color="#6b2cff" stop-opacity=".9"/>
-              </linearGradient>
-            </defs>
-            <circle cx="110" cy="55" r="26" fill="rgba(255,255,255,.08)" stroke="rgba(255,255,255,.18)"/>
-            <rect x="86" y="82" width="48" height="96" rx="18" fill="rgba(255,255,255,.06)" stroke="rgba(255,255,255,.18)"/>
-            <rect x="72" y="118" width="20" height="74" rx="10" fill="rgba(255,255,255,.06)" stroke="rgba(255,255,255,.18)"/>
-            <rect x="128" y="118" width="20" height="74" rx="10" fill="rgba(255,255,255,.06)" stroke="rgba(255,255,255,.18)"/>
-            <line x1="68" y1="120" x2="152" y2="120" stroke="url(#g)" stroke-width="6" stroke-linecap="round"/>
-            <text x="175" y="126" fill="rgba(255,255,255,.75)" font-size="14">Taille-Umfang</text>
-
-            <path d="M400 42 h80 l12 150 h-34 l-10-95 h-16 l-10 95 h-34z"
-                  fill="rgba(255,255,255,.06)" stroke="rgba(255,255,255,.18)" stroke-width="2"/>
-            <line x1="440" y1="100" x2="440" y2="190" stroke="url(#g)" stroke-width="6" stroke-linecap="round"/>
-            <text x="470" y="150" fill="rgba(255,255,255,.75)" font-size="14">Innenbeinlänge</text>
-
-            <rect x="560" y="54" width="240" height="130" rx="18" fill="rgba(255,255,255,.04)" stroke="rgba(255,255,255,.14)"/>
-            <text x="578" y="84" fill="rgba(255,255,255,.8)" font-size="13">Tipp:</text>
-            <text x="578" y="108" fill="rgba(255,255,255,.72)" font-size="12">Lieblingsjeans flach hinlegen,</text>
-            <text x="578" y="128" fill="rgba(255,255,255,.72)" font-size="12">Taille + Innenbeinlänge messen.</text>
-            <text x="578" y="148" fill="rgba(255,255,255,.72)" font-size="12">Das bringt maximale Treffsicherheit.</text>
-          </svg>
-        </div>
-      </div>
-    </div>
-  </div>
-
   <script>
-    (function(){
-      const $ = (id) => document.getElementById(id);
+    /******************************************************************
+     * OSION Fit Check – Jeans (Fotoanalyse)
+     * - Läuft im Browser
+     * - Nutzt MediaPipe Pose Landmarker (WebAssembly, via CDN)
+     * - Foto wird NICHT automatisch hochgeladen (rein clientseitig)
+     ******************************************************************/
 
-      const el = {
-        height: $("height"),
-        weight: $("weight"),
-        waist: $("waist"),
-        inseam: $("inseam"),
-        fit: $("fit"),
-        stretch: $("stretch"),
-        rise: $("rise"),
-        brand: $("brand"),
+    const el = {
+      file: document.getElementById("file"),
+      analyze: document.getElementById("analyze"),
+      photo: document.getElementById("photo"),
+      view: document.getElementById("view"),
+      overlay: document.getElementById("overlay"),
 
-        calc: $("calc"),
-        reset: $("reset"),
-        copy: $("copy"),
+      modelState: document.getElementById("modelState"),
+      photoState: document.getElementById("photoState"),
+      refState: document.getElementById("refState"),
 
-        result: $("result"),
-        sizeWL: $("sizeWL"),
-        sizeMeta: $("sizeMeta"),
-        bullets: $("bullets"),
-        note: $("note"),
-        why: $("why"),
+      refMode: document.getElementById("refMode"),
 
-        confBar: $("confBar"),
-        confText: $("confText"),
+      waist: document.getElementById("waist"),
+      inseam: document.getElementById("inseam"),
+      fit: document.getElementById("fit"),
+      stretch: document.getElementById("stretch"),
+      brand: document.getElementById("brand"),
+      targetWL: document.getElementById("targetWL"),
+      sync: document.getElementById("sync"),
+      clear: document.getElementById("clear"),
 
-        openMeasure: $("openMeasure"),
-        closeMeasure: $("closeMeasure"),
-        modalBackdrop: $("modalBackdrop")
-      };
+      result: document.getElementById("result"),
+      wlOut: document.getElementById("wlOut"),
+      metaOut: document.getElementById("metaOut"),
+      bullets: document.getElementById("bullets"),
+      note: document.getElementById("note"),
+      confText: document.getElementById("confText"),
+      confBar: document.getElementById("confBar"),
+    };
 
-      const clamp = (n, a, b) => Math.max(a, Math.min(b, n));
+    const ctx = el.view.getContext("2d");
+    const octx = el.overlay.getContext("2d");
 
-      function roundToNearest(n, step){
-        return Math.round(n/step)*step;
+    let poseLandmarker = null;
+    let imageBitmap = null;
+
+    // Reference calibration (two clicks)
+    let refClicks = [];
+    let pixelsPerCm = null; // if set, we can estimate rough lengths
+
+    const clamp = (n,a,b)=>Math.max(a,Math.min(b,n));
+
+    function resetOverlay(){
+      octx.clearRect(0,0,el.overlay.width, el.overlay.height);
+    }
+
+    function resizeCanvasesToImage(imgW, imgH){
+      el.view.width = imgW;
+      el.view.height = imgH;
+      el.overlay.width = imgW;
+      el.overlay.height = imgH;
+    }
+
+    function drawPhoto(){
+      if(!imageBitmap) return;
+      resizeCanvasesToImage(imageBitmap.width, imageBitmap.height);
+      ctx.clearRect(0,0,el.view.width, el.view.height);
+      ctx.drawImage(imageBitmap, 0, 0);
+      resetOverlay();
+      drawRefClicks();
+    }
+
+    function drawRefClicks(){
+      if(refClicks.length === 0) return;
+      octx.save();
+      octx.lineWidth = 4;
+      octx.strokeStyle = "rgba(255,255,255,.85)";
+      octx.fillStyle = "rgba(255,255,255,.85)";
+      for(const p of refClicks){
+        octx.beginPath();
+        octx.arc(p.x, p.y, 7, 0, Math.PI*2);
+        octx.fill();
       }
-
-      function mapL(inches){
-        const options = [28,30,32,34,36];
-        let best = options[0], bestD = Infinity;
-        for (const o of options){
-          const d = Math.abs(o - inches);
-          if (d < bestD){ bestD = d; best = o; }
-        }
-        return best;
+      if(refClicks.length === 2){
+        octx.beginPath();
+        octx.moveTo(refClicks[0].x, refClicks[0].y);
+        octx.lineTo(refClicks[1].x, refClicks[1].y);
+        octx.stroke();
       }
+      octx.restore();
+    }
 
-      function mapW(inches){
-        return clamp(Math.round(inches), 26, 44);
+    function setState(){
+      el.photoState.textContent = imageBitmap ? "Foto: geladen" : "Foto: nicht geladen";
+      const refLabel = el.refMode.value === "none" ? "aus" :
+        (el.refMode.value === "a4_21" ? "A4 21,0 cm" : "A4 29,7 cm");
+      el.refState.textContent = "Referenz: " + refLabel + (pixelsPerCm ? " · aktiv" : "");
+    }
+
+    // ---------- MediaPipe Pose Landmarker Loader ----------
+    async function loadPose(){
+      try{
+        el.modelState.textContent = "KI-Modul: wird geladen …";
+
+        // CDN Import (MediaPipe Tasks Vision)
+        // Hinweis: Versionsnummer kann bei Bedarf angepasst werden.
+        const vision = await import("https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.14/vision_bundle.mjs");
+
+        const { FilesetResolver, PoseLandmarker } = vision;
+
+        const fileset = await FilesetResolver.forVisionTasks(
+          "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.14/wasm"
+        );
+
+        poseLandmarker = await PoseLandmarker.createFromOptions(fileset, {
+          baseOptions: {
+            modelAssetPath: "https://storage.googleapis.com/mediapipe-models/pose_landmarker/pose_landmarker_lite/float16/1/pose_landmarker_lite.task",
+            delegate: "GPU"
+          },
+          runningMode: "IMAGE",
+          numPoses: 1
+        });
+
+        el.modelState.textContent = "KI-Modul: bereit";
+      }catch(err){
+        console.error(err);
+        el.modelState.textContent = "KI-Modul: nicht verfügbar (CDN/Netzwerk)";
+        poseLandmarker = null;
       }
+    }
 
-      function euApproxFromW(w){
-        const base = 44 + (w - 28);
-        return Math.round(base/2)*2;
+    // ---------- Helpers ----------
+    function parseTargetWL(str){
+      if(!str) return null;
+      const m = str.toUpperCase().replace(/\s/g,"").match(/W(\d+)[\/-]?L(\d+)/);
+      if(!m) return null;
+      return { W: Number(m[1]), L: Number(m[2]) };
+    }
+
+    function cmToIn(cm){ return cm / 2.54; }
+    function inToCm(inch){ return inch * 2.54; }
+
+    function mapL(inches){
+      const options = [28,30,32,34,36];
+      let best = options[0], bestD = Infinity;
+      for (const o of options){
+        const d = Math.abs(o - inches);
+        if (d < bestD){ bestD = d; best = o; }
       }
+      return best;
+    }
+    function mapW(inches){ return clamp(Math.round(inches), 26, 44); }
 
-      function beltApproxFromWaistCm(waistCm){
-        if (!waistCm) return null;
-        return roundToNearest(waistCm + 7, 5);
-      }
+    function suggestWLFromMeasures(){
+      const waistCm = Number(el.waist.value || 0) || null;
+      const inseamCm = Number(el.inseam.value || 0) || null;
 
-      function estimateInseamCmFromHeight(heightCm){
-        return heightCm ? Math.round(heightCm * 0.45) : null;
-      }
+      if(!waistCm && !inseamCm) return null;
 
-      function estimateWaistCmFromHeightWeight(heightCm, weightKg){
-        if (!heightCm || !weightKg) return null;
-        const hM = heightCm / 100;
-        const bmi = weightKg / (hM*hM);
-        let waist = heightCm * 0.42 + (bmi - 22) * 1.8;
-        return Math.round(clamp(waist, 68, 125));
-      }
+      // Simple baseline mapping:
+      // W ~ waist-inches (conservative; real mapping can be replaced by brand tables)
+      let W = waistCm ? mapW(cmToIn(waistCm)) : null;
+      let L = inseamCm ? mapL(Math.round(cmToIn(inseamCm))) : null;
 
-      function confidenceScore(inputsUsed){
-        let score = 35;
-        if (inputsUsed.waist) score += 35;
-        if (inputsUsed.inseam) score += 25;
-        if (inputsUsed.height && inputsUsed.weight) score += 8;
-        return clamp(score, 20, 95);
-      }
+      // Adjust for fit + stretch + brand tendency (small offsets)
+      const fit = el.fit.value;
+      const stretch = el.stretch.value;
+      const brand = el.brand.value;
 
-      function confLabel(score){
-        if (score >= 78) return "hoch";
-        if (score >= 55) return "mittel";
-        return "niedrig";
-      }
-
-      function escapeHtml(str){
-        return String(str)
-          .replaceAll("&","&amp;")
-          .replaceAll("<","&lt;")
-          .replaceAll(">","&gt;")
-          .replaceAll('"',"&quot;")
-          .replaceAll("'","&#039;");
-      }
-
-      function compute(){
-        const heightCm = Number(el.height.value || 0) || null;
-        const weightKg = Number(el.weight.value || 0) || null;
-        const waistCmIn = Number(el.waist.value || 0) || null;
-        const inseamCmIn = Number(el.inseam.value || 0) || null;
-
-        const fit = el.fit.value;
-        const stretch = el.stretch.value;
-        const rise = el.rise.value;
-        const brand = el.brand.value;
-
-        const waistCm = waistCmIn || estimateWaistCmFromHeightWeight(heightCm, weightKg);
-        const inseamCm = inseamCmIn || estimateInseamCmFromHeight(heightCm);
-
-        const waistIn = waistCm ? waistCm / 2.54 : null;
-        const inseamIn = inseamCm ? inseamCm / 2.54 : null;
-
-        let W = waistIn ? mapW(waistIn) : 32;
-        let L = inseamIn ? mapL(Math.round(inseamIn)) : 32;
-
+      if(W !== null){
         if (fit === "slim") W -= 1;
         if (fit === "loose") W += 1;
-
         if (stretch === "high") W -= 1;
-
         if (brand === "small") W += 1;
         if (brand === "large") W -= 1;
-
         W = clamp(W, 26, 44);
-
-        const eu = euApproxFromW(W);
-        const belt = beltApproxFromWaistCm(waistCmIn || null);
-
-        const used = {
-          waist: Boolean(waistCmIn),
-          inseam: Boolean(inseamCmIn),
-          height: Boolean(heightCm),
-          weight: Boolean(weightKg)
-        };
-
-        const score = confidenceScore(used);
-        const label = confLabel(score);
-
-        const bullets = [];
-        const notes = [];
-
-        if (used.waist){
-          bullets.push(`Taille gemessen: ${waistCmIn} cm → W${W}.`);
-        } else {
-          bullets.push(`Taille nicht gemessen → Schätzung genutzt. Für maximale Präzision Taille messen.`);
-          notes.push(`Ohne gemessene Taille ist die Empfehlung konservativ. Eine Messung erhöht die Treffsicherheit deutlich.`);
-        }
-
-        if (used.inseam){
-          bullets.push(`Innenbeinlänge gemessen: ${inseamCmIn} cm → L${L}.`);
-        } else {
-          bullets.push(`Innenbeinlänge nicht gemessen → Schätzung genutzt. Für exakten Sitz Innenbeinlänge messen.`);
-          notes.push(`Innenbeinlänge beeinflusst den Sitz stark. Eine Messung erhöht die Treffsicherheit deutlich.`);
-        }
-
-        bullets.push(`Sitz: ${fit === "slim" ? "enger" : fit === "loose" ? "lockerer" : "normal"} · Stretch: ${stretch === "high" ? "viel" : stretch === "none" ? "kein" : "etwas"}.`);
-
-        if (brand !== "tts"){
-          bullets.push(`Passform-Tendenz berücksichtigt: ${brand === "small" ? "fällt eher klein aus" : "fällt eher groß aus"}.`);
-        }
-
-        const betweenHint = (stretch === "high" || fit === "slim")
-          ? `Wenn du zwischen zwei Größen liegst: eher die kleinere nehmen (wegen Stretch/enger Sitz).`
-          : `Wenn du zwischen zwei Größen liegst: eher die größere nehmen (mehr Komfort).`;
-        notes.push(betweenHint);
-
-        notes.push(`Tipp: Maße und Hinweise auf der Produktseite sind entscheidend für den Sitz.`);
-
-        const why = [
-          `Basis: ${used.waist ? "gemessene Taille" : "Taille-Schätzung"} + ${used.inseam ? "gemessene Innenbeinlänge" : "Innenbein-Schätzung"}.`,
-          `Anpassung: Sitz (${fit}) + Stretch (${stretch}) + Passform-Tendenz (${brand}).`
-        ].join(" ");
-
-        el.sizeWL.textContent = `W${W} / L${L}`;
-        const beltTxt = belt ? ` · Gürtelmaß ca. ${belt} cm` : ``;
-        el.sizeMeta.textContent = `entspricht ungefähr EU ${eu}${beltTxt}`;
-
-        el.bullets.innerHTML = bullets.map(x => `<li>${escapeHtml(x)}</li>`).join("");
-        el.note.textContent = notes.join(" ");
-
-        el.why.textContent = why;
-
-        el.confText.textContent = label;
-        el.confBar.style.width = `${score}%`;
-
-        el.result.style.display = "block";
       }
 
-      function reset(){
-        el.height.value = "";
-        el.weight.value = "";
-        el.waist.value = "";
-        el.inseam.value = "";
-        el.fit.value = "regular";
-        el.stretch.value = "some";
-        el.rise.value = "mid";
-        el.brand.value = "tts";
-        el.result.style.display = "none";
-        el.confBar.style.width = "0%";
-        el.confText.textContent = "";
+      return { W: W ?? 32, L: L ?? 32, basedOn: { waist: !!waistCm, inseam: !!inseamCm } };
+    }
+
+    function confidenceScore({ hasPose, hasRef, hasWaist, hasInseam }){
+      let score = 28;
+      if(hasPose) score += 35;
+      if(hasRef) score += 12;
+      if(hasWaist) score += 15;
+      if(hasInseam) score += 10;
+      score = clamp(score, 20, 95);
+      return score;
+    }
+    function confLabel(score){
+      if(score >= 78) return "hoch";
+      if(score >= 55) return "mittel";
+      return "niedrig";
+    }
+
+    function dist(a,b){
+      const dx = a.x - b.x, dy = a.y - b.y;
+      return Math.sqrt(dx*dx + dy*dy);
+    }
+
+    function pickRefCm(){
+      if(el.refMode.value === "a4_21") return 21.0;
+      if(el.refMode.value === "a4_297") return 29.7;
+      return null;
+    }
+
+    function computePixelsPerCm(){
+      const refCm = pickRefCm();
+      if(!refCm) return null;
+      if(refClicks.length !== 2) return null;
+      const px = dist(refClicks[0], refClicks[1]);
+      if(px < 10) return null;
+      return px / refCm;
+    }
+
+    function canvasToImageCoords(evt){
+      const rect = el.overlay.getBoundingClientRect();
+      const x = (evt.clientX - rect.left) * (el.overlay.width / rect.width);
+      const y = (evt.clientY - rect.top) * (el.overlay.height / rect.height);
+      return { x, y };
+    }
+
+    // ---------- Pose Analysis ----------
+    function drawLandmarks(lms){
+      resetOverlay();
+      drawRefClicks();
+
+      const pts = lms.map(p => ({ x: p.x * el.overlay.width, y: p.y * el.overlay.height, v: p.visibility ?? 1 }));
+
+      // Indices: MediaPipe Pose Landmarks
+      // 23 leftHip, 24 rightHip, 25 leftKnee, 26 rightKnee, 27 leftAnkle, 28 rightAnkle, 11 leftShoulder, 12 rightShoulder
+      const key = {
+        leftHip: 23, rightHip: 24,
+        leftKnee: 25, rightKnee: 26,
+        leftAnkle: 27, rightAnkle: 28,
+        leftShoulder: 11, rightShoulder: 12
+      };
+
+      const drawPoint = (i, r=6)=>{
+        const p = pts[i];
+        if(!p) return;
+        octx.beginPath();
+        octx.arc(p.x, p.y, r, 0, Math.PI*2);
+        octx.fill();
+      };
+
+      const drawLine = (a,b)=>{
+        const p=pts[a], q=pts[b];
+        if(!p || !q) return;
+        octx.beginPath();
+        octx.moveTo(p.x,p.y);
+        octx.lineTo(q.x,q.y);
+        octx.stroke();
+      };
+
+      octx.save();
+      octx.lineWidth = 4;
+      octx.strokeStyle = "rgba(255,255,255,.75)";
+      octx.fillStyle = "rgba(255,255,255,.85)";
+
+      // hip line
+      drawLine(key.leftHip, key.rightHip);
+
+      // leg lines
+      drawLine(key.leftHip, key.leftKnee);
+      drawLine(key.leftKnee, key.leftAnkle);
+
+      drawLine(key.rightHip, key.rightKnee);
+      drawLine(key.rightKnee, key.rightAnkle);
+
+      // shoulder line (stability)
+      octx.strokeStyle = "rgba(255,255,255,.45)";
+      drawLine(key.leftShoulder, key.rightShoulder);
+
+      // points
+      octx.fillStyle = "rgba(255,255,255,.92)";
+      drawPoint(key.leftHip, 7); drawPoint(key.rightHip, 7);
+      drawPoint(key.leftKnee, 6); drawPoint(key.rightKnee, 6);
+      drawPoint(key.leftAnkle, 6); drawPoint(key.rightAnkle, 6);
+
+      octx.restore();
+
+      return { pts, key };
+    }
+
+    function analyzePoseGeometry(pts, key){
+      const get = (i)=>pts[i];
+
+      const lh = get(key.leftHip), rh = get(key.rightHip);
+      const lk = get(key.leftKnee), rk = get(key.rightKnee);
+      const la = get(key.leftAnkle), ra = get(key.rightAnkle);
+      const ls = get(key.leftShoulder), rs = get(key.rightShoulder);
+
+      // Basic checks
+      const visOk = (p)=>p && (p.v ?? 1) > 0.35;
+      const ok =
+        visOk(lh)&&visOk(rh)&&visOk(lk)&&visOk(rk)&&visOk(la)&&visOk(ra)&&visOk(ls)&&visOk(rs);
+
+      // Pose stability: shoulders roughly horizontal, ankles visible
+      const shoulderTilt = ls && rs ? Math.abs(ls.y - rs.y) : 999;
+      const hipTilt = lh && rh ? Math.abs(lh.y - rh.y) : 999;
+
+      // Knee bend heuristic: if knee is far forward/back not available; use vertical ordering
+      // Straight leg: knee y should be between hip y and ankle y (usually)
+      const legLeftOk = (lh && lk && la) ? (lk.y > lh.y && la.y > lk.y) : false;
+      const legRightOk = (rh && rk && ra) ? (rk.y > rh.y && ra.y > rk.y) : false;
+
+      // Pixel-based lengths (if ref)
+      const hipWidthPx = (lh && rh) ? dist(lh,rh) : null;
+      const inseamPxL = (lh && la) ? Math.abs(la.y - lh.y) : null; // vertical proxy
+      const inseamPxR = (rh && ra) ? Math.abs(ra.y - rh.y) : null;
+
+      return {
+        ok,
+        shoulderTilt, hipTilt,
+        legLeftOk, legRightOk,
+        hipWidthPx,
+        inseamPxL, inseamPxR,
+      };
+    }
+
+    function buildCustomerOutput({ wl, target, geom, hasRef, hasWaist, hasInseam, poseOk }){
+      const bullets = [];
+
+      // 1) Size suggestion from measures
+      if(wl){
+        bullets.push(`Empfehlung aus deinen Angaben: W${wl.W} / L${wl.L}.`);
+      }else{
+        bullets.push(`Für eine konkrete Größenempfehlung sind Taille-Umfang und Innenbeinlänge hilfreich.`);
       }
 
-      async function copyResult(){
-        if (el.result.style.display === "none"){
-          alert("Bitte erst berechnen.");
-          return;
-        }
-        const txt = `${el.sizeWL.textContent} – ${el.sizeMeta.textContent}\nHinweise:\n- ${[...el.bullets.querySelectorAll("li")].map(li=>li.textContent).join("\n- ")}\n\n${el.note.textContent}`;
-        try{
-          await navigator.clipboard.writeText(txt);
-          alert("Ergebnis kopiert.");
-        }catch(e){
-          alert("Kopieren nicht möglich. Bitte manuell markieren.");
-        }
+      // 2) Target compare
+      if(target && wl){
+        const dW = wl.W - target.W;
+        const dL = wl.L - target.L;
+
+        const wTxt = dW === 0 ? "Weite passt zur Empfehlung." :
+          (dW > 0 ? `Empfehlung ist ${dW} Weite(n) größer als deine Auswahl.` : `Empfehlung ist ${Math.abs(dW)} Weite(n) kleiner als deine Auswahl.`);
+        const lTxt = dL === 0 ? "Länge passt zur Empfehlung." :
+          (dL > 0 ? `Empfehlung ist ${dL} Länge(n) länger als deine Auswahl.` : `Empfehlung ist ${Math.abs(dL)} Länge(n) kürzer als deine Auswahl.`);
+
+        bullets.push(wTxt);
+        bullets.push(lTxt);
+      }else if(target && !wl){
+        bullets.push(`Du hast eine Auswahl angegeben (${target.W}/${target.L}). Für den Abgleich fehlen noch Maße.`);
       }
 
-      function openModal(){ el.modalBackdrop.style.display = "flex"; }
-      function closeModal(){ el.modalBackdrop.style.display = "none"; }
+      // 3) Photo checks
+      if(poseOk){
+        if(geom.shoulderTilt > 18) bullets.push(`Kamera wirkt leicht schief. Gerade ausrichten erhöht die Aussagekraft.`);
+        if(geom.hipTilt > 22) bullets.push(`Hüfte wirkt nicht ganz gerade. Möglichst entspannt und gerade stehen.`);
+        if(!geom.legLeftOk || !geom.legRightOk) bullets.push(`Beine sind im Foto vermutlich leicht angewinkelt. Gerade stehen bringt ein stabileres Ergebnis.`);
+        if(hasRef){
+          bullets.push(`Referenz aktiv: Längenabschätzung ist möglich (grob).`);
+        }else{
+          bullets.push(`Ohne Referenz sind Foto-Hinweise eher ein Plausibilitätscheck.`);
+        }
+      }else{
+        bullets.push(`Das Foto ist für eine sichere Pose-Erkennung nicht ideal (Punkte nicht klar sichtbar).`);
+      }
 
-      el.calc.addEventListener("click", compute);
-      el.reset.addEventListener("click", reset);
-      el.copy.addEventListener("click", copyResult);
+      // 4) Fit tone guidance (customer perspective)
+      const fit = el.fit.value;
+      const stretch = el.stretch.value;
 
-      el.openMeasure.addEventListener("click", openModal);
-      el.closeMeasure.addEventListener("click", closeModal);
-      el.modalBackdrop.addEventListener("click", (e)=>{ if(e.target === el.modalBackdrop) closeModal(); });
+      if(fit === "slim" && stretch === "none") bullets.push(`Enger Sitz + kein Stretch fühlt sich oft straffer an. Wenn du zwischen zwei Größen liegst, kann mehr Komfort sinnvoll sein.`);
+      if(fit === "loose") bullets.push(`Lockerer Sitz: die Weite darf spürbar Spiel haben. Achte darauf, dass der Bund stabil sitzt.`);
+      if(stretch === "high") bullets.push(`Viel Stretch: die Jeans passt sich stärker an. Ein stabil sitzender Bund ist hier der wichtigste Anker.`);
+
+      const note = `Hinweis: Fotoanalyse ersetzt keine Maßangaben, sie hilft vor allem bei der Plausibilität (Pose, Perspektive, Beinverlauf).`;
+      return { bullets, note };
+    }
+
+    // ---------- Main Analyze ----------
+    async function analyze(){
+      if(!poseLandmarker || !imageBitmap) return;
+
+      drawPhoto();
+
+      // Run pose on the bitmap
+      const res = poseLandmarker.detect(imageBitmap);
+
+      if(!res || !res.landmarks || res.landmarks.length === 0){
+        showResult({
+          wl: suggestWLFromMeasures(),
+          target: parseTargetWL(el.targetWL.value),
+          poseOk: false,
+          geom: { shoulderTilt: 999, hipTilt: 999, legLeftOk:false, legRightOk:false },
+        });
+        return;
+      }
+
+      const lms = res.landmarks[0];
+      const { pts, key } = drawLandmarks(lms);
+
+      // Update reference scale if possible
+      pixelsPerCm = computePixelsPerCm();
+      setState();
+
+      const geom = analyzePoseGeometry(pts, key);
+
+      // quick pose quality
+      const poseOk =
+        geom.ok &&
+        geom.shoulderTilt < 40 &&
+        geom.hipTilt < 50;
+
+      showResult({
+        wl: suggestWLFromMeasures(),
+        target: parseTargetWL(el.targetWL.value),
+        poseOk,
+        geom,
+      });
+    }
+
+    function showResult({ wl, target, poseOk, geom }){
+      const hasRef = !!pixelsPerCm;
+      const hasWaist = !!(Number(el.waist.value || 0));
+      const hasInseam = !!(Number(el.inseam.value || 0));
+      const hasPose = !!poseLandmarker && !!imageBitmap;
+
+      const score = confidenceScore({ hasPose: poseOk, hasRef, hasWaist, hasInseam });
+      const label = confLabel(score);
+
+      // Output headline
+      let wlText = "W– / L–";
+      let meta = "Abgleich anhand deiner Angaben + Foto-Plausibilität.";
+      if(wl){
+        wlText = `W${wl.W} / L${wl.L}`;
+        const base = [];
+        if(wl.basedOn.waist) base.push("Taille");
+        if(wl.basedOn.inseam) base.push("Innenbeinlänge");
+        meta = base.length ? `Basierend auf: ${base.join(" + ")}.` : meta;
+      }
+
+      // Compose bullets/notes (customer perspective)
+      const out = buildCustomerOutput({
+        wl, target, geom,
+        hasRef, hasWaist, hasInseam,
+        poseOk
+      });
+
+      el.wlOut.textContent = wlText;
+      el.metaOut.textContent = meta;
+
+      el.confText.textContent = label;
+      el.confBar.style.width = `${score}%`;
+
+      el.bullets.innerHTML = out.bullets.map(b=>`<li>${escapeHtml(b)}</li>`).join("");
+      el.note.textContent = out.note;
+
+      el.result.style.display = "block";
+    }
+
+    function escapeHtml(str){
+      return String(str)
+        .replaceAll("&","&amp;")
+        .replaceAll("<","&lt;")
+        .replaceAll(">","&gt;")
+        .replaceAll('"',"&quot;")
+        .replaceAll("'","&#039;");
+    }
+
+    // ---------- Events ----------
+    el.file.addEventListener("change", async ()=>{
+      const f = el.file.files && el.file.files[0];
+      if(!f) return;
+
+      // Create bitmap
+      const url = URL.createObjectURL(f);
+      el.photo.src = url;
+
+      await new Promise((resolve, reject)=>{
+        el.photo.onload = ()=>resolve();
+        el.photo.onerror = ()=>reject(new Error("Image load failed"));
+      });
+
+      // Use createImageBitmap for faster processing
+      try{
+        imageBitmap = await createImageBitmap(f);
+      }catch(e){
+        // fallback via img element
+        const tmp = new Image();
+        tmp.src = url;
+        await tmp.decode();
+        // Create a bitmap from drawn image
+        const c = document.createElement("canvas");
+        c.width = tmp.naturalWidth;
+        c.height = tmp.naturalHeight;
+        c.getContext("2d").drawImage(tmp,0,0);
+        imageBitmap = await createImageBitmap(c);
+      }
+
+      refClicks = [];
+      pixelsPerCm = null;
+
+      drawPhoto();
+      el.analyze.disabled = !poseLandmarker;
+      setState();
+    });
+
+    el.analyze.addEventListener("click", analyze);
+
+    el.refMode.addEventListener("change", ()=>{
+      refClicks = [];
+      pixelsPerCm = null;
+      drawPhoto();
+      setState();
+    });
+
+    // Click two points for reference on overlay canvas (only if ref selected)
+    el.overlay.addEventListener("click", (evt)=>{
+      if(!imageBitmap) return;
+      if(el.refMode.value === "none") return;
+
+      const p = canvasToImageCoords(evt);
+
+      if(refClicks.length >= 2) refClicks = [];
+      refClicks.push(p);
+
+      pixelsPerCm = computePixelsPerCm();
+      drawPhoto();
+      setState();
+    });
+
+    // Right panel buttons (just UX)
+    el.sync.addEventListener("click", ()=>{
+      // Nothing to “sync” to the photo, but we enable analyze button if model is ready
+      el.analyze.disabled = !poseLandmarker || !imageBitmap;
+      if(imageBitmap && poseLandmarker) analyze();
+    });
+
+    el.clear.addEventListener("click", ()=>{
+      el.waist.value = "";
+      el.inseam.value = "";
+      el.fit.value = "regular";
+      el.stretch.value = "some";
+      el.brand.value = "tts";
+      el.targetWL.value = "";
+      el.result.style.display = "none";
+    });
+
+    // Boot
+    (async function(){
+      await loadPose();
+      el.analyze.disabled = !poseLandmarker || !imageBitmap;
+      setState();
     })();
   </script>
 </body>
