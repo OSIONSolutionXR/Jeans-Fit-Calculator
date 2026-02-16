@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
   <title>OSION – Fit Calculator (Jeans)</title>
   <meta name="description" content="Jeans Fit Calculator: Größenempfehlung (W/L) mit Messhilfe, Plausibilitätscheck und klaren Hinweisen zur Reduktion von Retouren/Reklamationen." />
+
   <style>
     :root{
       --bg0:#070a14;
@@ -37,35 +38,40 @@
 
     *{ box-sizing:border-box; }
     html,body{ height:100%; }
+
+    /* ===== Premium Background ===== */
     body{
       margin:0;
       font-family: var(--sans);
       color: var(--text);
       background:
-        radial-gradient(1200px 700px at 18% 8%, rgba(107,44,255,.26), transparent 55%),
-        radial-gradient(900px 600px at 82% 18%, rgba(179,0,60,.26), transparent 55%),
-        linear-gradient(180deg, var(--bg0), var(--bg1) 40%, var(--bg2));
+        radial-gradient(1400px 900px at 22% 12%, rgba(107,44,255,.22), transparent 58%),
+        radial-gradient(1100px 820px at 78% 10%, rgba(179,0,60,.22), transparent 58%),
+        radial-gradient(900px 700px at 55% 95%, rgba(255,255,255,.06), transparent 62%),
+        linear-gradient(180deg, var(--bg0), var(--bg1) 45%, var(--bg2));
       overflow-x:hidden;
     }
 
     a{ color:inherit; text-decoration:none; }
+
     .wrap{
-      max-width: 1180px;
+      max-width: 980px;
       margin: 0 auto;
       padding: 26px 18px 44px;
     }
 
+    /* ===== Premium Topbar ===== */
     .topbar{
       display:flex;
       align-items:center;
       justify-content:space-between;
       gap:14px;
       padding: 14px 14px;
-      border:1px solid var(--stroke);
+      border: 1px solid rgba(255,255,255,.14);
       border-radius: var(--radius2);
-      background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02));
-      box-shadow: var(--shadow);
-      backdrop-filter: blur(10px);
+      background: linear-gradient(180deg, rgba(255,255,255,.07), rgba(255,255,255,.025));
+      box-shadow: 0 22px 80px rgba(0,0,0,.55);
+      backdrop-filter: blur(12px);
     }
 
     .brand{
@@ -73,13 +79,13 @@
       min-width: 240px;
     }
     .logo{
-      width:52px; height:52px;
-      border-radius: 14px;
-      border:1px solid var(--stroke2);
-      background:
-        linear-gradient(135deg, rgba(179,0,60,.25), rgba(107,44,255,.25));
+      width:54px; height:54px;
+      border-radius: 16px;
+      border:1px solid rgba(255,255,255,.18);
+      background: linear-gradient(135deg, rgba(179,0,60,.25), rgba(107,44,255,.25));
       display:grid; place-items:center;
       overflow:hidden;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.08);
     }
     .logo img{
       width:100%;
@@ -90,14 +96,14 @@
     .brand h1{
       margin:0;
       font-size: 15px;
-      letter-spacing:.2px;
-      font-weight: 800;
+      letter-spacing:.25px;
+      font-weight: 900;
       line-height:1.15;
     }
     .brand .sub{
       margin-top:2px;
       font-size: 12px;
-      color: var(--muted);
+      color: rgba(234,240,255,.72);
       line-height:1.2;
     }
 
@@ -108,11 +114,12 @@
       display:flex; align-items:center; gap:8px;
       padding: 10px 12px;
       border-radius: 999px;
-      border:1px solid var(--stroke);
+      border:1px solid rgba(255,255,255,.14);
       background: rgba(255,255,255,.04);
-      color: var(--muted);
+      color: rgba(234,240,255,.78);
       font-size: 12px;
       white-space:nowrap;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.06);
     }
     .dot{
       width:10px; height:10px; border-radius:999px;
@@ -120,25 +127,23 @@
       box-shadow: 0 0 0 3px rgba(255,255,255,.06);
     }
 
+    /* ===== One-column premium layout ===== */
     .grid{
       margin-top: 18px;
       display:grid;
-      grid-template-columns: 1.05fr .95fr;
+      grid-template-columns: 1fr;
       gap: 16px;
     }
 
-    @media (max-width: 980px){
-      .grid{ grid-template-columns: 1fr; }
-      .badgeRow{ justify-content:flex-start; }
-      .brand{ min-width:auto; }
-    }
-
+    /* ===== Premium Card ===== */
     .card{
-      border:1px solid var(--stroke);
+      border: 1px solid rgba(255,255,255,.14);
       border-radius: var(--radius2);
-      background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02));
-      box-shadow: var(--shadow);
-      backdrop-filter: blur(10px);
+      background:
+        radial-gradient(900px 260px at 10% 0%, rgba(255,255,255,.07), transparent 55%),
+        linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02));
+      box-shadow: 0 28px 110px rgba(0,0,0,.55);
+      backdrop-filter: blur(12px);
       overflow:hidden;
     }
     .cardHead{
@@ -150,14 +155,14 @@
     }
     .cardTitle{
       margin:0;
-      font-size: 16px;
-      font-weight: 850;
-      letter-spacing:.2px;
+      font-size: 17px;
+      font-weight: 950;
+      letter-spacing:.3px;
     }
     .cardHint{
       margin: 6px 0 0;
       font-size: 13px;
-      color: var(--muted);
+      color: rgba(234,240,255,.72);
       line-height:1.35;
     }
     .cardBody{
@@ -172,37 +177,51 @@
     }
     @media (max-width: 560px){
       .row{ grid-template-columns: 1fr; }
+      .badgeRow{ justify-content:flex-start; }
+      .brand{ min-width:auto; }
     }
 
     label{
       display:block;
       font-size: 12px;
-      color: var(--muted);
+      color: rgba(234,240,255,.72);
       margin: 0 0 6px;
     }
     .field{
       position:relative;
     }
+
+    /* ===== Premium Inputs ===== */
     input, select{
       width:100%;
       padding: 12px 12px;
       border-radius: 14px;
-      border:1px solid var(--stroke);
-      background: rgba(10,12,28,.55);
+      border: 1px solid rgba(255,255,255,.14);
+      background:
+        linear-gradient(180deg, rgba(10,12,28,.72), rgba(10,12,28,.46));
       color: var(--text);
       outline:none;
-      transition: border-color .15s ease, transform .15s ease;
+      transition: border-color .15s ease, transform .15s ease, box-shadow .15s ease;
+      box-shadow:
+        inset 0 1px 0 rgba(255,255,255,.06),
+        0 10px 30px rgba(0,0,0,.35);
     }
+    input::placeholder{ color: rgba(185,194,232,.55); }
     input:focus, select:focus{
       border-color: rgba(255,255,255,.28);
       transform: translateY(-1px);
+      box-shadow:
+        inset 0 1px 0 rgba(255,255,255,.07),
+        0 0 0 4px rgba(107,44,255,.14),
+        0 10px 34px rgba(0,0,0,.4);
     }
+
     .suffix{
       position:absolute;
       right: 10px;
       top: 34px;
       font-size: 12px;
-      color: var(--muted);
+      color: rgba(234,240,255,.65);
       pointer-events:none;
     }
 
@@ -212,33 +231,46 @@
       flex-wrap:wrap;
       margin-top: 8px;
     }
+
+    /* ===== Premium Buttons ===== */
     .btn{
-      border: 1px solid var(--stroke);
-      background: rgba(255,255,255,.05);
+      border: 1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.045);
       color: var(--text);
       padding: 11px 12px;
       border-radius: 14px;
       cursor:pointer;
-      font-weight: 800;
+      font-weight: 900;
       letter-spacing:.2px;
       transition: transform .15s ease, border-color .15s ease, background .15s ease;
+      box-shadow: 0 14px 40px rgba(0,0,0,.35);
     }
     .btn:hover{ transform: translateY(-1px); border-color: rgba(255,255,255,.25); }
     .btn.primary{
       border-color: rgba(255,255,255,.18);
-      background: linear-gradient(135deg, rgba(179,0,60,.22), rgba(107,44,255,.22));
+      background: linear-gradient(135deg, rgba(179,0,60,.34), rgba(107,44,255,.34));
+    }
+    .btn.primary:hover{
+      background: linear-gradient(135deg, rgba(179,0,60,.42), rgba(107,44,255,.42));
     }
     .btn.ghost{
       background: transparent;
+      box-shadow: none;
     }
 
+    /* ===== Premium Result Card ===== */
     .result{
       margin-top: 12px;
       padding: 14px;
       border-radius: var(--radius2);
-      border: 1px solid var(--stroke);
-      background: rgba(255,255,255,.04);
+      border: 1px solid rgba(255,255,255,.16);
+      background:
+        radial-gradient(820px 240px at 0% 0%, rgba(179,0,60,.14), transparent 55%),
+        radial-gradient(820px 240px at 100% 0%, rgba(107,44,255,.14), transparent 55%),
+        linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02));
+      box-shadow: 0 26px 90px rgba(0,0,0,.55);
     }
+
     .resultTop{
       display:flex;
       align-items:flex-start;
@@ -246,6 +278,7 @@
       gap: 12px;
       flex-wrap:wrap;
     }
+
     .sizeBig{
       display:flex;
       gap: 10px;
@@ -253,14 +286,20 @@
       flex-wrap:wrap;
     }
     .sizeBig .w{
-      font-size: 30px;
+      font-size: 28px;
       font-weight: 950;
       letter-spacing:.6px;
+      display:inline-block;
+      padding: 10px 14px;
+      border-radius: 16px;
+      border: 1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.04);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.06);
     }
     .sizeBig .meta{
       font-size: 13px;
-      color: var(--muted);
-      margin-top: 2px;
+      color: rgba(234,240,255,.72);
+      margin-top: 8px;
     }
 
     .confidence{
@@ -270,7 +309,7 @@
     }
     .confLabel{
       font-size: 12px;
-      color: var(--muted);
+      color: rgba(234,240,255,.72);
       margin-bottom: 6px;
       display:flex;
       justify-content:space-between;
@@ -279,8 +318,8 @@
     .bar{
       height: 10px;
       border-radius: 999px;
-      border:1px solid var(--stroke);
-      background: rgba(0,0,0,.20);
+      border: 1px solid rgba(255,255,255,.14);
+      background: rgba(0,0,0,.22);
       overflow:hidden;
     }
     .bar > i{
@@ -295,17 +334,18 @@
     .bullets{
       margin: 10px 0 0;
       padding: 0 0 0 16px;
-      color: var(--muted);
+      color: rgba(234,240,255,.72);
       line-height:1.45;
       font-size: 13px;
     }
+
     .note{
       margin-top: 10px;
       padding: 10px 12px;
       border-radius: 14px;
       border: 1px dashed rgba(255,255,255,.22);
       background: rgba(255,255,255,.03);
-      color: var(--muted);
+      color: rgba(234,240,255,.72);
       font-size: 12px;
       line-height:1.45;
     }
@@ -321,31 +361,31 @@
     }
 
     .tile{
-      border:1px solid var(--stroke);
+      border: 1px solid rgba(255,255,255,.12);
       border-radius: var(--radius2);
-      background: rgba(255,255,255,.03);
+      background: rgba(255,255,255,.028);
       padding: 12px;
     }
     .tile h3{
       margin:0;
       font-size: 13px;
-      letter-spacing:.2px;
-      font-weight: 900;
+      letter-spacing:.25px;
+      font-weight: 950;
     }
     .tile p{
       margin: 6px 0 0;
       font-size: 12px;
-      color: var(--muted);
+      color: rgba(234,240,255,.72);
       line-height:1.45;
     }
 
     .divider{
       height:1px;
-      background: rgba(255,255,255,.10);
+      background: rgba(255,255,255,.08);
       margin: 14px 0;
     }
 
-    /* Modal */
+    /* ===== Modal ===== */
     .modalBackdrop{
       position:fixed;
       inset:0;
@@ -375,7 +415,7 @@
     .modalHead b{ font-size: 14px; letter-spacing:.2px; }
     .modalBody{
       padding: 14px 16px 16px;
-      color: var(--muted);
+      color: rgba(234,240,255,.72);
       line-height:1.5;
       font-size: 13px;
     }
@@ -386,7 +426,7 @@
       border-radius: 12px;
       padding: 10px 12px;
       cursor:pointer;
-      font-weight: 900;
+      font-weight: 950;
     }
 
     .svgWrap{
@@ -396,6 +436,7 @@
       background: rgba(255,255,255,.03);
       padding: 12px;
     }
+
     .foot{
       margin-top: 12px;
       font-size: 12px;
@@ -410,8 +451,9 @@
     <div class="topbar">
       <div class="brand">
         <div class="logo" aria-hidden="true">
-          <!-- Lege dein Logo in den Repo-Ordner und passe den Dateinamen an -->
-          <img src="MGU-0015 Logo OSION Solution XR.png" alt="OSION Logo" onerror="this.style.display='none'; this.parentElement.textContent='OSION'; this.parentElement.style.fontWeight='900'; this.parentElement.style.fontSize='14px';" />
+          <!-- Logo-Datei ins Repo legen (Root). Dateiname ggf. anpassen -->
+          <img src="MGU-0015 Logo OSION Solution XR.png" alt="OSION Logo"
+               onerror="this.style.display='none'; this.parentElement.textContent='OSION'; this.parentElement.style.fontWeight='950'; this.parentElement.style.fontSize='14px';" />
         </div>
         <div>
           <h1>OSION Fit Calculator – Jeans</h1>
@@ -422,12 +464,10 @@
       <div class="badgeRow">
         <div class="pill"><span class="dot"></span> Fokus: weniger Retouren & Reklamationen</div>
         <div class="pill">Output: W/L + Hinweise + Sicherheitsgrad</div>
-        <div class="pill">GitHub Pages ready</div>
       </div>
     </div>
 
     <div class="grid">
-      <!-- INPUT -->
       <section class="card" aria-label="Eingaben">
         <div class="cardHead">
           <div>
@@ -549,65 +589,16 @@
           <div class="divider"></div>
 
           <div class="tile">
-            <h3>Messdaten erfassen (optional, aber stark gegen Retouren)</h3>
+            <h3Messdaten erfassen (optional, aber stark gegen Retouren)</h3>
             <p>
               Empfehlung wird maximal präzise mit: <b>Taille-Umfang</b> und <b>Innenbeinlänge</b>.
               Ohne Messwerte nutzt der Calculator eine Schätzung – das ist solide, aber weniger exakt.
             </p>
           </div>
+
+          <div class="foot">OSION · Fit Calculator · Jeans</div>
         </div>
       </section>
-
-      <!-- OUTPUT / INFO -->
-      <aside class="card" aria-label="Hinweise und Premium-Logik">
-        <div class="cardHead">
-          <div>
-            <h2 class="cardTitle">Ultra-Premium Logik</h2>
-            <p class="cardHint">Nicht „möglichst viele Klicks“, sondern <b>Filter für passende Käufer</b>. So sinken Retouren und Reklamationen.</p>
-          </div>
-        </div>
-
-        <div class="cardBody">
-          <div class="tile">
-            <h3>Was dieser Calculator absichtlich macht</h3>
-            <p>
-              Der Calculator gibt nicht nur eine Größe aus, sondern auch:
-              <b>Begründung</b>, <b>Hinweise</b> und einen <b>Sicherheitsgrad</b>.
-              Das reduziert Fehlkäufe, weil Erwartung und Realität näher zusammenkommen.
-            </p>
-          </div>
-
-          <div class="miniGrid">
-            <div class="tile">
-              <h3>Event-Tracking (optional)</h3>
-              <p>
-                Im Code ist ein Tracking-Hook vorbereitet (<span style="font-family:var(--mono)">window.dataLayer</span>).
-                Damit kann BestSales später messen: Nutzung → Kauf → Retourenquote.
-              </p>
-            </div>
-            <div class="tile">
-              <h3>Shop-Integration (optional)</h3>
-              <p>
-                Als Widget in eine Produktseite einbaubar oder als eigenständige Landing.
-                Empfehlungstext kann direkt in den Warenkorb übernommen werden.
-              </p>
-            </div>
-          </div>
-
-          <div class="divider"></div>
-
-          <div class="tile">
-            <h3>Hinweis für BestSales (strategisch wichtig)</h3>
-            <p>
-              Die beste Wirkung entsteht, wenn die Retourengründe sauber kategorisiert werden
-              (zu klein, zu groß, Passform, Material, Farbe).
-              Dann kann der Calculator pro Produktlinie „lernen“ (Regeln/Offsets).
-            </p>
-          </div>
-
-          <div class="foot">OSION · Fit Calculator · Jeans · Premium MVP</div>
-        </div>
-      </aside>
     </div>
   </div>
 
@@ -634,23 +625,18 @@
                 <stop offset="1" stop-color="#6b2cff" stop-opacity=".9"/>
               </linearGradient>
             </defs>
-            <!-- Person (schematisch) -->
             <circle cx="110" cy="55" r="26" fill="rgba(255,255,255,.08)" stroke="rgba(255,255,255,.18)"/>
             <rect x="86" y="82" width="48" height="96" rx="18" fill="rgba(255,255,255,.06)" stroke="rgba(255,255,255,.18)"/>
             <rect x="72" y="118" width="20" height="74" rx="10" fill="rgba(255,255,255,.06)" stroke="rgba(255,255,255,.18)"/>
             <rect x="128" y="118" width="20" height="74" rx="10" fill="rgba(255,255,255,.06)" stroke="rgba(255,255,255,.18)"/>
-            <!-- Waist line -->
             <line x1="68" y1="120" x2="152" y2="120" stroke="url(#g)" stroke-width="6" stroke-linecap="round"/>
             <text x="175" y="126" fill="rgba(255,255,255,.75)" font-size="14">Taille-Umfang</text>
 
-            <!-- Jeans icon -->
             <path d="M400 42 h80 l12 150 h-34 l-10-95 h-16 l-10 95 h-34z"
                   fill="rgba(255,255,255,.06)" stroke="rgba(255,255,255,.18)" stroke-width="2"/>
-            <!-- Inseam line -->
             <line x1="440" y1="100" x2="440" y2="190" stroke="url(#g)" stroke-width="6" stroke-linecap="round"/>
             <text x="470" y="150" fill="rgba(255,255,255,.75)" font-size="14">Innenbeinlänge</text>
 
-            <!-- Tip box -->
             <rect x="560" y="54" width="240" height="130" rx="18" fill="rgba(255,255,255,.04)" stroke="rgba(255,255,255,.14)"/>
             <text x="578" y="84" fill="rgba(255,255,255,.8)" font-size="13">Tipp:</text>
             <text x="578" y="108" fill="rgba(255,255,255,.72)" font-size="12">Lieblingsjeans flach hinlegen,</text>
@@ -662,312 +648,270 @@
     </div>
   </div>
 
-<script>
-/**
- * OSION Fit Calculator – Jeans (Premium MVP)
- * - Empfehlung: W/L
- * - Confidence / Plausibility
- * - Messhilfe Modal
- * - Tracking hook (dataLayer)
- */
+  <script>
+    (function(){
+      const $ = (id) => document.getElementById(id);
 
-(function(){
-  const $ = (id) => document.getElementById(id);
+      const el = {
+        height: $("height"),
+        weight: $("weight"),
+        waist: $("waist"),
+        inseam: $("inseam"),
+        fit: $("fit"),
+        stretch: $("stretch"),
+        rise: $("rise"),
+        brand: $("brand"),
 
-  const el = {
-    height: $("height"),
-    weight: $("weight"),
-    waist: $("waist"),
-    inseam: $("inseam"),
-    fit: $("fit"),
-    stretch: $("stretch"),
-    rise: $("rise"),
-    brand: $("brand"),
+        calc: $("calc"),
+        reset: $("reset"),
+        copy: $("copy"),
 
-    calc: $("calc"),
-    reset: $("reset"),
-    copy: $("copy"),
+        result: $("result"),
+        sizeWL: $("sizeWL"),
+        sizeMeta: $("sizeMeta"),
+        bullets: $("bullets"),
+        note: $("note"),
+        why: $("why"),
+        how: $("how"),
 
-    result: $("result"),
-    sizeWL: $("sizeWL"),
-    sizeMeta: $("sizeMeta"),
-    bullets: $("bullets"),
-    note: $("note"),
-    why: $("why"),
-    how: $("how"),
+        confBar: $("confBar"),
+        confText: $("confText"),
 
-    confBar: $("confBar"),
-    confText: $("confText"),
+        openMeasure: $("openMeasure"),
+        closeMeasure: $("closeMeasure"),
+        modalBackdrop: $("modalBackdrop")
+      };
 
-    openMeasure: $("openMeasure"),
-    closeMeasure: $("closeMeasure"),
-    modalBackdrop: $("modalBackdrop")
-  };
+      const clamp = (n, a, b) => Math.max(a, Math.min(b, n));
 
-  const clamp = (n, a, b) => Math.max(a, Math.min(b, n));
+      function roundToNearest(n, step){
+        return Math.round(n/step)*step;
+      }
 
-  function roundToNearest(n, step){
-    return Math.round(n/step)*step;
-  }
+      function mapL(inches){
+        const options = [28,30,32,34,36];
+        let best = options[0], bestD = Infinity;
+        for (const o of options){
+          const d = Math.abs(o - inches);
+          if (d < bestD){ bestD = d; best = o; }
+        }
+        return best;
+      }
 
-  // Map inseam inches to common L
-  function mapL(inches){
-    const options = [28,30,32,34,36];
-    let best = options[0], bestD = Infinity;
-    for (const o of options){
-      const d = Math.abs(o - inches);
-      if (d < bestD){ bestD = d; best = o; }
-    }
-    return best;
-  }
+      function mapW(inches){
+        const w = clamp(Math.round(inches), 26, 44);
+        return w;
+      }
 
-  // Map waist inches to common W
-  function mapW(inches){
-    // Common W: 26–44
-    const w = clamp(Math.round(inches), 26, 44);
-    return w;
-  }
+      function euApproxFromW(w){
+        const base = 44 + (w - 28);
+        return Math.round(base/2)*2;
+      }
 
-  function euApproxFromW(w){
-    // Rough mapping (varies by brand; used only as approx hint)
-    // W28≈EU44, W30≈EU46, W32≈EU48, W34≈EU50, W36≈EU52, W38≈EU54
-    const base = 44 + (w - 28);
-    // Smooth to even sizes
-    return Math.round(base/2)*2;
-  }
+      function beltApproxFromWaistCm(waistCm){
+        if (!waistCm) return null;
+        return roundToNearest(waistCm + 7, 5);
+      }
 
-  function beltApproxFromWaistCm(waistCm){
-    // Belt size often close to waist cm rounded to 5
-    if (!waistCm) return null;
-    return roundToNearest(waistCm + 7, 5); // small allowance over body measurement
-  }
+      function estimateInseamCmFromHeight(heightCm){
+        return heightCm ? Math.round(heightCm * 0.45) : null;
+      }
 
-  function estimateInseamCmFromHeight(heightCm){
-    // Simple heuristic: inseam ~ 45% of height (varies by body)
-    return heightCm ? Math.round(heightCm * 0.45) : null;
-  }
+      function estimateWaistCmFromHeightWeight(heightCm, weightKg){
+        if (!heightCm || !weightKg) return null;
+        const hM = heightCm / 100;
+        const bmi = weightKg / (hM*hM);
 
-  function estimateWaistCmFromHeightWeight(heightCm, weightKg){
-    // Conservative heuristic based on BMI-ish:
-    // Not medical, just a fallback if no waist measurement exists.
-    if (!heightCm || !weightKg) return null;
-    const hM = heightCm / 100;
-    const bmi = weightKg / (hM*hM);
+        let waist = heightCm * 0.42 + (bmi - 22) * 1.8;
+        waist = clamp(waist, 68, 125);
+        return Math.round(waist);
+      }
 
-    // Translate BMI into waist range (broad & safe)
-    // Baseline waist for BMI 22: ~ (height*0.42)
-    let waist = heightCm * 0.42 + (bmi - 22) * 1.8;
-    waist = clamp(waist, 68, 125);
-    return Math.round(waist);
-  }
+      function confidenceScore(inputsUsed){
+        let score = 35;
+        if (inputsUsed.waist) score += 35;
+        if (inputsUsed.inseam) score += 25;
+        if (inputsUsed.height && inputsUsed.weight) score += 8;
+        score = clamp(score, 20, 95);
+        return score;
+      }
 
-  function confidenceScore(inputsUsed){
-    // 0..100
-    // waist + inseam = high, one of them = mid, none = low
-    let score = 35;
-    if (inputsUsed.waist) score += 35;
-    if (inputsUsed.inseam) score += 25;
-    if (inputsUsed.height && inputsUsed.weight) score += 8;
-    score = clamp(score, 20, 95);
-    return score;
-  }
+      function confLabel(score){
+        if (score >= 78) return "hoch";
+        if (score >= 55) return "mittel";
+        return "niedrig";
+      }
 
-  function confLabel(score){
-    if (score >= 78) return "hoch";
-    if (score >= 55) return "mittel";
-    return "niedrig";
-  }
+      function escapeHtml(str){
+        return String(str)
+          .replaceAll("&","&amp;")
+          .replaceAll("<","&lt;")
+          .replaceAll(">","&gt;")
+          .replaceAll('"',"&quot;")
+          .replaceAll("'","&#039;");
+      }
 
-  function platformTracking(eventName, payload){
-    try{
-      window.dataLayer = window.dataLayer || [];
-      window.dataLayer.push({ event: eventName, ...payload });
-    }catch(e){}
-  }
+      function platformTracking(eventName, payload){
+        try{
+          window.dataLayer = window.dataLayer || [];
+          window.dataLayer.push({ event: eventName, ...payload });
+        }catch(e){}
+      }
 
-  function compute(){
-    const heightCm = Number(el.height.value || 0) || null;
-    const weightKg = Number(el.weight.value || 0) || null;
-    const waistCmIn = Number(el.waist.value || 0) || null;
-    const inseamCmIn = Number(el.inseam.value || 0) || null;
+      function compute(){
+        const heightCm = Number(el.height.value || 0) || null;
+        const weightKg = Number(el.weight.value || 0) || null;
+        const waistCmIn = Number(el.waist.value || 0) || null;
+        const inseamCmIn = Number(el.inseam.value || 0) || null;
 
-    const fit = el.fit.value;       // slim, regular, loose
-    const stretch = el.stretch.value; // none, some, high
-    const rise = el.rise.value;     // low, mid, high
-    const brand = el.brand.value;   // tts, small, large
+        const fit = el.fit.value;
+        const stretch = el.stretch.value;
+        const rise = el.rise.value;
+        const brand = el.brand.value;
 
-    // Derived values (fallbacks)
-    const waistCm = waistCmIn || estimateWaistCmFromHeightWeight(heightCm, weightKg);
-    const inseamCm = inseamCmIn || estimateInseamCmFromHeight(heightCm);
+        const waistCm = waistCmIn || estimateWaistCmFromHeightWeight(heightCm, weightKg);
+        const inseamCm = inseamCmIn || estimateInseamCmFromHeight(heightCm);
 
-    // Convert to inches
-    const waistIn = waistCm ? waistCm / 2.54 : null;
-    const inseamIn = inseamCm ? inseamCm / 2.54 : null;
+        const waistIn = waistCm ? waistCm / 2.54 : null;
+        const inseamIn = inseamCm ? inseamCm / 2.54 : null;
 
-    // Base W/L
-    let W = waistIn ? mapW(waistIn) : 32;
-    let L = inseamIn ? mapL(Math.round(inseamIn)) : 32;
+        let W = waistIn ? mapW(waistIn) : 32;
+        let L = inseamIn ? mapL(Math.round(inseamIn)) : 32;
 
-    // Adjustments: fit preference
-    if (fit === "slim") W -= 1;
-    if (fit === "loose") W += 1;
+        if (fit === "slim") W -= 1;
+        if (fit === "loose") W += 1;
 
-    // Stretch adjustment: more stretch can allow one step smaller
-    if (stretch === "high") W -= 1;
-    if (stretch === "none") W += 0; // keep
+        if (stretch === "high") W -= 1;
 
-    // Rise affects perceived tightness at waist/hip
-    if (rise === "low") W += 0;   // low rise often sits lower; avoid aggressive downsizing
-    if (rise === "high") W -= 0;  // keep neutral
+        if (brand === "small") W += 1;
+        if (brand === "large") W -= 1;
 
-    // Brand tendency
-    if (brand === "small") W += 1;
-    if (brand === "large") W -= 1;
+        W = clamp(W, 26, 44);
 
-    W = clamp(W, 26, 44);
+        const eu = euApproxFromW(W);
+        const belt = beltApproxFromWaistCm(waistCmIn || null);
 
-    // Meta
-    const eu = euApproxFromW(W);
-    const belt = beltApproxFromWaistCm(waistCmIn || null);
+        const used = {
+          waist: Boolean(waistCmIn),
+          inseam: Boolean(inseamCmIn),
+          height: Boolean(heightCm),
+          weight: Boolean(weightKg)
+        };
 
-    // Confidence and notes
-    const used = {
-      waist: Boolean(waistCmIn),
-      inseam: Boolean(inseamCmIn),
-      height: Boolean(heightCm),
-      weight: Boolean(weightKg)
-    };
+        const score = confidenceScore(used);
+        const label = confLabel(score);
 
-    const score = confidenceScore(used);
-    const label = confLabel(score);
+        const bullets = [];
+        const notes = [];
 
-    const bullets = [];
-    const notes = [];
+        if (used.waist){
+          bullets.push(`Taille gemessen: ${waistCmIn} cm → W${W}.`);
+        } else {
+          bullets.push(`Taille nicht gemessen → Schätzung genutzt. Für maximale Treffsicherheit Taille messen.`);
+          notes.push(`Ohne gemessene Taille ist die Empfehlung konservativ. Messung bringt deutlich höhere Sicherheit.`);
+        }
 
-    if (used.waist){
-      bullets.push(`Taille gemessen: ${waistCmIn} cm → W${W}.`);
-    } else if (waistCm){
-      bullets.push(`Taille nicht gemessen → Schätzung genutzt. Für maximale Treffsicherheit Taille messen.`);
-      notes.push(`Ohne gemessene Taille ist die Empfehlung konservativ. Messung bringt deutlich höhere Sicherheit.`);
-    }
+        if (used.inseam){
+          bullets.push(`Innenbeinlänge gemessen: ${inseamCmIn} cm → L${L}.`);
+        } else {
+          bullets.push(`Innenbeinlänge nicht gemessen → Schätzung genutzt. Für exakten Sitz Innenbeinlänge messen.`);
+          notes.push(`Innenbeinlänge beeinflusst den Sitz stark. Messung bringt deutlich höhere Sicherheit.`);
+        }
 
-    if (used.inseam){
-      bullets.push(`Innenbeinlänge gemessen: ${inseamCmIn} cm → L${L}.`);
-    } else if (inseamCm){
-      bullets.push(`Innenbeinlänge nicht gemessen → Schätzung genutzt. Für exakten Sitz Innenbeinlänge messen.`);
-      notes.push(`Innenbeinlänge beeinflusst den Sitz stark. Messung bringt deutlich höhere Sicherheit.`);
-    }
+        bullets.push(`Sitz: ${fit === "slim" ? "enger" : fit === "loose" ? "lockerer" : "normal"} · Stretch: ${stretch === "high" ? "viel" : stretch === "none" ? "kein" : "etwas"}.`);
 
-    bullets.push(`Sitz: ${fit === "slim" ? "enger" : fit === "loose" ? "lockerer" : "normal"} · Stretch: ${stretch === "high" ? "viel" : stretch === "none" ? "kein" : "etwas"}.`);
+        if (brand !== "tts"){
+          bullets.push(`Passform-Tendenz berücksichtigt: ${brand === "small" ? "fällt klein aus" : "fällt groß aus"}.`);
+        }
 
-    if (brand !== "tts"){
-      bullets.push(`Passform-Tendenz berücksichtigt: ${brand === "small" ? "fällt klein aus" : "fällt groß aus"}.`);
-    }
+        const betweenHint = (stretch === "high" || fit === "slim")
+          ? `Wenn du zwischen zwei Größen liegst: eher die kleinere nehmen (wegen Stretch/enger Sitz).`
+          : `Wenn du zwischen zwei Größen liegst: eher die größere nehmen (mehr Komfort).`;
+        notes.push(betweenHint);
 
-    // Edge guidance: between sizes
-    const betweenHint = (stretch === "high" || fit === "slim")
-      ? `Wenn du zwischen zwei Größen liegst: eher die kleinere nehmen (wegen Stretch/enger Sitz).`
-      : `Wenn du zwischen zwei Größen liegst: eher die größere nehmen (mehr Komfort).`;
-    notes.push(betweenHint);
+        notes.push(`Hinweis: Maßangaben und Sitz-Hinweise auf der Produktseite sind entscheidend.`);
 
-    // Safe statement to reduce complaints: expectation
-    notes.push(`Hinweis: Produktbilder können täuschen. Maßangaben und Sitz-Hinweise auf der Produktseite sind entscheidend.`);
+        const why = [
+          `Basis: ${used.waist ? "gemessene Taille" : "Taille-Schätzung"} + ${used.inseam ? "gemessene Innenbeinlänge" : "Innenbein-Schätzung"}.`,
+          `Anpassung: Sitz (${fit}) + Stretch (${stretch}) + Passform-Tendenz (${brand}).`
+        ].join(" ");
 
-    // Explain "why"
-    const why = [
-      `Basis: ${used.waist ? "gemessene Taille" : "Taille-Schätzung"} + ${used.inseam ? "gemessene Innenbeinlänge" : "Innenbein-Schätzung"}.`,
-      `Anpassung: Sitz (${fit}) + Stretch (${stretch}) + Passform-Tendenz (${brand}).`
-    ].join(" ");
+        const how = `Bestes Ergebnis: Taille + Innenbeinlänge messen (oder Lieblingsjeans messen). Das reduziert Fehlkäufe und damit Retouren/Reklamationen.`;
 
-    // How
-    const how = `Bestes Ergebnis: Taille + Innenbeinlänge messen (oder Lieblingsjeans messen). Das reduziert Fehlkäufe und damit Retouren/Reklamationen.`;
+        el.sizeWL.textContent = `W${W} / L${L}`;
+        const beltTxt = belt ? ` · Gürtelmaß ca. ${belt} cm` : ``;
+        el.sizeMeta.textContent = `entspricht ungefähr EU ${eu}${beltTxt}`;
 
-    // UI update
-    el.sizeWL.textContent = `W${W} / L${L}`;
-    const beltTxt = belt ? ` · Gürtelmaß ca. ${belt} cm` : ``;
-    el.sizeMeta.textContent = `entspricht ungefähr EU ${eu}${beltTxt}`;
+        el.bullets.innerHTML = bullets.map(x => `<li>${escapeHtml(x)}</li>`).join("");
+        el.note.textContent = notes.join(" ");
 
-    el.bullets.innerHTML = bullets.map(x => `<li>${escapeHtml(x)}</li>`).join("");
-    el.note.textContent = notes.join(" ");
+        el.why.textContent = why;
+        el.how.textContent = how;
 
-    el.why.textContent = why;
-    el.how.textContent = how;
+        el.confText.textContent = label;
+        el.confBar.style.width = `${score}%`;
 
-    el.confText.textContent = label;
-    el.confBar.style.width = `${score}%`;
+        el.result.style.display = "block";
 
-    el.result.style.display = "block";
+        platformTracking("oson_fit_calc_result", {
+          category: "jeans",
+          W, L,
+          confidence: score,
+          usedWaist: used.waist,
+          usedInseam: used.inseam,
+          fit, stretch, rise, brand
+        });
 
-    // tracking hook
-    platformTracking("oson_fit_calc_result", {
-      category: "jeans",
-      W, L,
-      confidence: score,
-      usedWaist: used.waist,
-      usedInseam: used.inseam,
-      fit, stretch, rise, brand
-    });
+        return { W, L, eu, belt, score, label, bullets, notes };
+      }
 
-    return { W, L, eu, belt, score, label, bullets, notes };
-  }
+      function reset(){
+        el.height.value = "";
+        el.weight.value = "";
+        el.waist.value = "";
+        el.inseam.value = "";
+        el.fit.value = "regular";
+        el.stretch.value = "some";
+        el.rise.value = "mid";
+        el.brand.value = "tts";
+        el.result.style.display = "none";
+        el.confBar.style.width = "0%";
+        el.confText.textContent = "";
+        platformTracking("oson_fit_calc_reset", { category: "jeans" });
+      }
 
-  function escapeHtml(str){
-    return String(str)
-      .replaceAll("&","&amp;")
-      .replaceAll("<","&lt;")
-      .replaceAll(">","&gt;")
-      .replaceAll('"',"&quot;")
-      .replaceAll("'","&#039;");
-  }
+      async function copyResult(){
+        if (el.result.style.display === "none"){
+          alert("Bitte erst berechnen.");
+          return;
+        }
+        const txt = `${el.sizeWL.textContent} – ${el.sizeMeta.textContent}\nHinweise:\n- ${[...el.bullets.querySelectorAll("li")].map(li=>li.textContent).join("\n- ")}\n\n${el.note.textContent}`;
+        try{
+          await navigator.clipboard.writeText(txt);
+          platformTracking("oson_fit_calc_copy", { category: "jeans" });
+          alert("Ergebnis kopiert.");
+        }catch(e){
+          alert("Kopieren nicht möglich. Bitte manuell markieren.");
+        }
+      }
 
-  function reset(){
-    el.height.value = "";
-    el.weight.value = "";
-    el.waist.value = "";
-    el.inseam.value = "";
-    el.fit.value = "regular";
-    el.stretch.value = "some";
-    el.rise.value = "mid";
-    el.brand.value = "tts";
-    el.result.style.display = "none";
-    el.confBar.style.width = "0%";
-    el.confText.textContent = "";
-    platformTracking("oson_fit_calc_reset", { category: "jeans" });
-  }
+      function openModal(){
+        el.modalBackdrop.style.display = "flex";
+      }
+      function closeModal(){
+        el.modalBackdrop.style.display = "none";
+      }
 
-  async function copyResult(){
-    if (el.result.style.display === "none"){
-      alert("Bitte erst berechnen.");
-      return;
-    }
-    const txt = `${el.sizeWL.textContent} – ${el.sizeMeta.textContent}\nHinweise:\n- ${[...el.bullets.querySelectorAll("li")].map(li=>li.textContent).join("\n- ")}\n\n${el.note.textContent}`;
-    try{
-      await navigator.clipboard.writeText(txt);
-      platformTracking("oson_fit_calc_copy", { category: "jeans" });
-      alert("Ergebnis kopiert.");
-    }catch(e){
-      alert("Kopieren nicht möglich. Bitte manuell markieren.");
-    }
-  }
+      el.calc.addEventListener("click", compute);
+      el.reset.addEventListener("click", reset);
+      el.copy.addEventListener("click", copyResult);
 
-  function openModal(){
-    el.modalBackdrop.style.display = "flex";
-  }
-  function closeModal(){
-    el.modalBackdrop.style.display = "none";
-  }
+      el.openMeasure.addEventListener("click", openModal);
+      el.closeMeasure.addEventListener("click", closeModal);
+      el.modalBackdrop.addEventListener("click", (e)=>{ if(e.target === el.modalBackdrop) closeModal(); });
 
-  el.calc.addEventListener("click", compute);
-  el.reset.addEventListener("click", reset);
-  el.copy.addEventListener("click", copyResult);
-
-  el.openMeasure.addEventListener("click", openModal);
-  el.closeMeasure.addEventListener("click", closeModal);
-  el.modalBackdrop.addEventListener("click", (e)=>{ if(e.target === el.modalBackdrop) closeModal(); });
-
-  // Initial tracking
-  platformTracking("oson_fit_calc_view", { category: "jeans" });
-})();
-</script>
+      platformTracking("oson_fit_calc_view", { category: "jeans" });
+    })();
+  </script>
 </body>
 </html>
