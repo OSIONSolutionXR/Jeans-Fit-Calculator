@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
-  <title>OSION – Fit Check (Jeans) · Fotoanalyse</title>
-  <meta name="description" content="Jeans Fit Check: Fotoanalyse mit Körper-Pose-Erkennung, Plausibilitätscheck, Hinweise zum Sitz und Größenabgleich (W/L)." />
+  <title>OSION – Jeans Scan & Vorschau</title>
+  <meta name="description" content="Jeans Scan & Vorschau: Größenwahrscheinlichkeit (W/L) plus visuelle Vorschau mit Overlay. Foto bleibt im Browser." />
 
   <style>
     :root{
@@ -13,6 +13,7 @@
       --bg2:#171a3a;
 
       --text:#eaf0ff;
+      --muted: rgba(234,240,255,.72);
 
       --bad:#ff6b6b;
       --gold:#ffd36a;
@@ -43,18 +44,11 @@
       overflow-x:hidden;
     }
 
-    .wrap{
-      max-width: 1100px;
-      margin: 0 auto;
-      padding: 26px 18px 44px;
-    }
+    .wrap{ max-width: 1180px; margin:0 auto; padding: 26px 18px 44px; }
 
     /* Topbar */
     .topbar{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:14px;
+      display:flex; align-items:center; justify-content:space-between; gap:14px;
       padding: 14px 14px;
       border: 1px solid rgba(255,255,255,.14);
       border-radius: var(--r2);
@@ -62,36 +56,20 @@
       box-shadow: 0 22px 80px rgba(0,0,0,.55);
       backdrop-filter: blur(12px);
     }
-    .brand{
-      display:flex; align-items:center; gap:14px;
-      min-width: 260px;
-    }
+    .brand{ display:flex; align-items:center; gap:14px; min-width: 280px; }
     .logo{
-      width:54px; height:54px;
-      border-radius: 16px;
+      width:54px; height:54px; border-radius: 16px;
       border:1px solid rgba(255,255,255,.18);
       background: linear-gradient(135deg, rgba(179,0,60,.25), rgba(107,44,255,.25));
-      display:grid; place-items:center;
-      overflow:hidden;
+      display:grid; place-items:center; overflow:hidden;
       box-shadow: inset 0 1px 0 rgba(255,255,255,.08);
+      flex:0 0 auto;
     }
     .logo img{ width:100%; height:100%; object-fit:cover; display:block; }
-    .brand h1{
-      margin:0;
-      font-size: 15px;
-      letter-spacing:.25px;
-      font-weight: 900;
-      line-height:1.15;
-    }
-    .brand .sub{
-      margin-top:2px;
-      font-size: 12px;
-      color: rgba(234,240,255,.72);
-      line-height:1.2;
-    }
-    .badgeRow{
-      display:flex; gap:10px; flex-wrap:wrap; justify-content:flex-end;
-    }
+    .brand h1{ margin:0; font-size: 15px; letter-spacing:.25px; font-weight: 950; line-height:1.15; }
+    .brand .sub{ margin-top:2px; font-size: 12px; color: var(--muted); line-height:1.2; }
+
+    .badgeRow{ display:flex; gap:10px; flex-wrap:wrap; justify-content:flex-end; }
     .pill{
       display:flex; align-items:center; gap:8px;
       padding: 10px 12px;
@@ -109,9 +87,36 @@
       box-shadow: 0 0 0 3px rgba(255,255,255,.06);
     }
 
+    /* Tabs */
+    .tabs{
+      margin-top: 14px;
+      display:flex;
+      gap: 10px;
+      flex-wrap:wrap;
+      align-items:center;
+    }
+    .tab{
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.04);
+      color: rgba(234,240,255,.85);
+      padding: 10px 12px;
+      border-radius: 999px;
+      cursor:pointer;
+      font-weight: 950;
+      letter-spacing:.2px;
+      transition: transform .15s ease, border-color .15s ease, background .15s ease;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.06);
+      user-select:none;
+    }
+    .tab:hover{ transform: translateY(-1px); border-color: rgba(255,255,255,.24); }
+    .tab.active{
+      background: linear-gradient(135deg, rgba(179,0,60,.34), rgba(107,44,255,.34));
+      border-color: rgba(255,255,255,.18);
+    }
+
     /* Layout */
     .grid{
-      margin-top: 18px;
+      margin-top: 14px;
       display:grid;
       grid-template-columns: 1.05fr .95fr;
       gap: 16px;
@@ -136,23 +141,10 @@
     }
     .cardHead{
       padding: 16px 16px 0;
-      display:flex;
-      align-items:flex-start;
-      justify-content:space-between;
-      gap: 12px;
+      display:flex; align-items:flex-start; justify-content:space-between; gap: 12px;
     }
-    .cardTitle{
-      margin:0;
-      font-size: 17px;
-      font-weight: 950;
-      letter-spacing:.3px;
-    }
-    .cardHint{
-      margin: 6px 0 0;
-      font-size: 13px;
-      color: rgba(234,240,255,.72);
-      line-height:1.35;
-    }
+    .cardTitle{ margin:0; font-size: 17px; font-weight: 950; letter-spacing:.3px; }
+    .cardHint{ margin: 6px 0 0; font-size: 13px; color: var(--muted); line-height:1.35; }
     .cardBody{ padding: 14px 16px 16px; }
 
     .row{
@@ -163,12 +155,7 @@
     }
     @media (max-width: 560px){ .row{ grid-template-columns:1fr; } }
 
-    label{
-      display:block;
-      font-size: 12px;
-      color: rgba(234,240,255,.72);
-      margin: 0 0 6px;
-    }
+    label{ display:block; font-size: 12px; color: var(--muted); margin: 0 0 6px; }
     .field{ position:relative; }
 
     input, select{
@@ -189,12 +176,7 @@
       box-shadow: inset 0 1px 0 rgba(255,255,255,.07), 0 0 0 4px rgba(107,44,255,.14), 0 10px 34px rgba(0,0,0,.4);
     }
 
-    .actions{
-      display:flex;
-      gap: 10px;
-      flex-wrap:wrap;
-      margin-top: 8px;
-    }
+    .actions{ display:flex; gap:10px; flex-wrap:wrap; margin-top: 8px; }
     .btn{
       border: 1px solid rgba(255,255,255,.14);
       background: rgba(255,255,255,.045);
@@ -202,10 +184,11 @@
       padding: 11px 12px;
       border-radius: 14px;
       cursor:pointer;
-      font-weight: 900;
+      font-weight: 950;
       letter-spacing:.2px;
       transition: transform .15s ease, border-color .15s ease, background .15s ease;
       box-shadow: 0 14px 40px rgba(0,0,0,.35);
+      user-select:none;
     }
     .btn:hover{ transform: translateY(-1px); border-color: rgba(255,255,255,.25); }
     .btn.primary{
@@ -217,7 +200,7 @@
     }
     .btn.ghost{ background:transparent; box-shadow:none; }
 
-    /* Photo stage */
+    /* Stage */
     .stage{
       border: 1px solid rgba(255,255,255,.14);
       border-radius: var(--r2);
@@ -239,23 +222,33 @@
       inset:0;
       pointer-events:none;
     }
-    .stageFooter{
-      margin-top:10px;
-      display:flex;
-      justify-content:space-between;
-      gap: 10px;
-      flex-wrap:wrap;
-      color: rgba(234,240,255,.70);
-      font-size: 12px;
-      line-height:1.4;
-    }
-    .tiny{
-      font-family: var(--mono);
-      font-size: 11px;
-      color: rgba(234,240,255,.58);
+    #tryon{
+      position:absolute;
+      inset:0;
+      pointer-events:none;
+      mix-blend-mode: screen;
+      opacity: .92;
     }
 
-    /* Output */
+    .status{
+      margin-top:10px;
+      font-size: 12px;
+      color: var(--muted);
+      display:flex;
+      gap: 10px;
+      align-items:center;
+      flex-wrap:wrap;
+    }
+    .chip{
+      padding: 8px 10px;
+      border-radius: 999px;
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.04);
+      color: rgba(234,240,255,.78);
+      font-size: 12px;
+    }
+
+    /* Result */
     .result{
       margin-top: 12px;
       padding: 14px;
@@ -268,13 +261,8 @@
       box-shadow: 0 26px 90px rgba(0,0,0,.55);
       display:none;
     }
-    .resultTop{
-      display:flex; align-items:flex-start; justify-content:space-between;
-      gap: 12px; flex-wrap:wrap;
-    }
-    .sizeBig{
-      display:flex; gap:10px; align-items:baseline; flex-wrap:wrap;
-    }
+    .resultTop{ display:flex; align-items:flex-start; justify-content:space-between; gap: 12px; flex-wrap:wrap; }
+    .sizeBig{ display:flex; gap:10px; align-items:baseline; flex-wrap:wrap; }
     .sizeBig .w{
       font-size: 22px;
       font-weight: 950;
@@ -286,23 +274,12 @@
       background: rgba(255,255,255,.04);
       box-shadow: inset 0 1px 0 rgba(255,255,255,.06);
     }
-    .sizeBig .meta{
-      font-size: 13px;
-      color: rgba(234,240,255,.72);
-      margin-top: 6px;
-    }
-    .confidence{
-      min-width: 260px;
-      max-width: 320px;
-      flex: 1;
-    }
+    .sizeBig .meta{ font-size: 13px; color: var(--muted); margin-top: 6px; }
+
+    .confidence{ min-width: 260px; max-width: 340px; flex: 1; }
     .confLabel{
-      font-size: 12px;
-      color: rgba(234,240,255,.72);
-      margin-bottom: 6px;
-      display:flex;
-      justify-content:space-between;
-      gap: 12px;
+      font-size: 12px; color: var(--muted); margin-bottom: 6px;
+      display:flex; justify-content:space-between; gap: 12px;
     }
     .bar{
       height: 10px;
@@ -323,9 +300,43 @@
     .bullets{
       margin: 10px 0 0;
       padding: 0 0 0 16px;
-      color: rgba(234,240,255,.72);
+      color: var(--muted);
       line-height:1.45;
       font-size: 13px;
+    }
+
+    .probGrid{
+      margin-top: 12px;
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+    @media (max-width: 560px){ .probGrid{ grid-template-columns:1fr; } }
+
+    .prob{
+      border: 1px solid rgba(255,255,255,.12);
+      border-radius: 18px;
+      background: rgba(255,255,255,.03);
+      padding: 12px;
+    }
+    .probTop{ display:flex; justify-content:space-between; align-items:center; gap:10px; }
+    .probTop b{ font-size: 13px; letter-spacing:.2px; }
+    .probTop span{ font-family: var(--mono); font-size: 12px; color: rgba(234,240,255,.72); }
+    .probBar{
+      margin-top: 10px;
+      height: 8px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.14);
+      background: rgba(0,0,0,.22);
+      overflow:hidden;
+    }
+    .probBar i{
+      display:block;
+      height:100%;
+      width:0%;
+      background: linear-gradient(90deg, rgba(179,0,60,.75), rgba(107,44,255,.75));
+      border-radius: 999px;
+      transition: width .3s ease;
     }
 
     .note{
@@ -334,16 +345,12 @@
       border-radius: 14px;
       border: 1px dashed rgba(255,255,255,.22);
       background: rgba(255,255,255,.03);
-      color: rgba(234,240,255,.72);
+      color: var(--muted);
       font-size: 12px;
       line-height:1.45;
     }
 
-    .divider{
-      height:1px;
-      background: rgba(255,255,255,.08);
-      margin: 14px 0;
-    }
+    .divider{ height:1px; background: rgba(255,255,255,.08); margin: 14px 0; }
 
     .tile{
       border: 1px solid rgba(255,255,255,.12);
@@ -351,36 +358,29 @@
       background: rgba(255,255,255,.028);
       padding: 12px;
     }
-    .tile h3{
-      margin:0;
-      font-size: 13px;
-      letter-spacing:.25px;
-      font-weight: 950;
-    }
-    .tile p{
-      margin: 6px 0 0;
-      font-size: 12px;
-      color: rgba(234,240,255,.72);
-      line-height:1.45;
-    }
+    .tile h3{ margin:0; font-size: 13px; letter-spacing:.25px; font-weight: 950; }
+    .tile p{ margin: 6px 0 0; font-size: 12px; color: var(--muted); line-height:1.45; }
 
-    .status{
-      margin-top:10px;
-      font-size: 12px;
-      color: rgba(234,240,255,.72);
-      display:flex;
-      gap: 10px;
-      align-items:center;
-      flex-wrap:wrap;
+    .sliders{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-top: 12px;
     }
-    .chip{
-      padding: 8px 10px;
-      border-radius: 999px;
-      border:1px solid rgba(255,255,255,.14);
-      background: rgba(255,255,255,.04);
-      color: rgba(234,240,255,.78);
-      font-size: 12px;
+    @media (max-width: 560px){ .sliders{ grid-template-columns:1fr; } }
+
+    .rangeWrap{
+      border: 1px solid rgba(255,255,255,.12);
+      border-radius: 18px;
+      background: rgba(255,255,255,.03);
+      padding: 12px;
     }
+    .rangeWrap .top{
+      display:flex; justify-content:space-between; align-items:center; gap:10px;
+      font-size: 12px; color: var(--muted);
+      margin-bottom: 8px;
+    }
+    input[type="range"]{ width:100%; }
 
     .foot{
       margin-top: 14px;
@@ -388,6 +388,8 @@
       color: rgba(255,255,255,.55);
       text-align:center;
     }
+
+    .hidden{ display:none !important; }
   </style>
 </head>
 
@@ -400,32 +402,38 @@
                onerror="this.style.display='none'; this.parentElement.textContent='OSION'; this.parentElement.style.fontWeight='950'; this.parentElement.style.fontSize='14px';" />
         </div>
         <div>
-          <h1>OSION Fit Check – Jeans</h1>
-          <div class="sub">Fotoanalyse: Pose-Erkennung · Plausibilitätscheck · Hinweise zum Sitz</div>
+          <h1>OSION – Jeans Scan & Vorschau</h1>
+          <div class="sub">Größenwahrscheinlichkeit (W/L) · visuelle Vorschau · Foto bleibt im Browser</div>
         </div>
       </div>
 
       <div class="badgeRow">
         <div class="pill"><span class="dot"></span> Fokus: passende Jeans finden</div>
-        <div class="pill">Foto bleibt im Browser</div>
+        <div class="pill">Keine Weiterleitung</div>
       </div>
     </div>
 
+    <div class="tabs" role="tablist" aria-label="Schritte">
+      <div class="tab active" id="tabScan" role="tab" aria-selected="true">1) Größen-Scan</div>
+      <div class="tab" id="tabTry" role="tab" aria-selected="false">2) Vorschau</div>
+      <div class="pill"><span class="dot"></span> Empfehlung: Foto + Maße kombinieren</div>
+    </div>
+
     <div class="grid">
-      <!-- LEFT: Photo + analysis -->
-      <section class="card" aria-label="Fotoanalyse">
+      <!-- LEFT: Foto + Overlay -->
+      <section class="card" aria-label="Foto">
         <div class="cardHead">
           <div>
-            <h2 class="cardTitle">Foto hochladen</h2>
+            <h2 class="cardTitle">Foto & Marker</h2>
             <p class="cardHint">
               Am besten: Ganzkörper-Frontfoto, gerade stehen, gute Beleuchtung, Kamera auf Hüfthöhe.
-              Optional: ein A4-Blatt sichtbar im Bild (als Referenz), z. B. in der Hand auf Hüfthöhe.
+              Optional: A4-Blatt sichtbar im Bild für bessere Skalierung.
             </p>
           </div>
           <div class="actions">
             <label class="btn ghost" for="file">Foto wählen</label>
             <input id="file" type="file" accept="image/*" hidden />
-            <button class="btn" id="analyze" disabled>Foto analysieren</button>
+            <button class="btn primary" id="analyze" disabled>Scan starten</button>
           </div>
         </div>
 
@@ -433,29 +441,116 @@
           <div class="stage">
             <div class="canvasWrap">
               <img id="photo" alt="Hochgeladenes Foto" />
-              <canvas id="view" width="1200" height="800" aria-label="Vorschau"></canvas>
-              <canvas id="overlay" width="1200" height="800" aria-label="Overlay"></canvas>
-            </div>
-
-            <div class="stageFooter">
-              <div>
-                <div><b>Tipp:</b> Wenn du ein A4-Blatt im Bild hast, kannst du gleich eine Referenz angeben.</div>
-                <div class="tiny">Referenzbreite (A4 quer: 29,7 cm / A4 hoch: 21,0 cm)</div>
-              </div>
-              <div style="display:flex; gap:10px; flex-wrap:wrap; align-items:center;">
-                <div class="chip">Referenz: <select id="refMode">
-                  <option value="none" selected>keine</option>
-                  <option value="a4_21">A4 Breite 21,0 cm</option>
-                  <option value="a4_297">A4 Breite 29,7 cm</option>
-                </select></div>
-                <div class="chip">Klick 2 Punkte aufs Foto</div>
-              </div>
+              <canvas id="view" width="1200" height="800"></canvas>
+              <canvas id="tryon" width="1200" height="800"></canvas>
+              <canvas id="overlay" width="1200" height="800"></canvas>
             </div>
 
             <div class="status">
               <span class="chip" id="modelState">KI-Modul: wird geladen …</span>
               <span class="chip" id="photoState">Foto: nicht geladen</span>
-              <span class="chip" id="refState">Referenz: aus</span>
+              <span class="chip" id="refState">Marker: aus</span>
+            </div>
+
+            <div class="tile" style="margin-top:12px;">
+              <h3>Marker (optional)</h3>
+              <p>Wenn ein A4-Blatt im Bild ist: Marker auswählen, dann 2 Punkte auf die Blattbreite klicken. So kann der Scan besser skalieren.</p>
+              <div class="row" style="margin-top:10px;">
+                <div class="field">
+                  <label for="refMode">Marker</label>
+                  <select id="refMode">
+                    <option value="none" selected>kein Marker</option>
+                    <option value="a4_21">A4 Breite 21,0 cm</option>
+                    <option value="a4_297">A4 Breite 29,7 cm</option>
+                  </select>
+                </div>
+                <div class="field">
+                  <label>Aktion</label>
+                  <button class="btn" id="clearRef">Marker-Punkte löschen</button>
+                </div>
+              </div>
+              <div class="note" style="margin-top:10px;">
+                Hinweis: Marker ist ein Qualitäts-Upgrade. Ohne Marker ist das Ergebnis stärker von Foto-Perspektive abhängig.
+              </div>
+            </div>
+
+            <div class="foot">OSION · Foto bleibt im Browser</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- RIGHT: Inputs + Results (Scan / Try-On) -->
+      <section class="card" aria-label="Scan und Vorschau">
+        <div class="cardHead">
+          <div>
+            <h2 class="cardTitle" id="rightTitle">Größen-Scan</h2>
+            <p class="cardHint" id="rightHint">Gib Maße an (optional, aber stark). Der Scan kombiniert Foto + Angaben zu einer Größenwahrscheinlichkeit.</p>
+          </div>
+        </div>
+
+        <div class="cardBody">
+          <!-- SCAN PANEL -->
+          <div id="panelScan">
+            <div class="row">
+              <div class="field">
+                <label for="height">Körpergröße (optional)</label>
+                <input id="height" type="number" inputmode="numeric" min="120" max="220" placeholder="z. B. 182" />
+              </div>
+              <div class="field">
+                <label for="weight">Gewicht (optional)</label>
+                <input id="weight" type="number" inputmode="numeric" min="35" max="200" placeholder="z. B. 84" />
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="field">
+                <label for="waist">Taille-Umfang (optional)</label>
+                <input id="waist" type="number" inputmode="numeric" min="55" max="140" placeholder="z. B. 88" />
+              </div>
+              <div class="field">
+                <label for="inseam">Innenbeinlänge (optional)</label>
+                <input id="inseam" type="number" inputmode="numeric" min="55" max="105" placeholder="z. B. 82" />
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="field">
+                <label for="fit">Sitz-Wunsch</label>
+                <select id="fit">
+                  <option value="regular" selected>Normal</option>
+                  <option value="slim">Enger</option>
+                  <option value="loose">Lockerer</option>
+                </select>
+              </div>
+              <div class="field">
+                <label for="stretch">Stretch-Anteil</label>
+                <select id="stretch">
+                  <option value="none">Kein Stretch</option>
+                  <option value="some" selected>Etwas Stretch</option>
+                  <option value="high">Viel Stretch</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="field">
+                <label for="brand">Passform-Tendenz (optional)</label>
+                <select id="brand">
+                  <option value="tts" selected>Fällt normal aus</option>
+                  <option value="small">Fällt eher klein aus</option>
+                  <option value="large">Fällt eher groß aus</option>
+                </select>
+              </div>
+              <div class="field">
+                <label for="targetWL">Geplante Größe (optional)</label>
+                <input id="targetWL" type="text" placeholder="z. B. W32 / L32" />
+              </div>
+            </div>
+
+            <div class="actions">
+              <button class="btn primary" id="runScan" disabled>Größen-Scan berechnen</button>
+              <button class="btn" id="reset">Zurücksetzen</button>
+              <button class="btn ghost" id="copy">Ergebnis kopieren</button>
             </div>
 
             <div class="result" id="result">
@@ -463,13 +558,12 @@
                 <div>
                   <div class="sizeBig">
                     <div class="w" id="wlOut">W32 / L32</div>
-                    <div class="meta" id="metaOut">Abgleich anhand deiner Angaben + Foto-Plausibilität.</div>
+                    <div class="meta" id="metaOut">Wahrscheinlichste Größe aus Foto + Angaben.</div>
                   </div>
                 </div>
-
                 <div class="confidence">
                   <div class="confLabel">
-                    <span>Analyse-Sicherheit</span>
+                    <span>Scan-Sicherheit</span>
                     <b id="confText">mittel</b>
                   </div>
                   <div class="bar"><i id="confBar"></i></div>
@@ -477,89 +571,77 @@
               </div>
 
               <ul class="bullets" id="bullets"></ul>
+
+              <div class="probGrid" id="probGrid"></div>
+
               <div class="note" id="note"></div>
 
               <div class="divider"></div>
 
               <div class="tile">
-                <h3>Was du im Overlay siehst</h3>
-                <p>Markierte Punkte zeigen Hüfte, Knie und Knöchel. So erkennst du, ob Foto/Pose stabil genug ist und ob die Beinlänge plausibel wirkt.</p>
+                <h3>Weiter zu Vorschau</h3>
+                <p>Wenn du eine freigestellte Jeans (PNG) hast, kannst du im nächsten Schritt eine Vorschau erzeugen.</p>
+                <div class="actions" style="margin-top:10px;">
+                  <button class="btn" id="goTry">Vorschau öffnen</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- TRY-ON PANEL -->
+          <div id="panelTry" class="hidden">
+            <div class="tile">
+              <h3>Jeans-Bild hinzufügen</h3>
+              <p>Für die Vorschau ist ein freigestelltes Jeans-Bild (PNG mit transparentem Hintergrund) ideal.</p>
+              <div class="actions" style="margin-top:10px;">
+                <label class="btn ghost" for="jeansFile">Jeans PNG wählen</label>
+                <input id="jeansFile" type="file" accept="image/png,image/*" hidden />
+                <button class="btn primary" id="applyOverlay" disabled>Vorschau erzeugen</button>
+                <button class="btn" id="clearOverlay" disabled>Vorschau löschen</button>
+              </div>
+
+              <div class="sliders">
+                <div class="rangeWrap">
+                  <div class="top"><span>Skalierung</span><b id="scaleVal">100%</b></div>
+                  <input id="scale" type="range" min="70" max="140" value="100" />
+                </div>
+                <div class="rangeWrap">
+                  <div class="top"><span>Transparenz</span><b id="alphaVal">92%</b></div>
+                  <input id="alpha" type="range" min="40" max="100" value="92" />
+                </div>
+              </div>
+
+              <div class="sliders">
+                <div class="rangeWrap">
+                  <div class="top"><span>Vertikal verschieben</span><b id="yVal">0</b></div>
+                  <input id="yOff" type="range" min="-200" max="200" value="0" />
+                </div>
+                <div class="rangeWrap">
+                  <div class="top"><span>Horizontal verschieben</span><b id="xVal">0</b></div>
+                  <input id="xOff" type="range" min="-200" max="200" value="0" />
+                </div>
+              </div>
+
+              <div class="note" style="margin-top:12px;">
+                Hinweis: Das ist eine visuelle Vorschau per Overlay. Eine echte KI-Anprobe kann später über eine API angebunden werden.
               </div>
             </div>
 
-            <div class="foot">OSION · Fit Check · Jeans (Fotoanalyse)</div>
-          </div>
-        </div>
-      </section>
-
-      <!-- RIGHT: Inputs (existing calculator style) -->
-      <section class="card" aria-label="Abgleich">
-        <div class="cardHead">
-          <div>
-            <h2 class="cardTitle">Abgleich (optional, aber stark)</h2>
-            <p class="cardHint">
-              Wenn du deine Maße kennst, wird der Abgleich präziser. Fotoanalyse liefert zusätzlich einen Plausibilitätscheck.
-            </p>
-          </div>
-        </div>
-
-        <div class="cardBody">
-          <div class="row">
-            <div class="field">
-              <label for="waist">Taille-Umfang</label>
-              <input id="waist" type="number" inputmode="numeric" min="55" max="140" placeholder="z. B. 88" />
+            <div class="tile" style="margin-top:12px;">
+              <h3>Optional: KI-Anprobe per API</h3>
+              <p>Wenn später ein Try-On-Service angebunden wird, kann das Ergebnisbild über einen Endpoint geladen werden (z. B. <span style="font-family:var(--mono);">/api/tryon</span>).</p>
+              <div class="actions" style="margin-top:10px;">
+                <button class="btn" id="runApiTryon" disabled>KI-Vorschau laden</button>
+              </div>
+              <div class="note" id="apiNote" style="margin-top:10px;">API ist im Code vorbereitet, aber standardmäßig deaktiviert.</div>
             </div>
-            <div class="field">
-              <label for="inseam">Innenbeinlänge</label>
-              <input id="inseam" type="number" inputmode="numeric" min="55" max="105" placeholder="z. B. 82" />
+
+            <div class="actions" style="margin-top:12px;">
+              <button class="btn ghost" id="backToScan">Zurück zum Scan</button>
             </div>
           </div>
 
-          <div class="row">
-            <div class="field">
-              <label for="fit">Sitz-Wunsch</label>
-              <select id="fit">
-                <option value="regular" selected>Normal</option>
-                <option value="slim">Enger</option>
-                <option value="loose">Lockerer</option>
-              </select>
-            </div>
-            <div class="field">
-              <label for="stretch">Stretch-Anteil</label>
-              <select id="stretch">
-                <option value="none">Kein Stretch</option>
-                <option value="some" selected>Etwas Stretch</option>
-                <option value="high">Viel Stretch</option>
-              </select>
-            </div>
-          </div>
-
-          <div class="row">
-            <div class="field">
-              <label for="brand">Passform-Tendenz</label>
-              <select id="brand">
-                <option value="tts" selected>Fällt normal aus</option>
-                <option value="small">Fällt eher klein aus</option>
-                <option value="large">Fällt eher groß aus</option>
-              </select>
-            </div>
-            <div class="field">
-              <label for="targetWL">Geplante Größe (falls schon gewählt)</label>
-              <input id="targetWL" type="text" placeholder="z. B. W32 / L32" />
-            </div>
-          </div>
-
-          <div class="actions">
-            <button class="btn primary" id="sync">Daten übernehmen</button>
-            <button class="btn" id="clear">Zurücksetzen</button>
-          </div>
-
-          <div class="divider"></div>
-
-          <div class="tile">
-            <h3>Hinweis</h3>
-            <p>Der Foto-Check ist ein Plausibilitätscheck. Für maximale Präzision sind Taille-Umfang und Innenbeinlänge entscheidend.</p>
-          </div>
+          <div class="foot">OSION · Jeans Scan & Vorschau</div>
         </div>
       </section>
     </div>
@@ -567,64 +649,150 @@
 
   <script>
     /******************************************************************
-     * OSION Fit Check – Jeans (Fotoanalyse)
-     * - Läuft im Browser
-     * - Nutzt MediaPipe Pose Landmarker (WebAssembly, via CDN)
-     * - Foto wird NICHT automatisch hochgeladen (rein clientseitig)
+     * OSION – Jeans Scan & Vorschau (Index HTML)
+     * - Foto bleibt im Browser (clientseitig)
+     * - Größen-Scan: Foto-Pose + optionale Angaben => Wahrscheinlichkeiten
+     * - Vorschau: Overlay (Jeans PNG) + API-Hook (optional)
      ******************************************************************/
 
+    const $ = (id)=>document.getElementById(id);
+
     const el = {
-      file: document.getElementById("file"),
-      analyze: document.getElementById("analyze"),
-      photo: document.getElementById("photo"),
-      view: document.getElementById("view"),
-      overlay: document.getElementById("overlay"),
+      // tabs / panels
+      tabScan: $("tabScan"),
+      tabTry: $("tabTry"),
+      panelScan: $("panelScan"),
+      panelTry: $("panelTry"),
+      rightTitle: $("rightTitle"),
+      rightHint: $("rightHint"),
 
-      modelState: document.getElementById("modelState"),
-      photoState: document.getElementById("photoState"),
-      refState: document.getElementById("refState"),
+      // photo
+      file: $("file"),
+      photo: $("photo"),
+      view: $("view"),
+      overlay: $("overlay"),
+      tryon: $("tryon"),
+      analyze: $("analyze"),
 
-      refMode: document.getElementById("refMode"),
+      // marker
+      refMode: $("refMode"),
+      clearRef: $("clearRef"),
 
-      waist: document.getElementById("waist"),
-      inseam: document.getElementById("inseam"),
-      fit: document.getElementById("fit"),
-      stretch: document.getElementById("stretch"),
-      brand: document.getElementById("brand"),
-      targetWL: document.getElementById("targetWL"),
-      sync: document.getElementById("sync"),
-      clear: document.getElementById("clear"),
+      // states
+      modelState: $("modelState"),
+      photoState: $("photoState"),
+      refState: $("refState"),
 
-      result: document.getElementById("result"),
-      wlOut: document.getElementById("wlOut"),
-      metaOut: document.getElementById("metaOut"),
-      bullets: document.getElementById("bullets"),
-      note: document.getElementById("note"),
-      confText: document.getElementById("confText"),
-      confBar: document.getElementById("confBar"),
+      // inputs
+      height: $("height"),
+      weight: $("weight"),
+      waist: $("waist"),
+      inseam: $("inseam"),
+      fit: $("fit"),
+      stretch: $("stretch"),
+      brand: $("brand"),
+      targetWL: $("targetWL"),
+
+      // scan actions
+      runScan: $("runScan"),
+      reset: $("reset"),
+      copy: $("copy"),
+
+      // results
+      result: $("result"),
+      wlOut: $("wlOut"),
+      metaOut: $("metaOut"),
+      bullets: $("bullets"),
+      probGrid: $("probGrid"),
+      note: $("note"),
+      confText: $("confText"),
+      confBar: $("confBar"),
+
+      // go try
+      goTry: $("goTry"),
+      backToScan: $("backToScan"),
+
+      // try-on
+      jeansFile: $("jeansFile"),
+      applyOverlay: $("applyOverlay"),
+      clearOverlay: $("clearOverlay"),
+      scale: $("scale"),
+      alpha: $("alpha"),
+      yOff: $("yOff"),
+      xOff: $("xOff"),
+      scaleVal: $("scaleVal"),
+      alphaVal: $("alphaVal"),
+      yVal: $("yVal"),
+      xVal: $("xVal"),
+
+      runApiTryon: $("runApiTryon"),
+      apiNote: $("apiNote"),
+      clearOverlayBtn: $("clearOverlay"),
     };
 
     const ctx = el.view.getContext("2d");
     const octx = el.overlay.getContext("2d");
+    const tctx = el.tryon.getContext("2d");
 
     let poseLandmarker = null;
     let imageBitmap = null;
 
-    // Reference calibration (two clicks)
+    // marker reference (two clicks)
     let refClicks = [];
-    let pixelsPerCm = null; // if set, we can estimate rough lengths
+    let pixelsPerCm = null;
+
+    // latest landmarks for scan/try-on anchor
+    let lastPose = null;
+
+    // jeans overlay image
+    let jeansBitmap = null;
 
     const clamp = (n,a,b)=>Math.max(a,Math.min(b,n));
 
-    function resetOverlay(){
-      octx.clearRect(0,0,el.overlay.width, el.overlay.height);
+    function escapeHtml(str){
+      return String(str)
+        .replaceAll("&","&amp;")
+        .replaceAll("<","&lt;")
+        .replaceAll(">","&gt;")
+        .replaceAll('"',"&quot;")
+        .replaceAll("'","&#039;");
     }
 
-    function resizeCanvasesToImage(imgW, imgH){
-      el.view.width = imgW;
-      el.view.height = imgH;
-      el.overlay.width = imgW;
-      el.overlay.height = imgH;
+    function setTab(which){
+      const scan = which === "scan";
+      el.tabScan.classList.toggle("active", scan);
+      el.tabTry.classList.toggle("active", !scan);
+      el.tabScan.setAttribute("aria-selected", scan ? "true" : "false");
+      el.tabTry.setAttribute("aria-selected", scan ? "false" : "true");
+      el.panelScan.classList.toggle("hidden", !scan);
+      el.panelTry.classList.toggle("hidden", scan);
+
+      el.rightTitle.textContent = scan ? "Größen-Scan" : "Vorschau";
+      el.rightHint.textContent = scan
+        ? "Gib Maße an (optional, aber stark). Der Scan kombiniert Foto + Angaben zu einer Größenwahrscheinlichkeit."
+        : "Jeans PNG hinzufügen und Vorschau erzeugen. Overlay kann per Regler feinjustiert werden.";
+    }
+
+    el.tabScan.addEventListener("click", ()=>setTab("scan"));
+    el.tabTry.addEventListener("click", ()=>{
+      setTab("try");
+      // only allow when we have a photo + pose
+      if(!imageBitmap || !lastPose){
+        el.apiNote.textContent = "Für die Vorschau zuerst Foto laden und Scan starten.";
+      }
+    });
+    el.goTry.addEventListener("click", ()=>setTab("try"));
+    el.backToScan.addEventListener("click", ()=>setTab("scan"));
+
+    function resizeCanvasesToImage(w,h){
+      el.view.width = w; el.view.height = h;
+      el.overlay.width = w; el.overlay.height = h;
+      el.tryon.width = w; el.tryon.height = h;
+    }
+
+    function resetOverlayLayers(){
+      octx.clearRect(0,0,el.overlay.width, el.overlay.height);
+      tctx.clearRect(0,0,el.tryon.width, el.tryon.height);
     }
 
     function drawPhoto(){
@@ -632,11 +800,11 @@
       resizeCanvasesToImage(imageBitmap.width, imageBitmap.height);
       ctx.clearRect(0,0,el.view.width, el.view.height);
       ctx.drawImage(imageBitmap, 0, 0);
-      resetOverlay();
-      drawRefClicks();
+      resetOverlayLayers();
+      drawMarkerClicks();
     }
 
-    function drawRefClicks(){
+    function drawMarkerClicks(){
       if(refClicks.length === 0) return;
       octx.save();
       octx.lineWidth = 4;
@@ -658,111 +826,18 @@
 
     function setState(){
       el.photoState.textContent = imageBitmap ? "Foto: geladen" : "Foto: nicht geladen";
+
       const refLabel = el.refMode.value === "none" ? "aus" :
         (el.refMode.value === "a4_21" ? "A4 21,0 cm" : "A4 29,7 cm");
-      el.refState.textContent = "Referenz: " + refLabel + (pixelsPerCm ? " · aktiv" : "");
-    }
 
-    // ---------- MediaPipe Pose Landmarker Loader ----------
-    async function loadPose(){
-      try{
-        el.modelState.textContent = "KI-Modul: wird geladen …";
-
-        // CDN Import (MediaPipe Tasks Vision)
-        // Hinweis: Versionsnummer kann bei Bedarf angepasst werden.
-        const vision = await import("https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.14/vision_bundle.mjs");
-
-        const { FilesetResolver, PoseLandmarker } = vision;
-
-        const fileset = await FilesetResolver.forVisionTasks(
-          "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.14/wasm"
-        );
-
-        poseLandmarker = await PoseLandmarker.createFromOptions(fileset, {
-          baseOptions: {
-            modelAssetPath: "https://storage.googleapis.com/mediapipe-models/pose_landmarker/pose_landmarker_lite/float16/1/pose_landmarker_lite.task",
-            delegate: "GPU"
-          },
-          runningMode: "IMAGE",
-          numPoses: 1
-        });
-
-        el.modelState.textContent = "KI-Modul: bereit";
-      }catch(err){
-        console.error(err);
-        el.modelState.textContent = "KI-Modul: nicht verfügbar (CDN/Netzwerk)";
-        poseLandmarker = null;
-      }
-    }
-
-    // ---------- Helpers ----------
-    function parseTargetWL(str){
-      if(!str) return null;
-      const m = str.toUpperCase().replace(/\s/g,"").match(/W(\d+)[\/-]?L(\d+)/);
-      if(!m) return null;
-      return { W: Number(m[1]), L: Number(m[2]) };
-    }
-
-    function cmToIn(cm){ return cm / 2.54; }
-    function inToCm(inch){ return inch * 2.54; }
-
-    function mapL(inches){
-      const options = [28,30,32,34,36];
-      let best = options[0], bestD = Infinity;
-      for (const o of options){
-        const d = Math.abs(o - inches);
-        if (d < bestD){ bestD = d; best = o; }
-      }
-      return best;
-    }
-    function mapW(inches){ return clamp(Math.round(inches), 26, 44); }
-
-    function suggestWLFromMeasures(){
-      const waistCm = Number(el.waist.value || 0) || null;
-      const inseamCm = Number(el.inseam.value || 0) || null;
-
-      if(!waistCm && !inseamCm) return null;
-
-      // Simple baseline mapping:
-      // W ~ waist-inches (conservative; real mapping can be replaced by brand tables)
-      let W = waistCm ? mapW(cmToIn(waistCm)) : null;
-      let L = inseamCm ? mapL(Math.round(cmToIn(inseamCm))) : null;
-
-      // Adjust for fit + stretch + brand tendency (small offsets)
-      const fit = el.fit.value;
-      const stretch = el.stretch.value;
-      const brand = el.brand.value;
-
-      if(W !== null){
-        if (fit === "slim") W -= 1;
-        if (fit === "loose") W += 1;
-        if (stretch === "high") W -= 1;
-        if (brand === "small") W += 1;
-        if (brand === "large") W -= 1;
-        W = clamp(W, 26, 44);
-      }
-
-      return { W: W ?? 32, L: L ?? 32, basedOn: { waist: !!waistCm, inseam: !!inseamCm } };
-    }
-
-    function confidenceScore({ hasPose, hasRef, hasWaist, hasInseam }){
-      let score = 28;
-      if(hasPose) score += 35;
-      if(hasRef) score += 12;
-      if(hasWaist) score += 15;
-      if(hasInseam) score += 10;
-      score = clamp(score, 20, 95);
-      return score;
-    }
-    function confLabel(score){
-      if(score >= 78) return "hoch";
-      if(score >= 55) return "mittel";
-      return "niedrig";
+      el.refState.textContent = "Marker: " + refLabel + (pixelsPerCm ? " · aktiv" : "");
+      el.analyze.disabled = !poseLandmarker || !imageBitmap;
+      el.runScan.disabled = !poseLandmarker || !imageBitmap;
     }
 
     function dist(a,b){
-      const dx = a.x - b.x, dy = a.y - b.y;
-      return Math.sqrt(dx*dx + dy*dy);
+      const dx=a.x-b.x, dy=a.y-b.y;
+      return Math.sqrt(dx*dx+dy*dy);
     }
 
     function pickRefCm(){
@@ -787,253 +862,405 @@
       return { x, y };
     }
 
-    // ---------- Pose Analysis ----------
-    function drawLandmarks(lms){
-      resetOverlay();
-      drawRefClicks();
+    // marker clicks on overlay (only if marker active)
+    el.overlay.addEventListener("click", (evt)=>{
+      if(!imageBitmap) return;
+      if(el.refMode.value === "none") return;
 
-      const pts = lms.map(p => ({ x: p.x * el.overlay.width, y: p.y * el.overlay.height, v: p.visibility ?? 1 }));
+      const p = canvasToImageCoords(evt);
+      if(refClicks.length >= 2) refClicks = [];
+      refClicks.push(p);
 
-      // Indices: MediaPipe Pose Landmarks
-      // 23 leftHip, 24 rightHip, 25 leftKnee, 26 rightKnee, 27 leftAnkle, 28 rightAnkle, 11 leftShoulder, 12 rightShoulder
-      const key = {
-        leftHip: 23, rightHip: 24,
-        leftKnee: 25, rightKnee: 26,
-        leftAnkle: 27, rightAnkle: 28,
-        leftShoulder: 11, rightShoulder: 12
-      };
+      pixelsPerCm = computePixelsPerCm();
+      drawPhoto();
+      if(lastPose) drawPoseOverlay(lastPose);
+      setState();
+    });
 
-      const drawPoint = (i, r=6)=>{
-        const p = pts[i];
-        if(!p) return;
-        octx.beginPath();
-        octx.arc(p.x, p.y, r, 0, Math.PI*2);
-        octx.fill();
-      };
+    el.clearRef.addEventListener("click", ()=>{
+      refClicks = [];
+      pixelsPerCm = null;
+      drawPhoto();
+      if(lastPose) drawPoseOverlay(lastPose);
+      setState();
+    });
 
-      const drawLine = (a,b)=>{
-        const p=pts[a], q=pts[b];
-        if(!p || !q) return;
-        octx.beginPath();
-        octx.moveTo(p.x,p.y);
-        octx.lineTo(q.x,q.y);
-        octx.stroke();
-      };
+    el.refMode.addEventListener("change", ()=>{
+      refClicks = [];
+      pixelsPerCm = null;
+      drawPhoto();
+      if(lastPose) drawPoseOverlay(lastPose);
+      setState();
+    });
 
-      octx.save();
-      octx.lineWidth = 4;
-      octx.strokeStyle = "rgba(255,255,255,.75)";
-      octx.fillStyle = "rgba(255,255,255,.85)";
+    // ---------- MediaPipe loader ----------
+    async function loadPose(){
+      try{
+        el.modelState.textContent = "KI-Modul: wird geladen …";
+        const vision = await import("https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.14/vision_bundle.mjs");
+        const { FilesetResolver, PoseLandmarker } = vision;
 
-      // hip line
-      drawLine(key.leftHip, key.rightHip);
+        const fileset = await FilesetResolver.forVisionTasks(
+          "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.14/wasm"
+        );
 
-      // leg lines
-      drawLine(key.leftHip, key.leftKnee);
-      drawLine(key.leftKnee, key.leftAnkle);
+        poseLandmarker = await PoseLandmarker.createFromOptions(fileset, {
+          baseOptions: {
+            modelAssetPath: "https://storage.googleapis.com/mediapipe-models/pose_landmarker/pose_landmarker_lite/float16/1/pose_landmarker_lite.task",
+            delegate: "GPU"
+          },
+          runningMode: "IMAGE",
+          numPoses: 1
+        });
 
-      drawLine(key.rightHip, key.rightKnee);
-      drawLine(key.rightKnee, key.rightAnkle);
-
-      // shoulder line (stability)
-      octx.strokeStyle = "rgba(255,255,255,.45)";
-      drawLine(key.leftShoulder, key.rightShoulder);
-
-      // points
-      octx.fillStyle = "rgba(255,255,255,.92)";
-      drawPoint(key.leftHip, 7); drawPoint(key.rightHip, 7);
-      drawPoint(key.leftKnee, 6); drawPoint(key.rightKnee, 6);
-      drawPoint(key.leftAnkle, 6); drawPoint(key.rightAnkle, 6);
-
-      octx.restore();
-
-      return { pts, key };
+        el.modelState.textContent = "KI-Modul: bereit";
+      }catch(e){
+        console.error(e);
+        el.modelState.textContent = "KI-Modul: nicht verfügbar (CDN/Netzwerk)";
+        poseLandmarker = null;
+      }
+      setState();
     }
 
-    function analyzePoseGeometry(pts, key){
-      const get = (i)=>pts[i];
+    // ---------- Scan logic ----------
+    function cmToIn(cm){ return cm/2.54; }
+    function mapL(inches){
+      const opts=[28,30,32,34,36];
+      let best=opts[0], bestD=1e9;
+      for(const o of opts){
+        const d=Math.abs(o-inches);
+        if(d<bestD){ bestD=d; best=o; }
+      }
+      return best;
+    }
+    function mapW(inches){ return clamp(Math.round(inches), 26, 44); }
 
-      const lh = get(key.leftHip), rh = get(key.rightHip);
-      const lk = get(key.leftKnee), rk = get(key.rightKnee);
-      const la = get(key.leftAnkle), ra = get(key.rightAnkle);
-      const ls = get(key.leftShoulder), rs = get(key.rightShoulder);
-
-      // Basic checks
-      const visOk = (p)=>p && (p.v ?? 1) > 0.35;
-      const ok =
-        visOk(lh)&&visOk(rh)&&visOk(lk)&&visOk(rk)&&visOk(la)&&visOk(ra)&&visOk(ls)&&visOk(rs);
-
-      // Pose stability: shoulders roughly horizontal, ankles visible
-      const shoulderTilt = ls && rs ? Math.abs(ls.y - rs.y) : 999;
-      const hipTilt = lh && rh ? Math.abs(lh.y - rh.y) : 999;
-
-      // Knee bend heuristic: if knee is far forward/back not available; use vertical ordering
-      // Straight leg: knee y should be between hip y and ankle y (usually)
-      const legLeftOk = (lh && lk && la) ? (lk.y > lh.y && la.y > lk.y) : false;
-      const legRightOk = (rh && rk && ra) ? (rk.y > rh.y && ra.y > rk.y) : false;
-
-      // Pixel-based lengths (if ref)
-      const hipWidthPx = (lh && rh) ? dist(lh,rh) : null;
-      const inseamPxL = (lh && la) ? Math.abs(la.y - lh.y) : null; // vertical proxy
-      const inseamPxR = (rh && ra) ? Math.abs(ra.y - rh.y) : null;
-
-      return {
-        ok,
-        shoulderTilt, hipTilt,
-        legLeftOk, legRightOk,
-        hipWidthPx,
-        inseamPxL, inseamPxR,
-      };
+    function parseTargetWL(str){
+      if(!str) return null;
+      const m = str.toUpperCase().replace(/\s/g,"").match(/W(\d+)[\/-]?L(\d+)/);
+      if(!m) return null;
+      return { W:Number(m[1]), L:Number(m[2]) };
     }
 
-    function buildCustomerOutput({ wl, target, geom, hasRef, hasWaist, hasInseam, poseOk }){
-      const bullets = [];
+    function estimateWaistCmFromHeightWeight(hCm, wKg){
+      if(!hCm || !wKg) return null;
+      const hM = hCm/100;
+      const bmi = wKg / (hM*hM);
+      let waist = hCm * 0.42 + (bmi - 22) * 1.8;
+      return Math.round(clamp(waist, 68, 125));
+    }
+    function estimateInseamCmFromHeight(hCm){
+      if(!hCm) return null;
+      return Math.round(hCm * 0.45);
+    }
 
-      // 1) Size suggestion from measures
-      if(wl){
-        bullets.push(`Empfehlung aus deinen Angaben: W${wl.W} / L${wl.L}.`);
-      }else{
-        bullets.push(`Für eine konkrete Größenempfehlung sind Taille-Umfang und Innenbeinlänge hilfreich.`);
-      }
-
-      // 2) Target compare
-      if(target && wl){
-        const dW = wl.W - target.W;
-        const dL = wl.L - target.L;
-
-        const wTxt = dW === 0 ? "Weite passt zur Empfehlung." :
-          (dW > 0 ? `Empfehlung ist ${dW} Weite(n) größer als deine Auswahl.` : `Empfehlung ist ${Math.abs(dW)} Weite(n) kleiner als deine Auswahl.`);
-        const lTxt = dL === 0 ? "Länge passt zur Empfehlung." :
-          (dL > 0 ? `Empfehlung ist ${dL} Länge(n) länger als deine Auswahl.` : `Empfehlung ist ${Math.abs(dL)} Länge(n) kürzer als deine Auswahl.`);
-
-        bullets.push(wTxt);
-        bullets.push(lTxt);
-      }else if(target && !wl){
-        bullets.push(`Du hast eine Auswahl angegeben (${target.W}/${target.L}). Für den Abgleich fehlen noch Maße.`);
-      }
-
-      // 3) Photo checks
-      if(poseOk){
-        if(geom.shoulderTilt > 18) bullets.push(`Kamera wirkt leicht schief. Gerade ausrichten erhöht die Aussagekraft.`);
-        if(geom.hipTilt > 22) bullets.push(`Hüfte wirkt nicht ganz gerade. Möglichst entspannt und gerade stehen.`);
-        if(!geom.legLeftOk || !geom.legRightOk) bullets.push(`Beine sind im Foto vermutlich leicht angewinkelt. Gerade stehen bringt ein stabileres Ergebnis.`);
-        if(hasRef){
-          bullets.push(`Referenz aktiv: Längenabschätzung ist möglich (grob).`);
-        }else{
-          bullets.push(`Ohne Referenz sind Foto-Hinweise eher ein Plausibilitätscheck.`);
-        }
-      }else{
-        bullets.push(`Das Foto ist für eine sichere Pose-Erkennung nicht ideal (Punkte nicht klar sichtbar).`);
-      }
-
-      // 4) Fit tone guidance (customer perspective)
+    function adjustW(W){
       const fit = el.fit.value;
       const stretch = el.stretch.value;
+      const brand = el.brand.value;
 
-      if(fit === "slim" && stretch === "none") bullets.push(`Enger Sitz + kein Stretch fühlt sich oft straffer an. Wenn du zwischen zwei Größen liegst, kann mehr Komfort sinnvoll sein.`);
-      if(fit === "loose") bullets.push(`Lockerer Sitz: die Weite darf spürbar Spiel haben. Achte darauf, dass der Bund stabil sitzt.`);
-      if(stretch === "high") bullets.push(`Viel Stretch: die Jeans passt sich stärker an. Ein stabil sitzender Bund ist hier der wichtigste Anker.`);
+      if (fit === "slim") W -= 1;
+      if (fit === "loose") W += 1;
+      if (stretch === "high") W -= 1;
+      if (brand === "small") W += 1;
+      if (brand === "large") W -= 1;
 
-      const note = `Hinweis: Fotoanalyse ersetzt keine Maßangaben, sie hilft vor allem bei der Plausibilität (Pose, Perspektive, Beinverlauf).`;
-      return { bullets, note };
+      return clamp(W, 26, 44);
     }
 
-    // ---------- Main Analyze ----------
-    async function analyze(){
-      if(!poseLandmarker || !imageBitmap) return;
-
-      drawPhoto();
-
-      // Run pose on the bitmap
-      const res = poseLandmarker.detect(imageBitmap);
-
-      if(!res || !res.landmarks || res.landmarks.length === 0){
-        showResult({
-          wl: suggestWLFromMeasures(),
-          target: parseTargetWL(el.targetWL.value),
-          poseOk: false,
-          geom: { shoulderTilt: 999, hipTilt: 999, legLeftOk:false, legRightOk:false },
-        });
-        return;
-      }
-
-      const lms = res.landmarks[0];
-      const { pts, key } = drawLandmarks(lms);
-
-      // Update reference scale if possible
-      pixelsPerCm = computePixelsPerCm();
-      setState();
-
-      const geom = analyzePoseGeometry(pts, key);
-
-      // quick pose quality
-      const poseOk =
-        geom.ok &&
-        geom.shoulderTilt < 40 &&
-        geom.hipTilt < 50;
-
-      showResult({
-        wl: suggestWLFromMeasures(),
-        target: parseTargetWL(el.targetWL.value),
-        poseOk,
-        geom,
-      });
+    function confidenceScore({ poseOk, hasMarker, hasWaist, hasInseam, hasHeightWeight }){
+      let s = 25;
+      if(poseOk) s += 35;
+      if(hasMarker) s += 12;
+      if(hasWaist) s += 15;
+      if(hasInseam) s += 10;
+      if(hasHeightWeight) s += 8;
+      return clamp(s, 20, 95);
+    }
+    function confLabel(score){
+      if(score >= 78) return "hoch";
+      if(score >= 55) return "mittel";
+      return "niedrig";
     }
 
-    function showResult({ wl, target, poseOk, geom }){
-      const hasRef = !!pixelsPerCm;
-      const hasWaist = !!(Number(el.waist.value || 0));
-      const hasInseam = !!(Number(el.inseam.value || 0));
-      const hasPose = !!poseLandmarker && !!imageBitmap;
+    // softmax-ish probabilities around candidates
+    function buildCandidates(mainWL){
+      const base = [
+        {W: mainWL.W,   L: mainWL.L,   tag:"Empfehlung"},
+        {W: mainWL.W+1, L: mainWL.L,   tag:"Alternative"},
+        {W: mainWL.W-1, L: mainWL.L,   tag:"Alternative"},
+        {W: mainWL.W,   L: mainWL.L+2, tag:"Alternative"},
+        {W: mainWL.W,   L: mainWL.L-2, tag:"Alternative"},
+      ].map(x=>({ ...x, W: clamp(x.W,26,44), L: clamp(x.L,28,36) }));
 
-      const score = confidenceScore({ hasPose: poseOk, hasRef, hasWaist, hasInseam });
-      const label = confLabel(score);
+      // de-duplicate
+      const uniq = [];
+      const seen = new Set();
+      for(const c of base){
+        const k = `W${c.W}L${c.L}`;
+        if(seen.has(k)) continue;
+        seen.add(k);
+        uniq.push(c);
+      }
+      return uniq.slice(0,4);
+    }
 
-      // Output headline
-      let wlText = "W– / L–";
-      let meta = "Abgleich anhand deiner Angaben + Foto-Plausibilität.";
-      if(wl){
-        wlText = `W${wl.W} / L${wl.L}`;
-        const base = [];
-        if(wl.basedOn.waist) base.push("Taille");
-        if(wl.basedOn.inseam) base.push("Innenbeinlänge");
-        meta = base.length ? `Basierend auf: ${base.join(" + ")}.` : meta;
+    function scoreCandidate(c, mainWL, conf){
+      // higher if closer to main
+      const d = Math.abs(c.W-mainWL.W)*1.2 + Math.abs(c.L-mainWL.L)*0.7;
+      const base = 1 / (1 + d);
+      return base * (0.6 + conf/200); // scale with confidence
+    }
+
+    function normalizeProbs(items){
+      const sum = items.reduce((a,x)=>a+x.s,0) || 1;
+      return items.map(x=>({ ...x, p: x.s/sum }));
+    }
+
+    function drawPoseOverlay(pts){
+      // pts in image coords already
+      octx.save();
+      octx.lineWidth = 4;
+      octx.strokeStyle = "rgba(255,255,255,.72)";
+      octx.fillStyle = "rgba(255,255,255,.90)";
+
+      const drawPt = (p,r=6)=>{
+        octx.beginPath(); octx.arc(p.x,p.y,r,0,Math.PI*2); octx.fill();
+      };
+      const drawLine = (a,b)=>{
+        octx.beginPath(); octx.moveTo(a.x,a.y); octx.lineTo(b.x,b.y); octx.stroke();
+      };
+
+      // hip line + legs
+      drawLine(pts.lh, pts.rh);
+      drawLine(pts.lh, pts.lk); drawLine(pts.lk, pts.la);
+      drawLine(pts.rh, pts.rk); drawLine(pts.rk, pts.ra);
+
+      drawPt(pts.lh,7); drawPt(pts.rh,7);
+      drawPt(pts.lk,6); drawPt(pts.rk,6);
+      drawPt(pts.la,6); drawPt(pts.ra,6);
+
+      octx.restore();
+      drawMarkerClicks();
+    }
+
+    function poseQuality(pts){
+      // simple quality: points exist + ordering
+      const ok = pts.lh && pts.rh && pts.lk && pts.rk && pts.la && pts.ra;
+      if(!ok) return { ok:false, hint:"Punkte nicht stabil erkannt." };
+
+      const legLeftOk = (pts.lk.y > pts.lh.y && pts.la.y > pts.lk.y);
+      const legRightOk = (pts.rk.y > pts.rh.y && pts.ra.y > pts.rk.y);
+
+      const hipTilt = Math.abs(pts.lh.y - pts.rh.y);
+      const legsOk = legLeftOk && legRightOk;
+      const tiltOk = hipTilt < (el.view.height * 0.06);
+
+      let hint = "";
+      if(!legsOk) hint = "Beine wirken leicht angewinkelt. Gerade stehen erhöht die Aussagekraft.";
+      if(!tiltOk) hint = hint ? hint : "Kamera wirkt leicht schief. Gerade ausrichten hilft.";
+
+      return { ok: true, poseOk: legsOk && tiltOk, hint };
+    }
+
+    function buildMainWLFromInputsAndPose(poseInfo){
+      const heightCm = Number(el.height.value||0) || null;
+      const weightKg = Number(el.weight.value||0) || null;
+      const waistCmIn = Number(el.waist.value||0) || null;
+      const inseamCmIn = Number(el.inseam.value||0) || null;
+
+      // primary: direct measures
+      let waistCm = waistCmIn;
+      let inseamCm = inseamCmIn;
+
+      // secondary: estimate from height/weight
+      if(!waistCm) waistCm = estimateWaistCmFromHeightWeight(heightCm, weightKg);
+      if(!inseamCm) inseamCm = estimateInseamCmFromHeight(heightCm);
+
+      // marker-based refinement (very conservative):
+      // if marker active and pose points exist, approximate inseam using pixel scale
+      if(pixelsPerCm && poseInfo && poseInfo.la && poseInfo.lh && !inseamCmIn){
+        const inseamPx = Math.abs(poseInfo.la.y - poseInfo.lh.y);
+        const approxCm = Math.round(inseamPx / pixelsPerCm);
+        // clamp to realistic range; blend with estimate if we have height
+        inseamCm = clamp(Math.round((inseamCm + approxCm) / 2), 60, 100);
       }
 
-      // Compose bullets/notes (customer perspective)
-      const out = buildCustomerOutput({
-        wl, target, geom,
-        hasRef, hasWaist, hasInseam,
-        poseOk
-      });
+      // map to WL
+      let W = waistCm ? mapW(cmToIn(waistCm)) : 32;
+      let L = inseamCm ? mapL(Math.round(cmToIn(inseamCm))) : 32;
 
-      el.wlOut.textContent = wlText;
-      el.metaOut.textContent = meta;
+      W = adjustW(W);
+
+      // keep L sane
+      L = clamp(L, 28, 36);
+
+      return {
+        W, L,
+        used: {
+          waist: !!waistCmIn,
+          inseam: !!inseamCmIn,
+          heightWeight: !!(heightCm && weightKg),
+          marker: !!pixelsPerCm
+        }
+      };
+    }
+
+    function renderResult(main, poseQ){
+      const target = parseTargetWL(el.targetWL.value);
+      const conf = confidenceScore({
+        poseOk: poseQ.poseOk,
+        hasMarker: !!pixelsPerCm,
+        hasWaist: main.used.waist,
+        hasInseam: main.used.inseam,
+        hasHeightWeight: main.used.heightWeight
+      });
+      const label = confLabel(conf);
+
+      el.wlOut.textContent = `W${main.W} / L${main.L}`;
+      el.metaOut.textContent = "Wahrscheinlichste Größe aus Foto + Angaben.";
 
       el.confText.textContent = label;
-      el.confBar.style.width = `${score}%`;
+      el.confBar.style.width = `${conf}%`;
 
-      el.bullets.innerHTML = out.bullets.map(b=>`<li>${escapeHtml(b)}</li>`).join("");
-      el.note.textContent = out.note;
+      const bullets = [];
+      bullets.push(`Empfehlung: W${main.W} / L${main.L}.`);
+
+      if(main.used.waist) bullets.push("Taille-Umfang wurde berücksichtigt.");
+      else bullets.push("Taille-Umfang ist optional. Mit Messwert wird der Scan präziser.");
+
+      if(main.used.inseam) bullets.push("Innenbeinlänge wurde berücksichtigt.");
+      else bullets.push("Innenbeinlänge ist optional. Mit Messwert wird der Scan präziser.");
+
+      if(pixelsPerCm) bullets.push("Marker ist aktiv: Skalierung im Foto ist stabiler.");
+      else bullets.push("Ohne Marker ist Skalierung im Foto stärker von Perspektive abhängig.");
+
+      if(poseQ.hint) bullets.push(poseQ.hint);
+
+      if(target){
+        const dW = main.W - target.W;
+        const dL = main.L - target.L;
+        if(dW === 0 && dL === 0) bullets.push("Deine geplante Größe passt zur Empfehlung.");
+        else{
+          if(dW !== 0) bullets.push(dW>0 ? `Im Vergleich zu deiner geplanten Größe ist die Weite eher größer (+${dW}).` : `Im Vergleich zu deiner geplanten Größe ist die Weite eher kleiner (${dW}).`);
+          if(dL !== 0) bullets.push(dL>0 ? `Im Vergleich zu deiner geplanten Größe ist die Länge eher länger (+${dL}).` : `Im Vergleich zu deiner geplanten Größe ist die Länge eher kürzer (${dL}).`);
+        }
+      }
+
+      el.bullets.innerHTML = bullets.map(x=>`<li>${escapeHtml(x)}</li>`).join("");
+
+      // probabilities
+      const cands = buildCandidates(main);
+      const scored = cands.map(c=>({ ...c, s: scoreCandidate(c, main, conf) }));
+      const probs = normalizeProbs(scored).sort((a,b)=>b.p-a.p);
+
+      el.probGrid.innerHTML = probs.map((c,i)=>{
+        const pct = Math.round(c.p*100);
+        const tag = (i===0) ? "Haupttreffer" : "Alternative";
+        return `
+          <div class="prob">
+            <div class="probTop">
+              <b>W${c.W} / L${c.L}</b>
+              <span>${tag} · ${pct}%</span>
+            </div>
+            <div class="probBar"><i style="width:${pct}%;"></i></div>
+          </div>
+        `;
+      }).join("");
+
+      el.note.textContent = "Hinweis: Der Scan liefert eine Wahrscheinlichkeits-Empfehlung. Für maximale Präzision sind Taille-Umfang und Innenbeinlänge ideal.";
 
       el.result.style.display = "block";
     }
 
-    function escapeHtml(str){
-      return String(str)
-        .replaceAll("&","&amp;")
-        .replaceAll("<","&lt;")
-        .replaceAll(">","&gt;")
-        .replaceAll('"',"&quot;")
-        .replaceAll("'","&#039;");
+    async function runPose(){
+      if(!poseLandmarker || !imageBitmap) return null;
+      const res = poseLandmarker.detect(imageBitmap);
+      if(!res || !res.landmarks || res.landmarks.length === 0) return null;
+
+      const lms = res.landmarks[0];
+      const toPt = (p)=>({ x: p.x * el.view.width, y: p.y * el.view.height, v: p.visibility ?? 1 });
+
+      // indices: 23/24 hips, 25/26 knees, 27/28 ankles
+      const pts = {
+        lh: toPt(lms[23]),
+        rh: toPt(lms[24]),
+        lk: toPt(lms[25]),
+        rk: toPt(lms[26]),
+        la: toPt(lms[27]),
+        ra: toPt(lms[28]),
+      };
+
+      return pts;
     }
 
-    // ---------- Events ----------
+    el.analyze.addEventListener("click", async ()=>{
+      drawPhoto();
+      const pts = await runPose();
+      lastPose = pts;
+
+      if(pts){
+        drawPoseOverlay(pts);
+      }
+
+      // enable scan button
+      el.runScan.disabled = !pts;
+      if(!pts){
+        el.modelState.textContent = "KI-Modul: bereit · Punkte nicht erkannt";
+      }
+    });
+
+    el.runScan.addEventListener("click", async ()=>{
+      drawPhoto();
+      if(lastPose) drawPoseOverlay(lastPose);
+
+      const pq = lastPose ? poseQuality(lastPose) : { ok:false, poseOk:false, hint:"Foto konnte nicht ausgewertet werden." };
+      const main = buildMainWLFromInputsAndPose(lastPose);
+
+      renderResult(main, pq);
+
+      // enable try-on actions once scan exists
+      el.applyOverlay.disabled = !jeansBitmap || !lastPose;
+      el.clearOverlay.disabled = !lastPose;
+      el.runApiTryon.disabled = false; // hook is present, but endpoint must exist
+    });
+
+    el.reset.addEventListener("click", ()=>{
+      el.height.value="";
+      el.weight.value="";
+      el.waist.value="";
+      el.inseam.value="";
+      el.fit.value="regular";
+      el.stretch.value="some";
+      el.brand.value="tts";
+      el.targetWL.value="";
+      el.result.style.display="none";
+      el.probGrid.innerHTML="";
+      el.bullets.innerHTML="";
+      el.confBar.style.width="0%";
+      el.confText.textContent="";
+      // keep photo
+    });
+
+    el.copy.addEventListener("click", async ()=>{
+      if(el.result.style.display === "none"){
+        alert("Bitte erst den Scan berechnen.");
+        return;
+      }
+      const txt = `${el.wlOut.textContent}\n\nDetails:\n- ${[...el.bullets.querySelectorAll("li")].map(li=>li.textContent).join("\n- ")}\n\n${el.note.textContent}`;
+      try{
+        await navigator.clipboard.writeText(txt);
+        alert("Ergebnis kopiert.");
+      }catch{
+        alert("Kopieren nicht möglich. Bitte manuell markieren.");
+      }
+    });
+
+    // photo upload
     el.file.addEventListener("change", async ()=>{
       const f = el.file.files && el.file.files[0];
       if(!f) return;
 
-      // Create bitmap
       const url = URL.createObjectURL(f);
       el.photo.src = url;
 
@@ -1042,75 +1269,164 @@
         el.photo.onerror = ()=>reject(new Error("Image load failed"));
       });
 
-      // Use createImageBitmap for faster processing
-      try{
-        imageBitmap = await createImageBitmap(f);
-      }catch(e){
-        // fallback via img element
-        const tmp = new Image();
-        tmp.src = url;
-        await tmp.decode();
-        // Create a bitmap from drawn image
-        const c = document.createElement("canvas");
-        c.width = tmp.naturalWidth;
-        c.height = tmp.naturalHeight;
-        c.getContext("2d").drawImage(tmp,0,0);
-        imageBitmap = await createImageBitmap(c);
+      imageBitmap = await createImageBitmap(f);
+
+      refClicks = [];
+      pixelsPerCm = null;
+      lastPose = null;
+
+      drawPhoto();
+      setState();
+
+      el.result.style.display="none";
+      el.runScan.disabled = true;
+      el.applyOverlay.disabled = true;
+      el.clearOverlay.disabled = true;
+      el.runApiTryon.disabled = true;
+      el.apiNote.textContent = "API ist im Code vorbereitet, aber standardmäßig deaktiviert.";
+    });
+
+    // ---------- Try-on overlay ----------
+    function updateSliderLabels(){
+      el.scaleVal.textContent = `${el.scale.value}%`;
+      el.alphaVal.textContent = `${el.alpha.value}%`;
+      el.yVal.textContent = `${el.yOff.value}`;
+      el.xVal.textContent = `${el.xOff.value}`;
+      el.tryon.style.opacity = (Number(el.alpha.value)/100).toFixed(2);
+    }
+    ["scale","alpha","yOff","xOff"].forEach(id=>{
+      el[id].addEventListener("input", ()=>{
+        updateSliderLabels();
+        if(lastPose && jeansBitmap) drawTryonOverlay();
+      });
+    });
+    updateSliderLabels();
+
+    el.jeansFile.addEventListener("change", async ()=>{
+      const f = el.jeansFile.files && el.jeansFile.files[0];
+      if(!f) return;
+
+      jeansBitmap = await createImageBitmap(f);
+      el.applyOverlay.disabled = !lastPose || !jeansBitmap;
+      el.clearOverlay.disabled = !lastPose;
+    });
+
+    function drawTryonOverlay(){
+      if(!lastPose || !jeansBitmap || !imageBitmap) return;
+
+      // clear tryon layer
+      tctx.clearRect(0,0,el.tryon.width, el.tryon.height);
+
+      // anchor points (use average hips + average ankles)
+      const hipMid = {
+        x: (lastPose.lh.x + lastPose.rh.x)/2,
+        y: (lastPose.lh.y + lastPose.rh.y)/2
+      };
+      const ankleMid = {
+        x: (lastPose.la.x + lastPose.ra.x)/2,
+        y: (lastPose.la.y + lastPose.ra.y)/2
+      };
+
+      const hipWidth = dist(lastPose.lh, lastPose.rh);
+      const legLen = Math.abs(ankleMid.y - hipMid.y);
+
+      // scaling targets
+      const s = Number(el.scale.value)/100;
+      const targetW = hipWidth * 1.35 * s;
+      const targetH = legLen * 1.15 * s;
+
+      // rotation (hip line)
+      const angle = Math.atan2((lastPose.rh.y-lastPose.lh.y), (lastPose.rh.x-lastPose.lh.x));
+
+      // offsets
+      const xOff = Number(el.xOff.value);
+      const yOff = Number(el.yOff.value);
+
+      // draw centered at hipMid (slightly down)
+      const cx = hipMid.x + xOff;
+      const cy = hipMid.y + (targetH*0.08) + yOff;
+
+      tctx.save();
+      tctx.translate(cx, cy);
+      tctx.rotate(angle);
+
+      // draw jeans bitmap fitted into target box
+      const w = targetW;
+      const h = targetH;
+
+      tctx.globalAlpha = Number(el.alpha.value)/100;
+
+      // "contain" fit
+      const bw = jeansBitmap.width;
+      const bh = jeansBitmap.height;
+      const scale = Math.min(w/bw, h/bh);
+
+      const dw = bw * scale;
+      const dh = bh * scale;
+
+      tctx.drawImage(jeansBitmap, -dw/2, -dh*0.10, dw, dh); // slightly up so waistband sits closer
+      tctx.restore();
+    }
+
+    el.applyOverlay.addEventListener("click", ()=>{
+      drawPhoto();
+      if(lastPose) drawPoseOverlay(lastPose);
+      drawTryonOverlay();
+    });
+
+    el.clearOverlay.addEventListener("click", ()=>{
+      tctx.clearRect(0,0,el.tryon.width, el.tryon.height);
+    });
+
+    // ---------- API hook (optional) ----------
+    // This is a prepared hook. It expects your backend to return an image (blob) to draw on tryon canvas.
+    // Endpoint suggestion: POST /api/tryon with form-data: photo, jeans, wl, options
+    async function runApiTryon(){
+      if(!imageBitmap || !jeansBitmap){
+        el.apiNote.textContent = "Für KI-Vorschau: Foto + Jeans PNG erforderlich.";
+        return;
       }
+      el.apiNote.textContent = "KI-Vorschau: Endpoint ist nicht aktiv. Im Code vorbereiteter Hook.";
+      // Uncomment and adjust when backend exists.
+      /*
+      const endpoint = "/api/tryon";
+      const fd = new FormData();
 
-      refClicks = [];
-      pixelsPerCm = null;
+      // Convert current photo file from input if available
+      const photoFile = el.file.files && el.file.files[0];
+      const jeansFile = el.jeansFile.files && el.jeansFile.files[0];
+      if(!photoFile || !jeansFile) return;
 
-      drawPhoto();
-      el.analyze.disabled = !poseLandmarker;
-      setState();
-    });
+      fd.append("photo", photoFile);
+      fd.append("jeans", jeansFile);
+      fd.append("fit", el.fit.value);
+      fd.append("stretch", el.stretch.value);
+      fd.append("brand", el.brand.value);
 
-    el.analyze.addEventListener("click", analyze);
+      try{
+        const res = await fetch(endpoint, { method:"POST", body: fd });
+        if(!res.ok) throw new Error("TryOn API error");
+        const blob = await res.blob();
+        const img = await createImageBitmap(blob);
 
-    el.refMode.addEventListener("change", ()=>{
-      refClicks = [];
-      pixelsPerCm = null;
-      drawPhoto();
-      setState();
-    });
+        // draw API result to tryon canvas
+        tctx.clearRect(0,0,el.tryon.width, el.tryon.height);
+        tctx.globalAlpha = 1.0;
+        tctx.drawImage(img, 0, 0, el.tryon.width, el.tryon.height);
 
-    // Click two points for reference on overlay canvas (only if ref selected)
-    el.overlay.addEventListener("click", (evt)=>{
-      if(!imageBitmap) return;
-      if(el.refMode.value === "none") return;
+        el.apiNote.textContent = "KI-Vorschau geladen.";
+      }catch(e){
+        el.apiNote.textContent = "KI-Vorschau nicht verfügbar (Endpoint/Antwort).";
+      }
+      */
+    }
 
-      const p = canvasToImageCoords(evt);
+    el.runApiTryon.addEventListener("click", runApiTryon);
 
-      if(refClicks.length >= 2) refClicks = [];
-      refClicks.push(p);
-
-      pixelsPerCm = computePixelsPerCm();
-      drawPhoto();
-      setState();
-    });
-
-    // Right panel buttons (just UX)
-    el.sync.addEventListener("click", ()=>{
-      // Nothing to “sync” to the photo, but we enable analyze button if model is ready
-      el.analyze.disabled = !poseLandmarker || !imageBitmap;
-      if(imageBitmap && poseLandmarker) analyze();
-    });
-
-    el.clear.addEventListener("click", ()=>{
-      el.waist.value = "";
-      el.inseam.value = "";
-      el.fit.value = "regular";
-      el.stretch.value = "some";
-      el.brand.value = "tts";
-      el.targetWL.value = "";
-      el.result.style.display = "none";
-    });
-
-    // Boot
+    // ---------- Boot ----------
     (async function(){
       await loadPose();
-      el.analyze.disabled = !poseLandmarker || !imageBitmap;
+      setTab("scan");
       setState();
     })();
   </script>
